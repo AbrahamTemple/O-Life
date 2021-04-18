@@ -33,5 +33,5 @@ Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 >> 当前 API 24
 >>> 相关解决:https://github.com/lottie-react-native/lottie-react-native/issues/345
 
-> 已解决
->> 文献:https://www.programmersought.com/article/74234168423/
+问题已解决
+> 文献:https://www.programmersought.com/article/74234168423/
