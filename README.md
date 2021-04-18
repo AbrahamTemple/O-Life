@@ -43,6 +43,7 @@ Caused by:android.view.InflateException: Binary XML file line #22: Binary XML fi
 Caused by:android.view.InflateException: Binary XML file line #22: Error inflating class
 Caused by: java.lang.ClassNotFoundException: Didn't find class ...
 ```
-> 外部库疑似迁移至Androidx以致Api不能被使用？
+> 外部库疑似迁移至Androidx以致Api不能被使用?
 
-> 可以通过某种修改达到适配旧版本运行的目的
+> 可以通过某种修改达到适配旧版本运行的目的?
+
