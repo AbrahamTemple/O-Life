@@ -29,7 +29,7 @@ Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 ```
 
 一种说辞
-> 由于我导的依赖已经用上了java8和grade 3.0.0以上，而我并没有
+> 由于我导的外部库已经用上了java8和grade 3.0.0以上，而我并没有
 >> 当前 API 24
 >>> 相关解决:https://github.com/lottie-react-native/lottie-react-native/issues/345
 
