@@ -34,7 +34,8 @@ Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 >>> 相关解决:https://github.com/lottie-react-native/lottie-react-native/issues/345
 
 问题已解决
-> 文献:https://www.programmersought.com/article/74234168423/
+> 因为我依赖的第三方是在java8中编译的，但是我的工具只有java1.7，所以会出现此问题
+>> 文献:https://www.programmersought.com/article/74234168423/
 
 ## 心态良好的问题
 
