@@ -22,10 +22,13 @@ to that submodule's build.gradle file.
 
 ``` Bash
 Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
-> com.android.build.api.transform.TransformException: java.lang.RuntimeException: java.lang.RuntimeException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: com.android.ide.common.process.ProcessException: Return code 1 for dex process
+> com.android.build.api.transform.TransformException: java.lang.RuntimeException: 
+> java.lang.RuntimeException: com.android.ide.common.process.ProcessException: 
+> java.util.concurrent.ExecutionException: 
+> com.android.ide.common.process.ProcessException: Return code 1 for dex process
 ```
 
 一种说辞
 > 由于我导的依赖已经用上了java8和grade 3.0.0以上，而我并没有
 >> 当前 API 24
->>> 相关解决:https://github.com/lottie-react-native/lottie-react-native/issues/345
+>> 相关解决:https://github.com/lottie-react-native/lottie-react-native/issues/345
