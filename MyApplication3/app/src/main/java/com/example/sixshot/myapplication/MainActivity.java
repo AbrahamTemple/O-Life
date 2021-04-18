@@ -17,8 +17,8 @@ import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    @BindView(R.id.test_button)
-    KTLoadingButton test_button;
+//    @BindView(R.id.test_button)
+//    KTLoadingButton test_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +39,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void init(){
-        test_button.setOnClickListener(this);
+//        test_button.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.test_button:
-                test_button.startLoading();
+//            case R.id.test_button:
+//                test_button.startLoading();
 
 //                test_button.doResult(true,);
                 //test_button.doResult(true,);
 //                doSomething(v);
 //                test_button.reset();
-                break;
+//                break;
             default:
                 break;
         }

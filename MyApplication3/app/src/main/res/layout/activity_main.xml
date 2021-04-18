@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.sixshot.myapplication.MainActivity">
 
-    <de.timonknispel.ktloadingbutton.KTLoadingButton
-        android:id="@+id/test_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:buttonName="Test"/>
+    <!--<de.timonknispel.ktloadingbutton.KTLoadingButton-->
+        <!--android:id="@+id/test_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:buttonName="Normal" />-->
 
 </RelativeLayout>
