@@ -36,6 +36,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .cookieJar(cookieJar)
                 .build();
         OkHttpUtils.initClient(okHttpClient);
+        
+        OkHttpUtils.get().url("https://www.baidu.com/").addParams("q","123456").build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                System.out.println(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                System.out.println(response);
+            }
+        });
     }
 
     public void init(){
