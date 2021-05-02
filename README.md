@@ -1,50 +1,23 @@
-# 2021年leangoo开发的Android项目
+# 2021年基于Android MVVM框架设计的项目
+
+全文环绕项目是project，且MyApplication3已被废弃
+
+## 核心功能
 
  - 网络请求 - okHttp
+
+ - 存储 - SharePreferences
 
  - 路由 - ARouter
 
  - 数据绑定 - DataBinding
+ 
+ - 渲染
 
- - 存储 - SharePreferences
+## 当前进度
 
-## 当下需解决的问题
+ - 该项目已成功迁移至Androidx
+ - 已引进路由跳转
+ - 路由跳转附带的参数可被单向绑定
 
-``` Bash
-Error:Error converting bytecode to dex:
-Cause: Dex cannot parse version 52 byte code.
-This is caused by library dependencies that have been compiled using Java 8 or above.
-If you are using the 'java' gradle plugin in a library submodule add 
-targetCompatibility = '1.7'
-sourceCompatibility = '1.7'
-to that submodule's build.gradle file.
-```
-
-``` Bash
-Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
-> com.android.build.api.transform.TransformException: java.lang.RuntimeException: 
-> java.lang.RuntimeException: com.android.ide.common.process.ProcessException: 
-> java.util.concurrent.ExecutionException: 
-> com.android.ide.common.process.ProcessException: Return code 1 for dex process
-```
-
-一种说辞
-> 由于我导的外部库已经用上了java8和grade 3.0.0以上，而我并没有
->> 当前 API 24
->>> 相关解决:https://github.com/lottie-react-native/lottie-react-native/issues/345
-
-问题已解决
-> 因为我依赖的第三方是在java8中编译的，但是我的工具只有java1.7，所以会出现此问题
->> 文献:https://www.programmersought.com/article/74234168423/
-
-## 心态良好的问题
-
-``` Bash
-Caused by:android.view.InflateException: Binary XML file line #22: Binary XML file line #22: Error inflating class ...
-Caused by:android.view.InflateException: Binary XML file line #22: Error inflating class
-Caused by: java.lang.ClassNotFoundException: Didn't find class ...
-```
-> 外部库疑似迁移至Androidx以致Api不能被使用?
-
-> 可以通过某种修改达到适配旧版本运行的目的?
 
