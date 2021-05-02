@@ -2,6 +2,10 @@
 
 全文环绕项目是project，且MyApplication3已被废弃
 
+## What's Android MVVM
+
+![Screenshot](reference.png)
+
 ## 核心功能
 
  - 网络请求 - okHttp
