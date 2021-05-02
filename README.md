@@ -1,4 +1,4 @@
-# 2021年基于Android MVVM框架设计的项目
+# 2021年基于Android MVVM框架的设计作品
 
 全文环绕项目是project，且MyApplication3已被废弃
 
