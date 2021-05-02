@@ -2,11 +2,11 @@
 
  - 网络请求 - okHttp
 
- - 懒加载按钮 - KTLoadingButton
+ - 路由 - ARouter
 
- - 上拉刷新 - Taurus
+ - 数据绑定 - DataBinding
 
- - 美化控件 - material
+ - 存储 - SharePreferences
 
 ## 当下需解决的问题
 
