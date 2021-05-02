@@ -18,8 +18,6 @@
  
  - View渲染
 
- - 监控数据
-
 ## 需要添加的全局配置
 
 - Application的build.grade
