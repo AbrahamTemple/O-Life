@@ -18,7 +18,7 @@
  
  - View渲染
 
-## 需要添加的全局配置
+## 需要添加的配置
 
 - Application的build.grade
 
