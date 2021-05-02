@@ -20,4 +20,6 @@
  - 已实现了路由跳转
  - 路由跳转附带的参数可被单向绑定
 
+![Screenshot](project/demo1.png)
 
+![Screenshot](project/demo2.png)
