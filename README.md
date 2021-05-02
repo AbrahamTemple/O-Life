@@ -2,7 +2,7 @@
 
 全文环绕项目是project，且MyApplication3已被废弃
 
-## What's Android MVVM architecture ?
+## What's Android MVVM architecture?
 
 ![Screenshot](reference.png)
 
