@@ -115,4 +115,4 @@ dependencies {
  - 简单实现了动态渲染
  - 改用封装okhttp的retrofit2
 
-![Screenshot](project/demo.gif)
+![Screenshot](demo.gif)
