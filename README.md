@@ -8,7 +8,7 @@
 
 ## 核心功能
 
- - 网络请求 - okHttp
+ - 网络请求 - Retrofit2
 
  - 存储 - SharePreferences
 
@@ -49,18 +49,6 @@ android {
     defaultConfig {
         .....
 
-        dexOptions {
-            preDexLibraries false
-            jumboMode true
-            javaMaxHeapSize "4g"
-            incremental false
-        }
-
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_8
-            targetCompatibility JavaVersion.VERSION_1_8
-        }
-
         dataBinding {
             enabled = true
         }
@@ -83,6 +71,12 @@ dependencies {
 
     /* 网络请求 */
     implementation 'com.zhy:okhttputils:2.6.2'
+    implementation "io.reactivex.rxjava2:rxjava:2.1.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 
     /* 路由 */
     implementation 'com.alibaba:arouter-api:1.4.1'
@@ -119,5 +113,6 @@ dependencies {
  - 路由跳转附带的参数可被单向绑定
  - 导入了一些UI/UX库控件
  - 简单实现了动态渲染
+ - 改用封装okhttp的retrofit2
 
 ![Screenshot](project/demo.gif)
