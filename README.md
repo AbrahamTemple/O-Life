@@ -16,7 +16,7 @@
 
  - 数据绑定 - DataBinding
  
- - View渲染
+ - 动态渲染 - EventBus
 
 ## 需要添加的配置
 
@@ -93,14 +93,32 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:30+'
     implementation 'com.android.support:design:30+'
     implementation 'com.android.support:cardview-v7:30+'
+    implementation 'com.squareup.picasso:picasso:2.3.2'
+    
+    /* 第三方UI/UX库 */
+
+    // 过度按钮
+    implementation 'com.royrodriguez:transitionbutton:0.2.0'
+
+    // 涟漪背景 -- https://github.com/skyfishjy/android-ripple-background
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
+
+    // 动画轮播 -- https://github.com/daimajia/AndroidImageSlider
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.daimajia.slider:library:1.1.5@aar'
+
+    /* 框架库 */
+    implementation 'org.greenrobot:eventbus:3.0.0'
 }
 ```
 
 ## 当前进度
 
  - 该项目已成功迁移至Androidx
- - 已实现了路由跳转
+ - 已实现了路由path与uri跳转
  - 路由跳转附带的参数可被单向绑定
+ - 导入了一些UI/UX库控件
+ - 简单实现了动态渲染
 
 ![Screenshot](project/demo1.png)
 
