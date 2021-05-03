@@ -87,6 +87,9 @@ dependencies {
     /* 路由 */
     implementation 'com.alibaba:arouter-api:1.4.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+    
+    /* 消息总线 */
+    implementation 'org.greenrobot:eventbus:3.0.0'
 
     /* 基本布局 */
     implementation 'com.android.support:recyclerview-v7:30+'
@@ -105,9 +108,7 @@ dependencies {
     // 动画轮播 -- https://github.com/daimajia/AndroidImageSlider
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.daimajia.slider:library:1.1.5@aar'
-
-    /* 框架库 */
-    implementation 'org.greenrobot:eventbus:3.0.0'
+    
 }
 ```
 
