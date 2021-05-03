@@ -113,7 +113,7 @@ dependencies {
 
 ## 当前进度
 
- - 该项目已成功迁移至Androidx
+ - 项目已成功迁移至Androidx
  - 已实现了路由path与uri跳转
  - 路由跳转附带的参数可被单向绑定
  - 导入了一些UI/UX库控件
