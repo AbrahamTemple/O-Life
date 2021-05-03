@@ -99,9 +99,8 @@ dependencies {
     // 涟漪背景 -- https://github.com/skyfishjy/android-ripple-background
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
 
-    // 动画轮播 -- https://github.com/daimajia/AndroidImageSlider
-    implementation 'com.nineoldandroids:library:2.4.0'
-    implementation 'com.daimajia.slider:library:1.1.5@aar'
+    // 电源菜单 -- https://github.com/skydoves/powermenu
+    implementation "com.github.skydoves:powermenu:2.1.9"
     
 }
 ```
