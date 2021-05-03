@@ -22,7 +22,7 @@
 
 - Application的build.grade
 
-``` Bash
+``` java
 buildscript {
     .....
     dependencies {
@@ -43,7 +43,7 @@ allprojects {
 
 - app的build.grade
 
-``` Bash
+``` java
 android {
     .....
     defaultConfig {
