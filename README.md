@@ -82,7 +82,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
 
     /* 网络请求 */
-    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
     implementation 'com.zhy:okhttputils:2.6.2'
 
     /* 路由 */
