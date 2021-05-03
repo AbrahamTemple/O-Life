@@ -120,6 +120,4 @@ dependencies {
  - 导入了一些UI/UX库控件
  - 简单实现了动态渲染
 
-![Screenshot](project/demo1.png)
-
-![Screenshot](project/demo2.png)
+![Screenshot](project/demo.gif)
