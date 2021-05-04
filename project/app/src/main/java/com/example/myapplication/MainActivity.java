@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.myapplication.data.network.config.NetWorkInit;
 import com.example.myapplication.domain.Counter;
 import com.example.myapplication.service.MyIntentService;
 import com.example.myapplication.ui.view.MyPowerMenu;
@@ -29,10 +30,15 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -68,7 +74,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
         rbg1.setOnClickListener(this);
+        NetWorkInit.getInstance().init();
         myPowerMenu = new MyPowerMenu(this,this);
+
     }
 
     @Override
@@ -121,8 +129,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnEventProgress(Counter counter){
+        Call<ResponseBody> call = NetWorkInit.getRequest().getBanner();
         TextView textView = (TextView)task1.findViewWithTag(counter.getTag());
         textView.setText(counter.getProgress() + "ms");
+        if(counter.getProgress() == 0){
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if(response.isSuccessful()){
+                        try {
+                            String result = response.body().string();
+                            Log.e("网络请求", "响应结果: " + result);
+                            Toast.makeText(MainActivity.this, "数据已请求完成", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
