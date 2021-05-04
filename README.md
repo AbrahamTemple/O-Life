@@ -107,11 +107,10 @@ dependencies {
 
 ## 当前进度
 
- - 项目已成功迁移至Androidx
  - 已实现了路由path与uri跳转
  - 路由跳转附带的参数可被单向绑定
  - 导入了一些UI/UX库控件
  - 简单实现了动态渲染
- - 改用封装okhttp的retrofit2
+ - 可用retrofit2访问到数据
 
 ![Screenshot](demo.gif)
