@@ -18,6 +18,8 @@
  
  - 动态渲染 - EventBus
 
+ - 异部事件 - Rxjava
+
 ## 需要添加的配置
 
 - Application的build.grade
@@ -71,13 +73,15 @@ dependencies {
 
     /* 网络请求 */
     implementation 'com.zhy:okhttputils:2.6.2'
-    implementation "io.reactivex.rxjava2:rxjava:2.1.0"
-    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 
+    /* 异步事件 */
+    implementation "io.reactivex.rxjava2:rxjava:2.1.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+    
     /* 路由 */
     implementation 'com.alibaba:arouter-api:1.4.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
