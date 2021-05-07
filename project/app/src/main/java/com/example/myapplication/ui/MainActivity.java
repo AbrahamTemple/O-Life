@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         myPowerMenu = new MyPowerMenu(this,this);
         myPowerMenu.init();
         sharedPreferences = SharedPreferencesUtils.init(MainActivity.this);
+        sharedPreferences.clear();
     }
 
     @Override
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ARouter.getInstance().build("/test/activity")
                         .withInt("codeName", 16)
                         .withString("name", "Abraham")
+                        .withString("url",sharedPreferences.getString("6"))
                         .navigation();
                 Log.d("MainActivity","已触发了路由path跳转");
                 break;
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ARouter.getInstance().build(uri)
                                     .withInt("codeName", 23)
                                     .withString("name", "Yan")
+                                    .withString("url",sharedPreferences.getString("20"))
                                     .navigation();
                             Log.d("MainActivity","已触发了路由uri跳转");
                         });
@@ -137,15 +140,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if(response.isSuccessful()){
+                        Toast.makeText(MainActivity.this, "请求数据成功", Toast.LENGTH_SHORT).show();
                         try {
                             String result = response.body().string();
                             Log.e("网络请求", "响应结果: " + result);
                             BannerResponse data = GsonUtils.fromJson(result, BannerResponse.class);
                             data.getData().forEach(d ->{
-                                sharedPreferences.putString(d.getId()+"",d.getImagePath());
+                                sharedPreferences.putString(d.getId()+"",d.getUrl());
                             });
-                            Log.d("共享首选项",sharedPreferences.getString("6"));
-                            Toast.makeText(MainActivity.this, "已存至共享首选项", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "网址已被保存", Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

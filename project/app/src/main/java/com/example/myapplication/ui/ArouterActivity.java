@@ -24,12 +24,14 @@ public class ArouterActivity extends AppCompatActivity {
     @Autowired
     public int codeName;
 
+    @Autowired
+    public String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arouter);
         init();
-        Log.d("ARouter", name+codeName);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
@@ -39,7 +41,7 @@ public class ArouterActivity extends AppCompatActivity {
         ARouter.getInstance().inject(this);
         //绑定数据
         ActivityArouterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_arouter);
-        binding.setUsers(new Users(name,codeName));
+        binding.setUsers(new Users(name,codeName,url));
     }
 
 }
