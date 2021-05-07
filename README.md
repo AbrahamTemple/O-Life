@@ -57,7 +57,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
+                arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
             }
         }
     }
@@ -73,14 +73,16 @@ dependencies {
 
     /* 网络请求 */
     implementation 'com.zhy:okhttputils:2.6.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 
     /* 异步事件 */
     implementation "io.reactivex.rxjava2:rxjava:2.1.0"
     implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+    implementation 'com.github.xuexiangjys:RxUtil2:1.2.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.2.0'
     
     /* 路由 */
     implementation 'com.alibaba:arouter-api:1.4.1'
