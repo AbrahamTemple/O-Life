@@ -119,4 +119,4 @@ dependencies {
  - 简单实现了动态渲染
  - 可用retrofit2访问到数据
 
-![Screenshot](demo.gif)
+![Screenshot](demo2.gif)
