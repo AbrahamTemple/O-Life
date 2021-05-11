@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许网络访问 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" /><!--允许访问电话-->
 
     <application
         android:name=".app.MyApplication"
@@ -15,18 +16,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".ui.ViewActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".service.MyIntentService"
             android:exported="false" />
 
         <activity android:name=".ui.ArouterActivity" />
-
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <data
                     android:host="m.aliyun.com"
                     android:scheme="arouter" />
+
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

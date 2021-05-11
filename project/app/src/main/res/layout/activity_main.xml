@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 android:layout_height="35dp"
                 android:layout_gravity="end"
                 android:layout_marginRight="15dp"
-                android:onClick="onProfile"
+                android:onClick="onIcon"
                 android:src="@drawable/ic_user"
                 android:tint="@android:color/white" />
         </androidx.appcompat.widget.Toolbar>
@@ -76,30 +76,40 @@
             android:id="@+id/btn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="路由跳转"
+            android:text="path跳转"
             tools:ignore="MissingConstraints"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/title_main"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="5dp"/>
 
         <com.royrodriguez.transitionbutton.TransitionButton
             android:id="@+id/btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="跳转到网面"
+            android:text="uri跳转"
             app:defaultColor="@color/colorAccent"
             app:loaderColor="@android:color/white"
             android:textColor="@android:color/white"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/btn1"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="5dp"/>
+
+        <Button
+            android:id="@+id/btn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UI仓库"
+            android:backgroundTint="@color/colorControlActivated"
+            android:layout_below="@+id/btn2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"/>
+
         <ScrollView
             android:layout_width="300dp"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/btn2"
-            android:layout_marginTop="20dp">
+            android:layout_below="@+id/btn3">
             <LinearLayout
                 android:id="@+id/linear_container"
                 android:orientation="vertical"

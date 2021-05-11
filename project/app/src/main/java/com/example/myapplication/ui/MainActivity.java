@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
@@ -47,11 +48,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.btn2)
     TransitionButton btn2;
 
+    @BindView(R.id.btn3)
+    Button btn3;
+
     @BindView(R.id.ser_content)
     RippleBackground rbg1;
 
     @BindView(R.id.linear_container)
     LinearLayout task1;
+
+
+    private Handler handler;
 
     private int textTag;
 
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textTag = 0;
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
+        btn3.setOnClickListener(this);
         rbg1.setOnClickListener(this);
         NetWorkInit.getInstance().init();
         myPowerMenu = new MyPowerMenu(this,this);
@@ -96,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 btn2.startAnimation();
 
                 // 在动画执行过程中要做一些什么
-                final Handler handler = new Handler();
+                handler = new Handler();
                 handler.postDelayed(() -> {
 
                     boolean isSuccessful = true;
@@ -126,12 +134,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 task1.addView(textView);
                 MyIntentService.startDownload(this,num,textTag);
                 textTag++;
+                break;
+            case R.id.btn3:
+                ARouter.getInstance().build("/ui/activity").navigation();
+                break;
             default:
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void OnEventProgress(Counter counter){
+    public void OnEventProgress(Counter counter){
         Call<ResponseBody> call = NetWorkInit.getRequest().getBanner();
         TextView textView = (TextView) task1.findViewWithTag(counter.getTag());
         textView.setText(counter.getProgress() + "ms");
@@ -174,5 +186,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onProfile(View view) {
         myPowerMenu.onProfile(view);
+    }
+
+    public void onIcon(View view){
+        myPowerMenu.onIcon(view);
     }
 }
