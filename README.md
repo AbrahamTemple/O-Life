@@ -1,7 +1,5 @@
 # 2021年基于Android MVVM框架的前端设计
 
-全文环绕项目是project，且MyApplication3已被废弃
-
 ## What's Android MVVM architecture?
 
 ![Screenshot](reference.png)
@@ -118,5 +116,3 @@ dependencies {
  - 导入了一些UI/UX库控件
  - 简单实现了动态渲染
  - 可用retrofit2访问到数据
-
-![Screenshot](demo2.gif)
