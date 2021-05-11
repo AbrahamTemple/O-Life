@@ -17,6 +17,8 @@
  - 动态渲染 - EventBus
 
  - 异部事件 - Rxjava
+ 
+ - 消息队列 - AMQP
 
 ## 需要添加的配置
 
@@ -88,6 +90,9 @@ dependencies {
     
     /* 消息总线 */
     implementation 'org.greenrobot:eventbus:3.0.0'
+    
+    /* 消息队列 */
+    implementation 'com.rabbitmq:amqp-client:5.12.0'
 
     /* 基本布局 */
     implementation 'com.android.support:recyclerview-v7:30+'
