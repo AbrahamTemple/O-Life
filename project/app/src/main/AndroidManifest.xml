@@ -5,7 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许网络访问 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" /><!--允许访问电话-->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".app.MyApplication"
@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <service
+            android:name=".service.AmqpService"
+            android:exported="false"></service>
+
         <activity
             android:name=".ui.ViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
