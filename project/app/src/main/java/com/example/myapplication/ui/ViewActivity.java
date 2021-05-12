@@ -44,7 +44,7 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
     private ConnectionFactory factory;
     private String userName = "admin" ;
     private String passWord = "admin" ;
-    private String hostName = "172.20.10.12" ;
+    private String hostName = "127.0.0.1" ;
     private String virtualHost = "/";
     private int portNum = 5672 ;
     private String exchangeName = "android_exchange" ;
