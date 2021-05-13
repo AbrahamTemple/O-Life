@@ -4,7 +4,7 @@
 
 ![Screenshot](reference.png)
 
-## My MVVM architecture design
+## 我的MVVM框架设计图
 
 ![Screenshot](mydesigner.png)
 
