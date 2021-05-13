@@ -4,6 +4,10 @@
 
 ![Screenshot](reference.png)
 
+## My Design
+
+![Screenshot](mydesigner.png)
+
 ## 核心功能
 
  - 网络请求 - Retrofit2
