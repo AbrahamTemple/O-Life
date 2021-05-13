@@ -4,7 +4,7 @@
 
 ![Screenshot](reference.png)
 
-## My Design
+## 我的设计图
 
 ![Screenshot](mydesigner.png)
 
