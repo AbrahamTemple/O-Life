@@ -18,10 +18,11 @@
         tools:ignore="GoogleAppIndexingWarning">
         <service
             android:name=".service.AmqpService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <activity
             android:name=".ui.ViewActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
