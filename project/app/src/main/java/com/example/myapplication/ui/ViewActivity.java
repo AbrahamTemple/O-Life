@@ -36,20 +36,15 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 @Route(path = "/ui/activity")
-public class ViewActivity extends AppCompatActivity implements View.OnClickListener{
+public class ViewActivity extends AppCompatActivity{
 
     public static final int REFRESH_DELAY = 3000;
 
     @BindView(R.id.pull_to_refresh)
     PullToRefreshView prv;
-
-    @BindView(R.id.call_btn)
-    MaterialButton call;
-
-    @BindView(R.id.publish_btn)
-    Button pub_btn;
 
     @BindView(R.id.message_list)
     TextView msg_list;
@@ -61,14 +56,13 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
+        EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         init();
     }
 
     public void init(){
         prv.setOnRefreshListener(() -> prv.postDelayed(() -> prv.setRefreshing(false), REFRESH_DELAY));
-        call.setOnClickListener(this);
-        pub_btn.setOnClickListener(this);
         AmqpService.startListener(this);
     }
 
@@ -78,20 +72,6 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
         Date now = new Date();
         SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss");
         msg_list.setText(ft.format(now) + ' ' + msg );
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.call_btn:
-                getPermission();
-                break;
-            case R.id.publish_btn:
-                String msg = msg_text.getText().toString();
-                AmqpService.startPublish(this,msg);
-                break;
-            default:
-        }
     }
 
     public void call() {
@@ -104,6 +84,13 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @OnClick(R.id.publish_btn)
+    public void getPublish(){
+        String msg = msg_text.getText().toString();
+        AmqpService.startPublish(this,msg);
+    }
+
+    @OnClick(R.id.call_btn)
     public void getPermission() {
         if (ContextCompat.checkSelfPermission(ViewActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(ViewActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
@@ -130,12 +117,6 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
             }
         }
-    }
-
-    @Override
-    protected void onStart() {
-        EventBus.getDefault().register(this);
-        super.onStart();
     }
 
     @Override
