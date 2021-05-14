@@ -15,6 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
+import com.example.myapplication.app.MyApplication;
 import com.example.myapplication.data.model.BannerResponse;
 import com.example.myapplication.data.network.config.NetWorkInit;
 import com.example.myapplication.domain.Counter;
@@ -31,6 +32,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.linear_container)
     LinearLayout task1;
 
+    @BindView(R.id.title_main)
+    TextView tag;
 
     private Handler handler;
 
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MyApplication.getInstance().addActivity(this);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         init();
@@ -136,7 +141,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 textTag++;
                 break;
             case R.id.btn3:
-                ARouter.getInstance().build("/ui/activity").navigation();
+                ARouter.getInstance().build("/ui/activity")
+                        .withString("tag", UUID.randomUUID().toString())
+                        .navigation();
                 break;
             default:
         }
@@ -178,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+        MyApplication.getInstance().AppExit();
     }
 
     public void onHamburger(View view) {

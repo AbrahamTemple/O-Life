@@ -15,6 +15,7 @@ import com.rabbitmq.client.Envelope;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
@@ -32,8 +33,11 @@ public class AmqpService extends IntentService {
     private static final String password = "admin" ;
     private static final String virtualHost = "/";
     private static final String exchange = "android_exchange" ;
-    private static final String queue = "android_queue";
-    private static final String rountingKey = "news";
+    private static String queue = "android_queue";
+    private static String rountingKey = "news";
+    private static boolean isAutoDete = false; //结束进程后自动删除队列
+    private static boolean isExclusive = false; //排斥其它队列，不允许其它队列访问
+    private static Map<String,Object> args = null; //附带参数
 
     public AmqpService() {
         super("AmqpService");
@@ -115,6 +119,7 @@ public class AmqpService extends IntentService {
             Connection connection = factory.newConnection() ;
             final Channel channel = connection.createChannel() ;
             channel.exchangeDeclare(exchange, "direct" , true) ;
+            channel.queueDeclare(queue,true,isExclusive,isAutoDete,args);
             channel.queueBind(queue, exchange, rountingKey) ;
             /**
              * @param queue 队列名
@@ -135,4 +140,23 @@ public class AmqpService extends IntentService {
         }
     }
 
+    public static void setQueue(String queue) {
+        AmqpService.queue = queue;
+    }
+
+    public static void setRountingKey(String rountingKey) {
+        AmqpService.rountingKey = rountingKey;
+    }
+
+    public static void setIsAutoDete(boolean isAutoDete) {
+        AmqpService.isAutoDete = isAutoDete;
+    }
+
+    public static void setIsExclusive(boolean isExclusive) {
+        AmqpService.isExclusive = isExclusive;
+    }
+
+    public static void setArgs(Map<String, Object> args) {
+        AmqpService.args = args;
+    }
 }

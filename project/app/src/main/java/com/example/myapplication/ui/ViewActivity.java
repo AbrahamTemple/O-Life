@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
+import com.example.myapplication.app.MyApplication;
 import com.example.myapplication.service.AmqpService;
 import com.yalantis.taurus.PullToRefreshView;
 
@@ -42,6 +44,9 @@ public class ViewActivity extends AppCompatActivity{
 
     public static final int REFRESH_DELAY = 3000;
 
+    @Autowired
+    public String tag;
+
     @BindView(R.id.pull_to_refresh)
     PullToRefreshView prv;
 
@@ -55,13 +60,19 @@ public class ViewActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
+        MyApplication.getInstance().addActivity(this);
         EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         init();
     }
 
     public void init(){
+        ARouter.getInstance().inject(this);
         prv.setOnRefreshListener(() -> prv.postDelayed(() -> prv.setRefreshing(false), REFRESH_DELAY));
+        AmqpService.setQueue(tag);
+        AmqpService.setRountingKey(tag);
+        AmqpService.setIsAutoDete(true);
+        AmqpService.setIsExclusive(true);
         AmqpService.startListener(this);
     }
 
@@ -72,7 +83,6 @@ public class ViewActivity extends AppCompatActivity{
         SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss");
         TextView textView = new TextView(this);
         textView.setTag(UUID.randomUUID());
-        textView.setTextSize(14);
         textView.setText(ft.format(now) + ' ' + msg);
         textView.setOnClickListener(v -> Log.d("得到路由key：",v.getTag().toString()));
         task1.addView(textView);
@@ -96,6 +106,7 @@ public class ViewActivity extends AppCompatActivity{
     @OnClick(R.id.publish_btn)
     public void getPublish(){
         String msg = msg_text.getText().toString();
+        AmqpService.setRountingKey("news");
         AmqpService.startPublish(this,msg);
     }
 
@@ -132,5 +143,12 @@ public class ViewActivity extends AppCompatActivity{
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+        MyApplication.getInstance().finishActivity(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        MyApplication.getInstance().finishActivity(this);
     }
 }
