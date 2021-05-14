@@ -115,6 +115,11 @@ dependencies {
     // 电源菜单 -- https://github.com/skydoves/powermenu
     implementation "com.github.skydoves:powermenu:2.1.9"
     
+    // 拉动刷新 -- https://github.com/Yalantis/Taurus
+    implementation 'com.github.yalantis:taurus:1.0.2'
+
+    // XUI -- https://github.com/xuexiangjys/XUI
+    implementation 'com.github.xuexiangjys:XUI:1.1.7'
 }
 ```
 
