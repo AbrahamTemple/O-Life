@@ -23,6 +23,8 @@
  - 异部事件 - Rxjava
  
  - 消息队列 - AMQP
+ 
+ - 网络协议 - WebScoket
 
 ## 需要添加的配置
 
