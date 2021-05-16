@@ -24,7 +24,7 @@
  
  - 消息队列 - AMQP
  
- - 网络协议 - WebScoket
+ - 双向通信 - WebScoket
 
 ## 需要添加的配置
 
@@ -100,7 +100,7 @@ dependencies {
     /* 消息队列 */
     implementation 'com.rabbitmq:amqp-client:5.12.0'
     
-    /* WebSocket */
+    /* 双向通信 */
     implementation 'org.java-websocket:Java-WebSocket:1.5.1'
 
     /* 基本布局 */
