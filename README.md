@@ -97,6 +97,9 @@ dependencies {
     
     /* 消息队列 */
     implementation 'com.rabbitmq:amqp-client:5.12.0'
+    
+    /* WebSocket */
+    implementation 'org.java-websocket:Java-WebSocket:1.5.1'
 
     /* 基本布局 */
     implementation 'com.android.support:recyclerview-v7:30+'
