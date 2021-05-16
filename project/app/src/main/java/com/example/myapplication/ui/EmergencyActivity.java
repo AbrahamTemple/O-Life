@@ -9,15 +9,16 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.myapplication.service.AmqpService;
+import com.example.myapplication.service.WsService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,9 +27,16 @@ import com.example.myapplication.R;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
+import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +55,7 @@ public class EmergencyActivity extends AppCompatActivity implements View.OnClick
         EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         init();
+        WsService.startConnection(this,"6");
     }
 
     public void init(){
@@ -67,6 +76,13 @@ public class EmergencyActivity extends AppCompatActivity implements View.OnClick
             case R.id.fab:
                 Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Map<String, Object> map = new HashMap<>();
+                List<String> persons = new ArrayList<>();
+                persons.add("6");
+                persons.add("1");
+                map.put("persons",persons);
+                map.put("msg","你们好啊");
+                WsService.startSend(this,map);
                 break;
         }
     }
@@ -114,6 +130,7 @@ public class EmergencyActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        WsService.startClose(this);
         super.onDestroy();
     }
 }

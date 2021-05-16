@@ -27,7 +27,7 @@ public class AmqpService extends IntentService {
     private static final String EXTRA_MESSAGE = "com.example.myapplication.service.extra.MESSAGE";
 
     private static ConnectionFactory factory;
-    private static final String host = "127.0.0.1" ; //一定不可为localhost
+    private static final String host = "172.20.10.12" ; //一定不可为localhost
     private static final int port = 5672 ;
     private static final String username = "admin" ;
     private static final String password = "admin" ;
