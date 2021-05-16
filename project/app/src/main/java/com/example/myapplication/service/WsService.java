@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.myapplication.util.GsonUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -98,6 +99,7 @@ public class WsService extends IntentService {
             public void onMessage(String message) {
                 Log.d(TAG, "收到消息");
                 Log.d(TAG,"消息内容为："+message);
+                EventBus.getDefault().post(message);
             }
 
             @Override

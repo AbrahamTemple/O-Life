@@ -20,6 +20,10 @@ import androidx.core.content.ContextCompat;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
@@ -37,16 +41,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @Route(path = "/call/activity")
-public class EmergencyActivity extends AppCompatActivity implements View.OnClickListener{
+public class EmergencyActivity extends AppCompatActivity{
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
+    @BindView(R.id.message_text)
+    EditText msg_text;
+
+    @BindView(R.id.linear_container)
+    LinearLayout task1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,32 +70,35 @@ public class EmergencyActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void init(){
-        fab.setOnClickListener(this);
     }
 
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnEventProgress(String msg){
-        Date now = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss");
-        System.out.println("消息已发送至" + msg + "--- SpringCloud正在执行 ---" + ft.format(now));
+        if(task1.getChildCount()>6){
+            task1.removeAllViews();
+        }
+        TextView textView = new TextView(this);
+        textView.setTag(UUID.randomUUID());
+        textView.setText(msg);
+        task1.addView(textView);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.fab:
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Map<String, Object> map = new HashMap<>();
-                List<String> persons = new ArrayList<>();
-                persons.add("6");
-                persons.add("1");
-                map.put("persons",persons);
-                map.put("msg","你们好啊");
-                WsService.startSend(this,map);
-                break;
-        }
+    @OnClick(R.id.publish_btn)
+    public void getPublish(){
+        String msg = msg_text.getText().toString();
+        Map<String, Object> map = new HashMap<>();
+        List<String> persons = new ArrayList<>();
+        persons.add("6");
+        persons.add("1");
+        map.put("persons",persons);
+        map.put("msg",msg);
+        WsService.startSend(this,map);
+    }
+
+    @OnClick(R.id.restart_btn)
+    public void getRestart(){
+        WsService.startReConnection(this);
     }
 
     public void call() {
