@@ -66,7 +66,7 @@ public class EmergencyActivity extends AppCompatActivity{
         EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         init();
-        WsService.startConnection(this,"6");
+//        WsService.startConnection(this,"6");
     }
 
     public void init(){
@@ -98,7 +98,7 @@ public class EmergencyActivity extends AppCompatActivity{
 
     @OnClick(R.id.restart_btn)
     public void getRestart(){
-        WsService.startReConnection(this);
+//        WsService.startReConnection(this);
     }
 
     public void call() {
@@ -144,7 +144,7 @@ public class EmergencyActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-        WsService.startClose(this);
+//        WsService.startClose(this);
         super.onDestroy();
     }
 }
