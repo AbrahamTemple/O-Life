@@ -101,7 +101,7 @@ public class ViewActivity extends AppCompatActivity{
 
     @OnClick({R.id.shine_btn})
     public void getRouter(){
-        ARouter.getInstance().build("/call/activity").navigation();
+        ARouter.getInstance().build("/olife/home").navigation();
     }
 
     @OnClick(R.id.publish_btn)

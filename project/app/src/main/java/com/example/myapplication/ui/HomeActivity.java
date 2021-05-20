@@ -2,6 +2,7 @@ package com.example.myapplication.ui;
 
 import android.os.Bundle;
 
+import com.ToxicBakery.viewpager.transforms.CubeInTransformer;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,25 +33,17 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
     ConvenientBanner banner;
 
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
-    private List<String> networkImages;
-    private String[] images = {"http://img2.imgtn.bdimg.com/it/u=3093785514,1341050958&fm=21&gp=0.jpg",
-            "http://img2.3lian.com/2014/f2/37/d/40.jpg",
-            "http://d.3987.com/sqmy_131219/001.jpg",
-            "http://img2.3lian.com/2014/f2/37/d/39.jpg",
-            "http://www.8kmm.com/UploadFiles/2012/8/201208140920132659.jpg",
-            "http://f.hiphotos.baidu.com/image/h%3D200/sign=1478eb74d5a20cf45990f9df460b4b0c/d058ccbf6c81800a5422e5fdb43533fa838b4779.jpg",
-            "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
-    };
+    private ArrayList<String> transformerList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        init();
     }
 
     private void init() {
-//        initImageLoader();
         loadTestDatas();
         //本地图片例子
         banner.setPages(
@@ -64,27 +58,17 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
                         return R.layout.item_localimage;
                     }
                 }, localImages)
+                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
                 .setOnItemClickListener(this);
 
-        //网络加载例子
-//        networkImages= Arrays.asList(images);
-//        banner.setPages(new CBViewHolderCreator<NetWorkImageHolderView>() {
-//            @Override
-//            public NetWorkImageHolderView createHolder() {
-//                return new NetWorkImageHolderView();
-//            }
-//        },networkImages);
     }
 
-    private void loadTestDatas() {
-        //本地图片集合
-        for (int position = 0; position < 7; position++)
-            localImages.add(getResId("ic_test_" + position, R.drawable.class));
-//        //各种翻页效果
+    private void initTransform(){
 //        transformerList.add(DefaultTransformer.class.getSimpleName());
 //        transformerList.add(AccordionTransformer.class.getSimpleName());
 //        transformerList.add(BackgroundToForegroundTransformer.class.getSimpleName());
-//        transformerList.add(CubeInTransformer.class.getSimpleName());
+        transformerList.add(CubeInTransformer.class.getSimpleName());
 //        transformerList.add(CubeOutTransformer.class.getSimpleName());
 //        transformerList.add(DepthPageTransformer.class.getSimpleName());
 //        transformerList.add(FlipHorizontalTransformer.class.getSimpleName());
@@ -95,8 +79,12 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 //        transformerList.add(StackTransformer.class.getSimpleName());
 //        transformerList.add(ZoomInTransformer.class.getSimpleName());
 //        transformerList.add(ZoomOutTranformer.class.getSimpleName());
+    }
 
-//        transformerArrayAdapter.notifyDataSetChanged();
+    private void loadTestDatas() {
+        //本地图片集合
+        for (int position = 0; position < 4; position++)
+            localImages.add(getResId("ic_test_" + position, R.drawable.class));
     }
 
     public static int getResId(String variableName, Class<?> c) {
