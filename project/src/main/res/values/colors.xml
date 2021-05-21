@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="md_grey_800">#424242</color>
+    <color name="md_black_1000">#000000</color>
+    <color name="md_white_1000">#ffffff</color>
+    <color name="md_deep_orange_300">#FF8A65</color>
+    <color name="md_blue_grey_300">#90A4AE</color>
+    <color name="md_grey_600">#757575</color>
+    <color name="colorControlActivated">#FF03A9F4</color>
+
+    <color name="base_red">#b92714</color>
+    <color name="saffron">#F1B136</color>
+    <color name="eggplant">#03A679</color>
+    <color name="sienna">#EB6460</color>
+</resources>
