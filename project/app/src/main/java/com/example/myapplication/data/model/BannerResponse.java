@@ -11,6 +11,14 @@ public class BannerResponse {
     @SerializedName("data")
     private List<Banner> data;
 
+    @Expose
+    @SerializedName("errorCode")
+    private Integer errorCode;
+
+    @Expose
+    @SerializedName("errorMsg")
+    private String errorMsg;
+
     public List<Banner> getData() {
         return data;
     }

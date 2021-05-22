@@ -11,13 +11,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
 import com.example.myapplication.app.MyApplication;
 import com.example.myapplication.data.model.BannerResponse;
-import com.example.myapplication.data.network.config.NetWorkInit;
+import com.example.myapplication.data.network.bean.NetWorkManager;
+import com.example.myapplication.data.network.block.Contract;
+import com.example.myapplication.data.network.block.Model;
+import com.example.myapplication.data.network.block.Presenter;
+import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
 import com.example.myapplication.service.MyIntentService;
 import com.example.myapplication.util.GsonUtils;
@@ -42,7 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Contract.View {
 
     @BindView(R.id.btn1)
     Button btn1;
@@ -70,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private SharedPreferencesUtils sharedPreferences;
 
+    private Presenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn2.setOnClickListener(this);
         btn3.setOnClickListener(this);
         rbg1.setOnClickListener(this);
-        NetWorkInit.getInstance().init();
         myPowerMenu = new MyPowerMenu(this,this);
         myPowerMenu.init();
         sharedPreferences = SharedPreferencesUtils.init(MainActivity.this);
@@ -151,34 +155,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnEventProgress(Counter counter){
-        Call<ResponseBody> call = NetWorkInit.getRequest().getBanner();
+        presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         TextView textView = (TextView) task1.findViewWithTag(counter.getTag());
         textView.setText(counter.getProgress() + "ms");
-        if(counter.getProgress() == 0){
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if(response.isSuccessful()){
-                        Toast.makeText(MainActivity.this, "请求数据成功", Toast.LENGTH_SHORT).show();
-                        try {
-                            String result = response.body().string();
-                            Log.e("网络请求", "响应结果: " + result);
-                            BannerResponse data = GsonUtils.fromJson(result, BannerResponse.class);
-                            data.getData().forEach(d ->{
-                                sharedPreferences.putString(d.getId()+"",d.getUrl());
-                            });
-                            Toast.makeText(MainActivity.this, "网址已被保存", Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+        if(counter.getProgress() == 0) {
+            presenter.getList();
         }
+//        Call<ResponseBody> call = NetWorkManager.getRequest().getBanner();
+//        if(counter.getProgress() == 0){
+//            call.enqueue(new Callback<ResponseBody>() {
+//                @Override
+//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                    if(response.isSuccessful()){
+//                        Toast.makeText(MainActivity.this, "请求数据成功", Toast.LENGTH_SHORT).show();
+//                        try {
+//                            String result = response.body().string();
+//                            Log.e("网络请求", "响应结果: " + result);
+//                            BannerResponse data = GsonUtils.fromJson(result, BannerResponse.class);
+//                            data.getData().forEach(d ->{
+//                                sharedPreferences.putString(d.getId()+"",d.getUrl());
+//                            });
+//                            Toast.makeText(MainActivity.this, "网址已被保存", Toast.LENGTH_SHORT).show();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//                @Override
+//                public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
     }
 
     @Override
@@ -198,5 +206,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onIcon(View view){
         myPowerMenu.onIcon(view);
+    }
+
+    @Override
+    public void getDataSuccess(ResponseBody body) {
+        Toast.makeText(MainActivity.this, "请求数据成功", Toast.LENGTH_SHORT).show();
+        try {
+            String result = body.string();
+            Log.e("网络请求", "响应结果: " + result);
+            BannerResponse data = GsonUtils.fromJson(result, BannerResponse.class);
+            data.getData().forEach(d ->{
+                sharedPreferences.putString(d.getId()+"",d.getUrl());
+            });
+            Toast.makeText(MainActivity.this, "网址已被保存", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getDataFail() {
+        Toast.makeText(MainActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
     }
 }

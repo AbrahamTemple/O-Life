@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rv_users"
+    tools:context=".ui.CallActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.skyfishjy.library.RippleBackground
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/ser_content"
+            app:rb_color="#0099CC"
+            app:rb_radius="32dp"
+            app:rb_rippleAmount="4"
+            app:rb_duration="3000"
+            app:rb_scale="6"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/global_calling">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerInParent="true"
+                android:id="@+id/centerImage"
+                android:src="@drawable/phone2"/>
+        </com.skyfishjy.library.RippleBackground>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:id="@+id/call_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="一键呼叫"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/md_white_1000"
+            app:icon="@drawable/ic_call"
+            app:cornerRadius="20dp"
+            app:rippleColor="@color/colorControlActivated"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/ser_content">
+        </com.google.android.material.button.MaterialButton>
+
+        <ScrollView
+            android:layout_width="350dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/call_btn"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_shape">
+            <LinearLayout
+                android:id="@+id/msg_container"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
+</FrameLayout>

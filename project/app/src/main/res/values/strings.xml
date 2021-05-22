@@ -11,4 +11,5 @@
     <string name="trip_to_indonesia">Trip to Indonesia</string>
     <string name="title_activity_emergency">EmergencyActivity</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_call">CallActivity</string>
 </resources>

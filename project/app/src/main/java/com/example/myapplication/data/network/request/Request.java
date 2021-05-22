@@ -1,8 +1,6 @@
 package com.example.myapplication.data.network.request;
 
-import com.example.myapplication.data.model.BlogResponse;
 import com.example.myapplication.vo.Response;
-import com.example.myapplication.vo.RestResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -22,9 +20,12 @@ public interface Request {
 
     public static String HOST = "https://www.wanandroid.com";
 
-    @POST("/banner/json")
-    Observable<Response<List<BlogResponse.Blog>>> setBlog(@QueryMap Map<String, String> map);
+//    @POST("/banner/json")
+//    Observable<Response<List<BlogResponse.Blog>>> setBlog(@QueryMap Map<String, String> map);
 
     @GET("banner/json")
     Call<ResponseBody> getBanner();
+
+    @GET("/banner/json")
+    Observable<ResponseBody> rxBanner();
 }

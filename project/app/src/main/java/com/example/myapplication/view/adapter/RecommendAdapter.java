@@ -1,0 +1,77 @@
+package com.example.myapplication.view.adapter;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.R;
+import com.example.myapplication.view.items.HomeRecommend;
+import com.intrusoft.squint.DiagonalView;
+
+import java.util.List;
+
+public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.ViewHolder> {
+
+    List<HomeRecommend> lists;
+    OnItemClickListener onItemClickListener;
+
+    public RecommendAdapter(List<HomeRecommend> lists) {
+        this.lists = lists;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_recommend, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        HomeRecommend recommend = lists.get(position);
+        holder.image.setImageResource(recommend.getImg());
+        holder.about.setText(recommend.getAbout());
+        holder.title.setText(recommend.getTitle());
+        holder.other.setText(recommend.getOther());
+        holder.itemView.setOnClickListener(v -> {
+            if(onItemClickListener!=null){
+                Log.e("TT",holder.itemView.toString());
+                onItemClickListener.onClick(recommend,position);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return lists.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder{
+
+        DiagonalView image;
+        TextView title;
+        TextView about;
+        TextView other;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            image = itemView.findViewById(R.id.diagonal);
+            title = itemView.findViewById(R.id.r_title);
+            about = itemView.findViewById(R.id.r_about);
+            other = itemView.findViewById(R.id.r_other);
+        }
+    }
+
+    /**
+     * 定义点击回调接口
+     */
+    public interface  OnItemClickListener{
+        void onClick(HomeRecommend recommend,int position);
+    }
+
+}

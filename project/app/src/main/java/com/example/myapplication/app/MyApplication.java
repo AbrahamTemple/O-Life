@@ -2,9 +2,9 @@ package com.example.myapplication.app;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.myapplication.data.network.bean.NetWorkManager;
 
 import java.util.Stack;
 
@@ -19,6 +19,7 @@ public class MyApplication extends Application {
         super.onCreate();
         singleton = this;
         initRouter();
+        initNetWork();
     }
 
     public void initRouter(){
@@ -29,6 +30,10 @@ public class MyApplication extends Application {
         }
         //在Application中初始化路由
         ARouter.init(this);
+    }
+
+    public void initNetWork(){
+        NetWorkManager.getInstance().init();
     }
 
     public static MyApplication getInstance() {

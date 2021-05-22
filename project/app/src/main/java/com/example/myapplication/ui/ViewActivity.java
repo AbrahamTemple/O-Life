@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
 import com.example.myapplication.app.MyApplication;
+import com.example.myapplication.event.MyPhoneStateListener;
 import com.example.myapplication.service.AmqpService;
 import com.yalantis.taurus.PullToRefreshView;
 
@@ -94,6 +97,8 @@ public class ViewActivity extends AppCompatActivity{
             Intent intent = new Intent(Intent.ACTION_CALL);
             intent.setData(Uri.parse("tel:13106789112"));
             startActivity(intent);
+            TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            manager.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
         }catch (SecurityException e){
             e.printStackTrace();
         }

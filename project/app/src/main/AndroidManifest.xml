@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许网络访问 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!--监听电话拨打状态-->
 
     <application
         android:name=".app.MyApplication"
@@ -17,9 +18,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".ui.CallActivity"
+            android:label="@string/title_activity_call"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".service.WsService"
@@ -39,11 +44,13 @@
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity android:name=".ui.ArouterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".service.MyIntentService"
             android:exported="false" />
 
-        <activity android:name=".ui.ArouterActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <data
