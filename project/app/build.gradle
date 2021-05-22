@@ -78,7 +78,7 @@ dependencies {
     implementation 'com.rabbitmq:amqp-client:5.12.0'
 
     /* WebSocket */
-    implementation 'com.neovisionaries:nv-websocket-client:2.2'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.1'
 
     /* 基本布局 */
     implementation 'com.android.support:recyclerview-v7:30+'
@@ -94,16 +94,19 @@ dependencies {
 
     // 过度按钮
     implementation 'com.royrodriguez:transitionbutton:0.2.0'
-
     // 涟漪背景 -- https://github.com/skyfishjy/android-ripple-background
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
-
     // 电源菜单 -- https://github.com/skydoves/powermenu
     implementation "com.github.skydoves:powermenu:2.1.9"
-
     // 拉动刷新 -- https://github.com/Yalantis/Taurus
     implementation 'com.github.yalantis:taurus:1.0.2'
-
     // XUI -- https://github.com/xuexiangjys/XUI
     implementation 'com.github.xuexiangjys:XUI:1.1.7'
+    // 方便横幅 -- https://github.com/saiwu-bigkoo/Android-ConvenientBanner
+    implementation 'com.bigkoo:convenientbanner:2.1.5'
+    implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+    // 动画Recycle -- https://github.com/willowtreeapps/spruce-android
+    implementation 'com.willowtreeapps.spruce:spruce-android:1.1.0'
+    // 斜角图片 -- https://github.com/IntruderShanky/Squint
+    implementation 'com.github.IntruderShanky:Squint:3.0.1'
 }
