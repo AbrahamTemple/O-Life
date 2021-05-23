@@ -1,12 +1,8 @@
 # 2021年基于Android MVVM框架的前端设计
 
-## What's Android MVVM architecture?
-
-![Screenshot](reference.png)
-
 ## 我的MVVM框架设计图
 
-![Screenshot](mydesigner.png)
+![Screenshot](design.png)
 
 ## 核心功能
 
