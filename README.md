@@ -1,6 +1,6 @@
 # 2021年基于Android MVVM框架的前端设计
 
-## 我的MVVM框架设计图
+## 我的MVVM框架组件图
 
 ![Screenshot](design.png)
 
