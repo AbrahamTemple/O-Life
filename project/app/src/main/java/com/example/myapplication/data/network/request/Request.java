@@ -9,6 +9,8 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
@@ -18,14 +20,19 @@ import retrofit2.http.QueryMap;
 
 public interface Request {
 
-    public static String HOST = "https://www.wanandroid.com";
+//    public static String HOST = "https://www.wanandroid.com";
 
 //    @POST("/banner/json")
 //    Observable<Response<List<BlogResponse.Blog>>> setBlog(@QueryMap Map<String, String> map);
 
-    @GET("banner/json")
-    Call<ResponseBody> getBanner();
+//    @GET("banner/json")
+//    Call<ResponseBody> getBanner();
 
-    @GET("/banner/json")
-    Observable<ResponseBody> rxBanner();
+    public static String HOST = "http://124.71.185.137:8081";
+
+    @GET("/wrr/phone")
+    Observable<ResponseBody> getPhone(@HeaderMap Map<String, String> headers);
+
+    @GET("/oh/all")
+    Observable<ResponseBody> getAllHospital(@HeaderMap Map<String, String> headers);
 }

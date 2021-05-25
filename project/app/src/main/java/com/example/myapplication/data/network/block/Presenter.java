@@ -4,6 +4,9 @@ package com.example.myapplication.data.network.block;
 import com.example.myapplication.data.network.scheduler.BaseSchedulerProvider;
 import com.example.myapplication.vo.ResponseTransformer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -32,9 +35,10 @@ public class Presenter {
         mDisposable.dispose();
     }
 
-    public void getList() {
-
-        Disposable disposable = model.rxBanner()
+    public void getPone(String token) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization","Bearer " + token);
+        Disposable disposable = model.getPhone(headers)
 //                .compose(ResponseTransformer.handleResult())
                 .compose(schedulerProvider.applySchedulers())
                 .subscribeOn(Schedulers.io())
@@ -43,9 +47,25 @@ public class Presenter {
                     view.getDataSuccess(data);
                 }, throwable -> {
                     // 处理异常
-                    view.getDataFail();
+                    view.getDataFail(throwable);
                 });
         mDisposable.add(disposable);
     }
 
+    public void getAllHospital(String token){
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization","Bearer " + token);
+        Disposable disposable = model.getAllHospital(headers)
+//                .compose(ResponseTransformer.handleResult())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .subscribe(data -> {
+                    view.getDataSuccess(data);
+                }, throwable -> {
+                    // 处理异常
+                    view.getDataFail(throwable);
+                });
+        mDisposable.add(disposable);
+    }
 }

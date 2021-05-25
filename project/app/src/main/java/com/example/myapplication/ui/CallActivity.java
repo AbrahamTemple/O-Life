@@ -30,29 +30,39 @@ import androidx.core.content.ContextCompat;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
+import com.example.myapplication.data.model.PhoneResponse;
+import com.example.myapplication.data.network.block.Contract;
+import com.example.myapplication.data.network.block.Model;
+import com.example.myapplication.data.network.block.Presenter;
+import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.event.MyPhoneStateListener;
 import com.example.myapplication.service.AmqpService;
+import com.example.myapplication.util.GsonUtils;
+import com.example.myapplication.util.SharedPreferencesUtils;
 import com.skyfishjy.library.RippleBackground;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 
 @Route(path = "/olife/call")
-public class CallActivity extends AppCompatActivity {
+public class CallActivity extends AppCompatActivity implements Contract.View{
 
     private String TAG = "CallActivity";
-    private String PhoneNumber = "13106789112";
+    private String PhoneNumber;
+    private SharedPreferencesUtils sharedPreferences;
+    private Presenter presenter;
 
     @Autowired
     public String tag;
@@ -83,6 +93,11 @@ public class CallActivity extends AppCompatActivity {
     public void init(){
         myPhoneStateListener = new MyPhoneStateListener();
         manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
+        sharedPreferences = SharedPreferencesUtils.init(CallActivity.this);
+        sharedPreferences.clear();
+        presenter.getPone("e43aaac3-46f0-41ad-bfdf-51e769899c97");
+        PhoneNumber = sharedPreferences.getString("phone");
     }
 
     public void initAmqp(){
@@ -118,6 +133,8 @@ public class CallActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
+            presenter.getPone("e43aaac3-46f0-41ad-bfdf-51e769899c97");
+            PhoneNumber = sharedPreferences.getString("phone");
             call(PhoneNumber);
             AmqpService.setRountingKey(tag);
             AmqpService.startPublish(this,PhoneNumber);
@@ -182,5 +199,23 @@ public class CallActivity extends AppCompatActivity {
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void getDataSuccess(ResponseBody body) {
+        Toast.makeText(CallActivity.this, "成功匹配到电话", Toast.LENGTH_SHORT).show();
+        try {
+            String result = body.string();
+            Log.e("网络请求", "响应结果: " + result);
+            PhoneResponse data = GsonUtils.fromJson(result, PhoneResponse.class);
+            sharedPreferences.putString("phone",data.getData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getDataFail(Throwable throwable) {
+        Toast.makeText(CallActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

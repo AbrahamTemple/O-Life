@@ -15,8 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
 import com.example.myapplication.app.MyApplication;
-import com.example.myapplication.data.model.BannerResponse;
-import com.example.myapplication.data.network.bean.NetWorkManager;
+import com.example.myapplication.data.model.PhoneResponse;
 import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
@@ -40,9 +39,6 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, Contract.View {
@@ -159,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView textView = (TextView) task1.findViewWithTag(counter.getTag());
         textView.setText(counter.getProgress() + "ms");
         if(counter.getProgress() == 0) {
-            presenter.getList();
+            presenter.getPone("bb8b89b5-6408-4266-806e-d0463baa583b");
         }
 //        Call<ResponseBody> call = NetWorkManager.getRequest().getBanner();
 //        if(counter.getProgress() == 0){
@@ -211,13 +207,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void getDataSuccess(ResponseBody body) {
         Toast.makeText(MainActivity.this, "请求数据成功", Toast.LENGTH_SHORT).show();
+//        try {
+//            String result = body.string();
+//            Log.e("网络请求", "响应结果: " + result);
+//            BannerResponse data = GsonUtils.fromJson(result, BannerResponse.class);
+//            data.getData().forEach(d ->{
+//                sharedPreferences.putString(d.getId()+"",d.getUrl());
+//            });
+//            Toast.makeText(MainActivity.this, "网址已被保存", Toast.LENGTH_SHORT).show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         try {
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);
-            BannerResponse data = GsonUtils.fromJson(result, BannerResponse.class);
-            data.getData().forEach(d ->{
-                sharedPreferences.putString(d.getId()+"",d.getUrl());
-            });
+            PhoneResponse data = GsonUtils.fromJson(result, PhoneResponse.class);
+            System.out.println(data.getData());
             Toast.makeText(MainActivity.this, "网址已被保存", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -225,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void getDataFail() {
-        Toast.makeText(MainActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
+    public void getDataFail(Throwable throwable) {
+        Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

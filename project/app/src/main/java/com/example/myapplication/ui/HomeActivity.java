@@ -8,12 +8,21 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.example.myapplication.data.model.HospitalResponse;
+import com.example.myapplication.data.model.PhoneResponse;
+import com.example.myapplication.data.network.block.Contract;
+import com.example.myapplication.data.network.block.Model;
+import com.example.myapplication.data.network.block.Presenter;
+import com.example.myapplication.data.network.scheduler.SchedulerProvider;
+import com.example.myapplication.util.GsonUtils;
+import com.example.myapplication.util.SharedPreferencesUtils;
 import com.example.myapplication.view.adapter.RecommendAdapter;
 import com.example.myapplication.view.items.LocalImageHolderView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,18 +32,26 @@ import com.example.myapplication.view.layout.MyPowerMenu;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
 import com.yalantis.taurus.PullToRefreshView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 
 @Route(path = "/olife/home")
-public class HomeActivity extends AppCompatActivity implements OnItemClickListener {
+public class HomeActivity extends AppCompatActivity implements OnItemClickListener, Contract.View{
 
     public static final int REFRESH_DELAY = 3000;
 
@@ -47,7 +64,8 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
     @BindView(R.id.pull_to_refresh)
     PullToRefreshView prv;
 
-
+    private SharedPreferencesUtils sharedPreferences;
+    private Presenter presenter;
 
     private MyPowerMenu myPowerMenu;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
@@ -64,7 +82,7 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         initRefresh();
         initNav();
         initBanner();
-        initRecycler();
+        initNet();
     }
 
     private void initRefresh(){
@@ -76,12 +94,19 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         myPowerMenu.init();
     }
 
-    private void initRecycler(){
+    private void initNet(){
+        presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
+        sharedPreferences = SharedPreferencesUtils.init(HomeActivity.this);
+        sharedPreferences.clear();
+        presenter.getAllHospital("e43aaac3-46f0-41ad-bfdf-51e769899c97");
+    }
+
+    private void initRecycler(HospitalResponse hospitalResponse){
         List<HomeRecommend> lists = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            HomeRecommend r = new HomeRecommend(R.drawable.ramain_register,"春江医院","春江医院是治理男科不育不孕的国家一级医院","治愈患者：6700万");
+        hospitalResponse.getData().forEach(d->{
+            HomeRecommend r = new HomeRecommend(R.drawable.ramain_register,d.getName(),d.getAddress(),"联系电话："+d.getPhone());
             lists.add(r);
-        }
+        });
         RecommendAdapter recommendAdapter = new RecommendAdapter(lists);
         new SpruceRecyclerView(this, recommend, recommendAdapter, false).init();
     }
@@ -161,5 +186,23 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 
     public void onIcon(View view){
         myPowerMenu.onIcon(view);
+    }
+
+    @Override
+    public void getDataSuccess(ResponseBody body) {
+        Toast.makeText(HomeActivity.this, "页面渲染成功", Toast.LENGTH_SHORT).show();
+        try {
+            String result = body.string();
+            Log.e("网络请求", "响应结果: " + result);
+            HospitalResponse data = GsonUtils.fromJson(result, HospitalResponse.class);
+            initRecycler(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getDataFail(Throwable throwable) {
+        Toast.makeText(HomeActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
