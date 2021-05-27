@@ -54,7 +54,7 @@
             android:layout_width="350dp"
             android:layout_height="150dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/call_btn"
+            android:layout_below="@+id/gpsText"
             android:layout_marginTop="20dp"
             android:background="@drawable/border_shape">
             <LinearLayout
@@ -64,7 +64,19 @@
                 android:layout_height="wrap_content">
             </LinearLayout>
         </ScrollView>
-
+        <com.adam.gpsstatus.GpsStatusTextView
+            android:id="@+id/gpsText"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:text="当前网络状态"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            app:colorClosed="@color/gps_icon_red"
+            app:colorFixed="@color/gps_icon_green"
+            app:colorUnFixed="@color/gps_icon_yellow"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/call_btn"/>
     </RelativeLayout>
 
 </FrameLayout>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="80dp">
     <LinearLayout
         android:id="@+id/staff_index"
@@ -8,12 +10,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
-        <ImageView
+        <com.skydoves.elasticviews.ElasticImageView
+            android:id="@+id/staff_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_staff"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            app:imageView_scale="0.7"
+            app:imageView_duration="300"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,12 +33,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
-        <ImageView
+        <com.skydoves.elasticviews.ElasticImageView
+            android:id="@+id/callout_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_callout"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            app:imageView_scale="0.7"
+            app:imageView_duration="300"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,12 +56,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
-        <ImageView
+        <com.skydoves.elasticviews.ElasticImageView
+            android:id="@+id/register_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_register"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            app:imageView_scale="0.7"
+            app:imageView_duration="300"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,12 +79,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
-        <ImageView
+        <com.skydoves.elasticviews.ElasticImageView
+            android:id="@+id/healthy_chat_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_healthy_chat"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            app:imageView_scale="0.7"
+            app:imageView_duration="300"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

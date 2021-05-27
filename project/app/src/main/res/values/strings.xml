@@ -12,4 +12,6 @@
     <string name="title_activity_emergency">EmergencyActivity</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_call">CallActivity</string>
+    <string name="title_activity_char">CharActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

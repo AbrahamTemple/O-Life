@@ -10,6 +10,8 @@
     <color name="md_blue_grey_300">#90A4AE</color>
     <color name="md_grey_600">#757575</color>
     <color name="colorControlActivated">#FF03A9F4</color>
+    <color name="colorGrey">#D1D1D1</color>
+    <color name="colorBg">#2D78B1</color>
 
     <color name="base_red">#b92714</color>
     <color name="saffron">#F1B136</color>
