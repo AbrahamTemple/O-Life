@@ -75,11 +75,11 @@
             android:layout_marginTop="2dp"
             android:text="更多" />
     </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_recommend"
-        android:layout_width="match_parent"
-        android:layout_height="330dp"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"/>
     </LinearLayout>
     </ScrollView>
 </com.yalantis.taurus.PullToRefreshView>
