@@ -228,6 +228,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onItemClick(int position) {
         Toast.makeText(this,"点击了第"+position+"个", Toast.LENGTH_SHORT).show();
+        ARouter.getInstance().build("/olife/login").navigation();
     }
 
     @Override
