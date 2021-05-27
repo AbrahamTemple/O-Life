@@ -98,12 +98,6 @@ dependencies {
     
     /* 双向通信 */
     implementation 'org.java-websocket:Java-WebSocket:1.5.1'
-
-    /* 基本布局 */
-    implementation 'com.android.support:recyclerview-v7:30+'
-    implementation 'com.android.support:design:30+'
-    implementation 'com.android.support:cardview-v7:30+'
-    implementation 'com.squareup.picasso:picasso:2.3.2'
     
     ...
 }
