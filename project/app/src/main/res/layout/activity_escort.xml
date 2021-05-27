@@ -33,12 +33,25 @@
         app:button_duration="250"
         app:button_scale="0.87" />
 
+    <com.example.myapplication.view.layout.ChatBarView
+        android:id="@+id/chatbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        app:cb_isTextCleanerEnabled="true"
+        app:cb_isSoftInputHidden="true"
+        app:cb_messageBoxHint="sample text"
+        app:cb_micClickWarningMessage="warning message"/>
 
     <com.mingle.widget.LoadingView
         android:id="@+id/loadView"
         app:loadingText="加载中..."
         android:layout_width="match_parent"
         android:layout_height="550dp"/>
+
+
 
 <!--    <ScrollView-->
 <!--        android:layout_width="match_parent"-->
