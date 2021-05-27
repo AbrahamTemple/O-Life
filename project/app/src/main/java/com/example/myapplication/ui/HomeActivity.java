@@ -9,11 +9,12 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.myapplication.data.model.HospitalResponse;
-import com.example.myapplication.data.model.PhoneResponse;
 import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
+import com.example.myapplication.domain.Counter;
+import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.SharedPreferencesUtils;
 import com.example.myapplication.view.adapter.RecommendAdapter;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.view.items.HomeRecommend;
 import com.example.myapplication.view.layout.MyPowerMenu;
+import com.example.myapplication.view.layout.ShapeLoadingDialog;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
 import com.yalantis.taurus.PullToRefreshView;
 
@@ -39,9 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -70,19 +70,54 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
     private MyPowerMenu myPowerMenu;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
 
+    private ShapeLoadingDialog shapeLoadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         init();
     }
 
     private void init() {
+        initLoading();
         initRefresh();
         initNav();
         initBanner();
-        initNet();
+        initRequest();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnEventProgress(Counter counter) {
+        switch (counter.getTag()){
+            case 404:
+                if(counter.getProgress() == 0) {
+                    shapeLoadingDialog.dismiss();
+                    Toast.makeText(HomeActivity.this, "网络请求出现问题", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 401:
+                if(counter.getProgress() == 0) {
+                    shapeLoadingDialog.dismiss();
+                    Toast.makeText(HomeActivity.this, "访问权限不足", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 200:
+                if(counter.getProgress() == 0) {
+                    shapeLoadingDialog.dismiss();
+                    Toast.makeText(HomeActivity.this, "页面渲染成功", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
+    }
+
+    private void initLoading(){
+        shapeLoadingDialog = new ShapeLoadingDialog(this);
+        shapeLoadingDialog.setLoadingText("加载中...");
+        shapeLoadingDialog.show();
     }
 
     private void initRefresh(){
@@ -94,11 +129,11 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         myPowerMenu.init();
     }
 
-    private void initNet(){
+    private void initRequest(){
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(HomeActivity.this);
         sharedPreferences.clear();
-        presenter.getAllHospital("e43aaac3-46f0-41ad-bfdf-51e769899c97");
+        presenter.getAllHospital("9fde581c-2ed4-4511-bad2-3a0d03d421bf");
     }
 
     private void initRecycler(HospitalResponse hospitalResponse){
@@ -138,6 +173,11 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
                 .navigation();
     }
 
+    @OnClick({R.id.staff_index})
+    public void toEscortActivity(){
+        ARouter.getInstance().build("/olife/escort").navigation();
+    }
+
     private void loadTestDatas() {
         //本地图片集合
         for (int position = 0; position < 4; position++)
@@ -173,6 +213,7 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -190,12 +231,12 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     public void getDataSuccess(ResponseBody body) {
-        Toast.makeText(HomeActivity.this, "页面渲染成功", Toast.LENGTH_SHORT).show();
         try {
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);
             HospitalResponse data = GsonUtils.fromJson(result, HospitalResponse.class);
             initRecycler(data);
+            CounterService.startDownload(this,1, 200);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -203,6 +244,8 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     public void getDataFail(Throwable throwable) {
-        Toast.makeText(HomeActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        String[] httpStatus = throwable.getMessage().split("[ ]");
+//        Toast.makeText(HomeActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        CounterService.startDownload(this,2, Integer.valueOf(httpStatus[1]));
     }
 }

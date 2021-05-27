@@ -21,7 +21,7 @@ import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
-import com.example.myapplication.service.MyIntentService;
+import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.SharedPreferencesUtils;
 import com.example.myapplication.view.layout.MyPowerMenu;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         MyApplication.getInstance().addActivity(this);
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
         init();
     }
 
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 textView.setTag(textTag);
                 textView.setText(num * 1000 + "ms");
                 task1.addView(textView);
-                MyIntentService.startDownload(this,num,textTag);
+//                MyIntentService.startDownload(this,num,textTag);
                 textTag++;
                 break;
             case R.id.btn3:
@@ -149,14 +149,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void OnEventProgress(Counter counter){
-        presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
-        TextView textView = (TextView) task1.findViewWithTag(counter.getTag());
-        textView.setText(counter.getProgress() + "ms");
-        if(counter.getProgress() == 0) {
-            presenter.getPone("bb8b89b5-6408-4266-806e-d0463baa583b");
-        }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void OnEventProgress(Counter counter){
+//        presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
+//        TextView textView = (TextView) task1.findViewWithTag(counter.getTag());
+//        textView.setText(counter.getProgress() + "ms");
+//        if(counter.getProgress() == 0) {
+//            presenter.getPone("bb8b89b5-6408-4266-806e-d0463baa583b");
+//        }
 //        Call<ResponseBody> call = NetWorkManager.getRequest().getBanner();
 //        if(counter.getProgress() == 0){
 //            call.enqueue(new Callback<ResponseBody>() {
@@ -183,11 +183,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                }
 //            });
 //        }
-    }
+//    }
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
         super.onDestroy();
         MyApplication.getInstance().AppExit();
     }

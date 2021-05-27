@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.data.network.bean.NetWorkManager;
+import com.xuexiang.xui.XUI;
 
 import java.util.Stack;
 
@@ -20,6 +21,7 @@ public class MyApplication extends Application {
         singleton = this;
         initRouter();
         initNetWork();
+        initXui();
     }
 
     public void initRouter(){
@@ -34,6 +36,11 @@ public class MyApplication extends Application {
 
     public void initNetWork(){
         NetWorkManager.getInstance().init();
+    }
+
+    public void initXui(){
+        XUI.init(this);
+        XUI.debug(true);
     }
 
     public static MyApplication getInstance() {

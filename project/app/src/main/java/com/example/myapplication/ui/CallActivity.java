@@ -39,6 +39,7 @@ import com.example.myapplication.event.MyPhoneStateListener;
 import com.example.myapplication.service.AmqpService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.SharedPreferencesUtils;
+import com.mingle.widget.ShapeLoadingDialog;
 import com.skyfishjy.library.RippleBackground;
 
 import org.greenrobot.eventbus.EventBus;
@@ -79,6 +80,8 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
     private MyPhoneStateListener myPhoneStateListener;
     private TelephonyManager manager;
 
+    private ShapeLoadingDialog shapeLoadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +99,7 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(CallActivity.this);
         sharedPreferences.clear();
-        presenter.getPone("e43aaac3-46f0-41ad-bfdf-51e769899c97");
+        presenter.getPone("6ecf5fb3-b955-4e14-ba07-30a1e0f8516f");
         PhoneNumber = sharedPreferences.getString("phone");
     }
 
@@ -133,7 +136,7 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
-            presenter.getPone("e43aaac3-46f0-41ad-bfdf-51e769899c97");
+            presenter.getPone("6ecf5fb3-b955-4e14-ba07-30a1e0f8516f");
             PhoneNumber = sharedPreferences.getString("phone");
             call(PhoneNumber);
             AmqpService.setRountingKey(tag);
