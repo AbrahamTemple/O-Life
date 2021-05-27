@@ -22,6 +22,7 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.myapplication.R;
 import com.example.myapplication.domain.CardBean;
 import com.example.myapplication.domain.ProvinceBean;
+import com.example.myapplication.util.HideUtil;
 import com.example.myapplication.view.layout.ChatBarView;
 import com.skydoves.elasticviews.ElasticAnimation;
 import com.skydoves.elasticviews.ElasticButton;
@@ -60,6 +61,7 @@ public class EscortActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_escort);
         ButterKnife.bind(this);
+        HideUtil.init(this);
         init();
     }
 
