@@ -102,13 +102,16 @@ dependencies {
     implementation 'com.github.yalantis:taurus:1.0.2'
     // XUI -- https://github.com/xuexiangjys/XUI
     implementation 'com.github.xuexiangjys:XUI:1.1.7'
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
     // 方便横幅 -- https://github.com/saiwu-bigkoo/Android-ConvenientBanner
     implementation 'com.bigkoo:convenientbanner:2.1.5'
     implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
-    // 动画Recycle -- https://github.com/willowtreeapps/spruce-android
+    // 动画列表 -- https://github.com/willowtreeapps/spruce-android
     implementation 'com.willowtreeapps.spruce:spruce-android:1.1.0'
     // 斜角图片 -- https://github.com/IntruderShanky/Squint
     implementation 'com.github.IntruderShanky:Squint:3.0.1'
-    // 冒泡拨号 -- https://github.com/Cleveroad/BubbleAnimationLayout
-    implementation 'com.cleveroad:bubbleanimation-layout:1.0.0'
+    // 弹性视图 -- https://github.com/skydoves/ElasticViews
+    implementation "com.github.skydoves:elasticviews:2.1.0"
+
+    implementation "com.github.zzz40500:android-shapeLoadingView:1.0.3.2"
 }
