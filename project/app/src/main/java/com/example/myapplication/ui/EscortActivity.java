@@ -1,10 +1,6 @@
 package com.example.myapplication.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -20,18 +16,13 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
-import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
-import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.myapplication.R;
 import com.example.myapplication.domain.CardBean;
 import com.example.myapplication.domain.ProvinceBean;
-import com.example.myapplication.view.fragment.LoadFragment;
-import com.example.myapplication.view.fragment.MyListFragment;
-import com.mingle.widget.LoadingView;
+import com.example.myapplication.view.layout.ChatBarView;
 import com.skydoves.elasticviews.ElasticAnimation;
 import com.skydoves.elasticviews.ElasticButton;
 
@@ -61,6 +52,9 @@ public class EscortActivity extends AppCompatActivity {
     @BindView(R.id.btn_Options)
     ElasticButton btn_Options;
 
+    @BindView(R.id.chatbar)
+    ChatBarView chatBarView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +67,7 @@ public class EscortActivity extends AppCompatActivity {
         initTimePicker();
         getOptionData();
         initOptionPicker();
+        initCharView();
     }
 
     @OnClick(R.id.btn_Time)
@@ -87,6 +82,17 @@ public class EscortActivity extends AppCompatActivity {
                 .setOnFinishListener(() -> {
                     pvOptions.show();
                 }).doAction();
+    }
+
+    public void initCharView(){
+        chatBarView.setSendClickListener(view -> {
+            Toast.makeText(EscortActivity.this, chatBarView.getMessageText(), Toast.LENGTH_SHORT).show();
+        });
+
+        chatBarView.setOnMicListener(view -> {
+            Toast.makeText(EscortActivity.this, "Recording...", Toast.LENGTH_SHORT).show();
+            return true;
+        });
     }
 
     private void initTimePicker() {//Dialog 模式下，在底部弹出
