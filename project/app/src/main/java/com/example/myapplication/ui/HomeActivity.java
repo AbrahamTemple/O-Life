@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
@@ -32,6 +33,8 @@ import com.example.myapplication.view.items.HomeRecommend;
 import com.example.myapplication.view.layout.MyPowerMenu;
 import com.example.myapplication.view.layout.ShapeLoadingDialog;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
+import com.skydoves.elasticviews.ElasticAnimation;
+import com.skydoves.elasticviews.ElasticImageView;
 import com.yalantis.taurus.PullToRefreshView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -51,7 +54,7 @@ import okhttp3.ResponseBody;
 
 
 @Route(path = "/olife/home")
-public class HomeActivity extends AppCompatActivity implements OnItemClickListener, Contract.View{
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener,OnItemClickListener, Contract.View{
 
     public static final int REFRESH_DELAY = 3000;
 
@@ -63,6 +66,24 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 
     @BindView(R.id.pull_to_refresh)
     PullToRefreshView prv;
+
+    @BindView(R.id.staff_logo)
+    ElasticImageView staff_logo;
+
+    @BindView(R.id.callout_logo)
+    ElasticImageView callout_logo;
+
+    @BindView(R.id.register_logo)
+    ElasticImageView register_logo;
+
+    @BindView(R.id.healthy_chat_logo)
+    ElasticImageView healthy_chat_logo;
+
+    @BindView(R.id.staff_index)
+    LinearLayout staff_index;
+
+    @BindView(R.id.callout_index)
+    LinearLayout callout_index;
 
     private SharedPreferencesUtils sharedPreferences;
     private Presenter presenter;
@@ -87,6 +108,7 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         initNav();
         initBanner();
         initRequest();
+        initOnClick();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -112,6 +134,15 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
                 break;
         }
 
+    }
+
+    private void initOnClick(){
+        staff_logo.setOnClickListener(this);
+        callout_logo.setOnClickListener(this);
+        register_logo.setOnClickListener(this);
+        healthy_chat_logo.setOnClickListener(this);
+        staff_index.setOnClickListener(this);
+        callout_index.setOnClickListener(this);
     }
 
     private void initLoading(){
@@ -164,18 +195,6 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
                 .setPageIndicator(new int[]{R.drawable.point_unfocused_small, R.drawable.point_focused_big})
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
                 .setOnItemClickListener(this);
-    }
-
-    @OnClick(R.id.callout_index)
-    public void toCallActivity(){
-        ARouter.getInstance().build("/olife/call")
-                .withString("tag", UUID.randomUUID().toString())
-                .navigation();
-    }
-
-    @OnClick({R.id.staff_index})
-    public void toEscortActivity(){
-        ARouter.getInstance().build("/olife/escort").navigation();
     }
 
     private void loadTestDatas() {
@@ -247,5 +266,33 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         String[] httpStatus = throwable.getMessage().split("[ ]");
 //        Toast.makeText(HomeActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
         CounterService.startDownload(this,2, Integer.valueOf(httpStatus[1]));
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.staff_index:
+            case R.id.staff_logo:
+                new ElasticAnimation(staff_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
+                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/escort").navigation()).doAction();
+                break;
+            case R.id.callout_index:
+            case R.id.callout_logo:
+                new ElasticAnimation(callout_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
+                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/call")
+                                .withString("tag", UUID.randomUUID().toString())
+                                .navigation()).doAction();
+                break;
+            case R.id.register_index:
+            case R.id.register_logo:
+                new ElasticAnimation(register_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
+                        .setOnFinishListener(() -> Log.d("register","挂号链接")).doAction();
+                break;
+            case R.id.healthy_chat_index:
+            case R.id.healthy_chat_logo:
+                new ElasticAnimation(healthy_chat_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
+                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/chat").navigation()).doAction();
+                break;
+        }
     }
 }

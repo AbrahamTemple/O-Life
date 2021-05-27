@@ -2,9 +2,13 @@ package com.example.myapplication.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
@@ -20,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adam.gpsstatus.GpsStatusProxy;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 
@@ -48,7 +53,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -58,7 +65,7 @@ import okhttp3.ResponseBody;
 
 
 @Route(path = "/olife/call")
-public class CallActivity extends AppCompatActivity implements Contract.View{
+public class CallActivity extends AppCompatActivity implements Contract.View {
 
     private String TAG = "CallActivity";
     private String PhoneNumber;
@@ -82,6 +89,9 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
 
     private ShapeLoadingDialog shapeLoadingDialog;
 
+    private GpsStatusProxy proxy;
+    private LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,17 +103,18 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
         initAmqp();
     }
 
-    public void init(){
+    public void init() {
         myPhoneStateListener = new MyPhoneStateListener();
         manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
+        initGetNetStatus();
         sharedPreferences = SharedPreferencesUtils.init(CallActivity.this);
         sharedPreferences.clear();
         presenter.getPone("6ecf5fb3-b955-4e14-ba07-30a1e0f8516f");
         PhoneNumber = sharedPreferences.getString("phone");
     }
 
-    public void initAmqp(){
+    public void initAmqp() {
         AmqpService.setQueue(tag);
         AmqpService.setRountingKey(tag);
         AmqpService.setIsAutoDete(true);
@@ -111,26 +122,38 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
         AmqpService.startListener(this);
     }
 
+    public void initGetNetStatus() {
+        proxy = GpsStatusProxy.getInstance(getApplicationContext());
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            List<String> permissionsNeeded = new ArrayList<String>();
+            permissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(this, permissionsNeeded.toArray(new String[permissionsNeeded.size()]), 1);
+            return;
+        }
+        proxy.register();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
+    }
 
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void OnEventProgress(String msg){
-        if (task1.getChildCount()>16){
+    public void OnEventProgress(String msg) {
+        if (task1.getChildCount() > 16) {
             task1.removeAllViewsInLayout();
         }
         Date now = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss");
+        SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
         TextView textView = new TextView(this);
         textView.setTag("帅胤");
         Random rand = new Random();
-        textView.setTextColor(Color.rgb(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)));
+        textView.setTextColor(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
         textView.setText(ft.format(now) + ' ' + msg);
-        textView.setOnClickListener(v -> Toast.makeText(this, "服务者："+textView.getTag().toString(), Toast.LENGTH_SHORT).show());
+        textView.setOnClickListener(v -> Toast.makeText(this, "服务者：" + textView.getTag().toString(), Toast.LENGTH_SHORT).show());
         task1.addView(textView);
     }
 
     @OnClick(R.id.call_btn)
-    public void getCall(){
+    public void getCall() {
         state.startRippleAnimation();
         startShakeByViewAnim(logo, 0.9f, 1.1f, 10f, 1000);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -140,10 +163,38 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
             PhoneNumber = sharedPreferences.getString("phone");
             call(PhoneNumber);
             AmqpService.setRountingKey(tag);
-            AmqpService.startPublish(this,PhoneNumber);
+            AmqpService.startPublish(this, PhoneNumber);
             manager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         }
     }
+
+    //网络状况检测
+    private LocationListener listener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            proxy.notifyLocation(location);
+            Log.d("网络状态已刷新",location.getProvider());
+            Toast.makeText(CallActivity.this, "网络状态已刷新 "+location.getProvider(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            Log.d("网络状态发生改变",provider);
+            Toast.makeText(CallActivity.this, "网络状态正在改变 HTTP "+status, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            Log.d("网络状态检测已启用",provider);
+            Toast.makeText(CallActivity.this, "网络状态检测已启用 "+provider, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            Log.d("网络状态检测已关闭",provider);
+            Toast.makeText(CallActivity.this, "网络状态检测已关闭 "+provider, Toast.LENGTH_SHORT).show();
+        }
+    };
 
     // 抖动动画
     private void startShakeByViewAnim(View view, float scaleSmall, float scaleLarge, float shakeDegrees, long duration) {
@@ -169,11 +220,11 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
     }
 
     public void call(String phoneNumber) {
-        try{
+        try {
             Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:"+phoneNumber));
+            intent.setData(Uri.parse("tel:" + phoneNumber));
             startActivity(intent);
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             e.printStackTrace();
         }
     }
@@ -195,12 +246,23 @@ public class CallActivity extends AppCompatActivity implements Contract.View{
                 Toast.makeText(this, "发生未知错误", Toast.LENGTH_SHORT).show();
                 finish();
             }
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    List<String> permissionsNeeded = new ArrayList<String>();
+                    permissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
+                    ActivityCompat.requestPermissions(this, permissionsNeeded.toArray(new String[permissionsNeeded.size()]), 1);
+                    return;
+                }
+                proxy.register();
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, listener);
+            }
         }
     }
 
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        proxy.unRegister();
         super.onDestroy();
     }
 
