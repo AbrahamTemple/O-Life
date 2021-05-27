@@ -105,34 +105,6 @@ dependencies {
     implementation 'com.android.support:cardview-v7:30+'
     implementation 'com.squareup.picasso:picasso:2.3.2'
     
-    /* 第三方UI/UX库 */
-
-    // 过度按钮
-    implementation 'com.royrodriguez:transitionbutton:0.2.0'
-    // 涟漪背景 -- https://github.com/skyfishjy/android-ripple-background
-    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
-    // 电源菜单 -- https://github.com/skydoves/powermenu
-    implementation "com.github.skydoves:powermenu:2.1.9"
-    // 拉动刷新 -- https://github.com/Yalantis/Taurus
-    implementation 'com.github.yalantis:taurus:1.0.2'
-    // XUI -- https://github.com/xuexiangjys/XUI
-    implementation 'com.github.xuexiangjys:XUI:1.1.7'
-    // 方便横幅 -- https://github.com/saiwu-bigkoo/Android-ConvenientBanner
-    implementation 'com.bigkoo:convenientbanner:2.1.5'
-    implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
-    // 动画Recycle -- https://github.com/willowtreeapps/spruce-android
-    implementation 'com.willowtreeapps.spruce:spruce-android:1.1.0'
-    // 斜角图片 -- https://github.com/IntruderShanky/Squint
-    implementation 'com.github.IntruderShanky:Squint:3.0.1'
+    ...
 }
 ```
-
-## 拥有的功能
-
- - 路由跳转
- - 跳转参数被单向绑定
- - 动态渲染View
- - 轻量数据用内存存储
- - 一键拨号
- - 发布与订阅
- - 群发与定点聊天功能
