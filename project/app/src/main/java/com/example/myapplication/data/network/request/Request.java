@@ -35,4 +35,7 @@ public interface Request {
 
     @GET("/oh/all")
     Observable<ResponseBody> getAllHospital(@HeaderMap Map<String, String> headers);
+
+    @GET("/oe/all")
+    Observable<ResponseBody> getAllDoctor(@HeaderMap Map<String, String> headers);
 }

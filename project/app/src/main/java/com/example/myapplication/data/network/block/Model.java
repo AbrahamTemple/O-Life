@@ -18,4 +18,9 @@ public class Model implements Contract.Model{
     public Observable<ResponseBody> getAllHospital(Map<String, String> headers) {
         return NetWorkManager.getRequest().getAllHospital(headers);
     }
+
+    @Override
+    public Observable<ResponseBody> getAllDoctor(Map<String, String> headers) {
+        return NetWorkManager.getRequest().getAllDoctor(headers);
+    }
 }

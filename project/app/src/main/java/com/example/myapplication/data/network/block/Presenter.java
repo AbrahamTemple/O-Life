@@ -68,4 +68,21 @@ public class Presenter {
                 });
         mDisposable.add(disposable);
     }
+
+    public void getAllDoctor(String token){
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization","Bearer " + token);
+        Disposable disposable = model.getAllDoctor(headers)
+//                .compose(ResponseTransformer.handleResult())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .subscribe(data -> {
+                    view.getDataSuccess(data);
+                }, throwable -> {
+                    // 处理异常
+                    view.getDataFail(throwable);
+                });
+        mDisposable.add(disposable);
+    }
 }

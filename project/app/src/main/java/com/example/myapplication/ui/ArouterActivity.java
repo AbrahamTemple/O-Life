@@ -30,9 +30,6 @@ public class ArouterActivity extends AppCompatActivity implements View.OnClickLi
     @Autowired
     public String url;
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,19 +43,12 @@ public class ArouterActivity extends AppCompatActivity implements View.OnClickLi
         //绑定数据
         ActivityArouterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_arouter);
         binding.setUsers(new Users(name,codeName,url));
-        fab.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab:
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                break;
-            default:
-        }
+
     }
 
 

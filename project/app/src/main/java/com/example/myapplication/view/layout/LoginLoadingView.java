@@ -21,6 +21,8 @@ public class LoginLoadingView extends View {
     public static final int STATUS_LOGGING = 1;
     //登录成功
     public static final int STATUS_LOGIN_SUCCESS = 2;
+    //登录失败
+    public static final int STATUS_LOGIN_FAIL= 3;
 
     private int mWidth, mHeight;
     private Paint mPaint;
@@ -31,8 +33,12 @@ public class LoginLoadingView extends View {
     private float mLineWidth;
     //成功Text的x坐标
     private float mSuccessTextX;
+    //失败Text的x坐标
+    private float mFailTextX;
     //成功Text的文案
     private String mSuccessText = "SUCCESS";
+    //失败Text的文案
+    private String mFailText = "ERROR";
     //登录Text的文案
     private String mLoginText = "SIGN UP";
     //登录Text的alpha值
@@ -84,6 +90,16 @@ public class LoginLoadingView extends View {
                 mPaint.setAlpha(255);
                 canvas.drawLine((mWidth - getTextWidth(mSuccessText)) / 2, mHeight, (mWidth + getTextWidth(mSuccessText)) / 2, mHeight, mPaint);
                 break;
+            case STATUS_LOGIN_FAIL:
+                mPaint.setAlpha(mLoginTextAlpha);
+                canvas.drawText(mLoginText, mFailTextX + getTextWidth(mFailText) + DensityUtil.dp2px(getContext(), 10), (mHeight + getTextHeight(mLoginText)) / 2, mPaint);
+
+                mPaint.setAlpha(255 - mLoginTextAlpha);
+                canvas.drawText(mFailText, mFailTextX, (mHeight + getTextHeight(mFailText)) / 2, mPaint);
+
+                mPaint.setAlpha(255);
+                canvas.drawLine((mWidth - getTextWidth(mFailText)) / 2, mHeight, (mWidth + getTextWidth(mFailText)) / 2, mHeight, mPaint);
+                break;
         }
     }
 
@@ -96,13 +112,15 @@ public class LoginLoadingView extends View {
         mStatus = status;
         switch (status) {
             case STATUS_LOGIN:
-
                 break;
             case STATUS_LOGGING:
                 startLoggingAnim();
                 break;
             case STATUS_LOGIN_SUCCESS:
                 startLoginSuccessAnim();
+                break;
+            case STATUS_LOGIN_FAIL:
+                startLoginFailAnim();
                 break;
         }
     }
@@ -135,6 +153,34 @@ public class LoginLoadingView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mSuccessTextX = (float) animation.getAnimatedValue();
+            }
+        });
+
+        ValueAnimator alphaAnim = ValueAnimator.ofInt(255, 0);
+        alphaAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mLoginTextAlpha = (int) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(textXAnim, alphaAnim);
+        set.setDuration(mDuration);
+        set.setInterpolator(new LinearInterpolator());
+        set.start();
+    }
+
+    /**
+     * 启动登录失败动画
+     */
+    private void startLoginFailAnim() {
+        ValueAnimator textXAnim = ValueAnimator.ofFloat(0, (mWidth - getTextWidth(mFailText)) / 2);
+        textXAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mFailTextX = (float) animation.getAnimatedValue();
             }
         });
 

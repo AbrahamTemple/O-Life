@@ -17,7 +17,7 @@ import com.example.myapplication.domain.Counter;
 import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.SharedPreferencesUtils;
-import com.example.myapplication.view.adapter.RecommendAdapter;
+import com.example.myapplication.view.adapter.ListAdapter;
 import com.example.myapplication.view.items.LocalImageHolderView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
-import com.example.myapplication.view.items.HomeRecommend;
+import com.example.myapplication.view.items.Intro;
 import com.example.myapplication.view.layout.MyPowerMenu;
 import com.example.myapplication.view.layout.ShapeLoadingDialog;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
@@ -49,7 +49,6 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 
@@ -164,17 +163,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(HomeActivity.this);
         sharedPreferences.clear();
-        presenter.getAllHospital("9fde581c-2ed4-4511-bad2-3a0d03d421bf");
+        presenter.getAllHospital("bdc5c064-4fd4-4650-aabd-33096bc7e41c");
     }
 
     private void initRecycler(HospitalResponse hospitalResponse){
-        List<HomeRecommend> lists = new ArrayList<>();
+        List<Intro> lists = new ArrayList<>();
         hospitalResponse.getData().forEach(d->{
-            HomeRecommend r = new HomeRecommend(R.drawable.ramain_register,d.getName(),d.getAddress(),"联系电话："+d.getPhone());
+            Intro r = new Intro(R.drawable.ramain_register,d.getName(),d.getAddress(),"联系电话："+d.getPhone());
             lists.add(r);
         });
-        RecommendAdapter recommendAdapter = new RecommendAdapter(lists);
-        new SpruceRecyclerView(this, recommend, recommendAdapter, false).init();
+        ListAdapter listAdapter = new ListAdapter(lists);
+        new SpruceRecyclerView(this, recommend, listAdapter, false).init();
     }
 
     private void initBanner(){

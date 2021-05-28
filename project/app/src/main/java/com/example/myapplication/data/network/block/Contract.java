@@ -22,6 +22,7 @@ public class Contract {
 
     public interface Model {
         Observable<ResponseBody> getPhone(Map<String, String> headers);
-        Observable<ResponseBody> getAllHospital(@HeaderMap Map<String, String> headers);
+        Observable<ResponseBody> getAllHospital(Map<String, String> headers);
+        Observable<ResponseBody> getAllDoctor(Map<String, String> headers);
     }
 }

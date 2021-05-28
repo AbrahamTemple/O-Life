@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.example.myapplication.domain.Counter;
+import com.example.myapplication.util.HideUtil;
 import com.example.myapplication.view.layout.LoginLoadingView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,18 +16,27 @@ import androidx.core.content.ContextCompat;
 import android.transition.ChangeBounds;
 import android.transition.Scene;
 import android.transition.TransitionManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.myapplication.R;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 @Route(path = "/olife/login")
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -42,15 +53,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private int mTvSighUpWidth, mTvSighUpHeight;
     private int mDuration;
 
+    private TextView nameEdit,passEdit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
+        HideUtil.init(this);
+        initLogin();
+    }
 
+    public void initLogin(){
         mDuration = getResources().getInteger(R.integer.duration);
 
         mSceneSignUp = Scene.getSceneForLayout(mFrtContent, R.layout.scene_sign_up, this);
+        mSceneSignUp.enter();
+        nameEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_name);
+        passEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_pass_same);
         mSceneSignUp.setEnterAction(() -> {
             final LoginLoadingView loginView = (LoginLoadingView) mFrtContent.findViewById(R.id.login_view);
             ViewTreeObserver vto = loginView.getViewTreeObserver();
@@ -62,9 +83,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mSceneLogging.setEnterAction(() -> {
             final LoginLoadingView loginView = (LoginLoadingView) mFrtContent.findViewById(R.id.login_view);
             loginView.postDelayed(() -> loginView.setStatus(LoginLoadingView.STATUS_LOGGING), mDuration);
-            loginView.postDelayed(() -> loginView.setStatus(LoginLoadingView.STATUS_LOGIN_SUCCESS), 4000);
-
-            loginView.postDelayed(() -> TransitionManager.go(mSceneHome, new ChangeBounds().setDuration(mDuration).setInterpolator(new DecelerateInterpolator())), 6000);
+//            EventBus.getDefault().post(loginView);
+            System.out.println(nameEdit.getText().toString() +" "+ passEdit.getText().toString());
+            if (nameEdit.getText().toString().equals("AbrahamVong") && passEdit.getText().toString().equals("123456")) {
+                loginView.postDelayed(() -> loginView.setStatus(LoginLoadingView.STATUS_LOGIN_SUCCESS), 4000);
+                loginView.postDelayed(() -> TransitionManager.go(mSceneHome, new ChangeBounds().setDuration(mDuration).setInterpolator(new DecelerateInterpolator())), 6000);
+            } else {
+                loginView.postDelayed(() -> loginView.setStatus(LoginLoadingView.STATUS_LOGIN_FAIL), 4000);
+                loginView.postDelayed(() -> TransitionManager.go(mSceneSignUp, new ChangeBounds().setDuration(mDuration).setInterpolator(new DecelerateInterpolator())), 6000);
+            }
         });
 
         mSceneHome = Scene.getSceneForLayout(mFrtContent, R.layout.activity_home, this);
@@ -78,6 +105,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
 
         TransitionManager.go(mSceneSignUp);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnEventProgress(LoginLoadingView loginView) {
+        mSceneSignUp.exit();
     }
 
     private void setSize(int width, int height) {
@@ -119,5 +151,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         anim.start();
 
         TransitionManager.go(mSceneLogging, new ChangeBounds().setDuration(mDuration).setInterpolator(new DecelerateInterpolator()));
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        mSceneSignUp.exit();
+        super.onDestroy();
     }
 }

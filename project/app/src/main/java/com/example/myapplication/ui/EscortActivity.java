@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -30,6 +31,7 @@ import com.skydoves.elasticviews.ElasticButton;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +72,15 @@ public class EscortActivity extends AppCompatActivity {
         getOptionData();
         initOptionPicker();
         initCharView();
+    }
+
+    @OnClick(R.id.btn_post)
+    public void postForm(View v){
+        //new Random().nextBoolean()?1:0
+        new ElasticAnimation(v).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
+                .setOnFinishListener(() -> ARouter.getInstance().build("/olife/list")
+                        .withInt("action", new Random().nextBoolean()?1:0)
+                        .navigation()).doAction();
     }
 
     @OnClick(R.id.btn_Time)
