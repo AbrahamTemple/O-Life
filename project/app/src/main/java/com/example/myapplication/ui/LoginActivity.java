@@ -13,9 +13,13 @@ import com.example.myapplication.view.layout.LoginLoadingView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.ChangeBounds;
 import android.transition.Scene;
 import android.transition.TransitionManager;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -39,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @Route(path = "/olife/login")
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     @BindView(R.id.frt_content)
     FrameLayout mFrtContent;
@@ -68,10 +72,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void initLogin(){
         mDuration = getResources().getInteger(R.integer.duration);
 
+//        View form = LayoutInflater.from(this).inflate(R.layout.scene_sign_up, null);
+//        nameEdit = form.findViewById(R.id.log_name);
+//        passEdit = form.findViewById(R.id.log_pass_same);
+
         mSceneSignUp = Scene.getSceneForLayout(mFrtContent, R.layout.scene_sign_up, this);
-        mSceneSignUp.enter();
-        nameEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_name);
-        passEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_pass_same);
+        initEditListener();
+//        mSceneSignUp.enter();
+//        nameEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_name);
+//        passEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_pass_same);
         mSceneSignUp.setEnterAction(() -> {
             final LoginLoadingView loginView = (LoginLoadingView) mFrtContent.findViewById(R.id.login_view);
             ViewTreeObserver vto = loginView.getViewTreeObserver();
@@ -105,6 +114,56 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
 
         TransitionManager.go(mSceneSignUp);
+    }
+
+    public void initEditListener(){
+        mSceneSignUp.enter();
+        nameEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_name);
+        passEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_pass_same);
+//        nameEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                Log.e("点击ET_phone", "没有响应");
+//                nameEdit.setText(v.getText());
+//                return false;
+//            }
+//        });
+
+//        nameEdit.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                String delText = s.toString().substring(start, start + count);
+//                Log.i("beforeTextChanged: ",delText);
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String addText = s.toString().substring(start, start + count);
+//                Log.i("onTextChanged: ",addText);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                Log.i("afterTextChanged: ",s.toString());
+//                nameEdit.setText(s.toString());
+//            }
+//        });
+//        passEdit.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                passEdit.setText(s.toString());
+//            }
+//        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -158,5 +217,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         EventBus.getDefault().unregister(this);
         mSceneSignUp.exit();
         super.onDestroy();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        System.out.println("before:"+s.toString());
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        System.out.println("onchange:"+s.toString());
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        System.out.println("after:"+s.toString());
     }
 }

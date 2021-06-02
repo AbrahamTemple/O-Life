@@ -38,6 +38,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.about.setText(recommend.getAbout());
         holder.title.setText(recommend.getTitle());
         holder.other.setText(recommend.getOther());
+        holder.main.setText(recommend.getMain());
         holder.itemView.setOnClickListener(v -> {
             if(onItemClickListener!=null){
                 Log.e("TT",holder.itemView.toString());
@@ -57,6 +58,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         TextView title;
         TextView about;
         TextView other;
+        TextView main;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +66,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             title = itemView.findViewById(R.id.r_title);
             about = itemView.findViewById(R.id.r_about);
             other = itemView.findViewById(R.id.r_other);
+            main = itemView.findViewById(R.id.r_main);
         }
     }
 

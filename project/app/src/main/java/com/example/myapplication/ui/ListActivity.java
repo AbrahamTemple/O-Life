@@ -66,21 +66,32 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnEventProgress(Counter counter) {
         switch (counter.getTag()){
-            case 404:
+            case 405:
                 if(counter.getProgress() == 0) {
                     shapeLoadingDialog.dismiss();
                     Toast.makeText(ListActivity.this, "网络请求出现问题", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case 401:
+            case 402:
                 if(counter.getProgress() == 0) {
                     shapeLoadingDialog.dismiss();
                     Toast.makeText(ListActivity.this, "访问权限不足", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case 200:
+            case 201:
                 if(counter.getProgress() == 0) {
                     shapeLoadingDialog.dismiss();
+//                    if (action == 0) {
+//                        String dataString = sharedPreferences.getString("all_hospital");
+//                        System.out.println(dataString);
+//                        HospitalResponse data = GsonUtils.fromJson(dataString, HospitalResponse.class);
+//                        initRecycler(data);
+//                    } else {
+//                        String dataString = sharedPreferences.getString("all_doctor");
+//                        System.out.println(dataString);
+//                        DoctorResponse data = GsonUtils.fromJson(dataString, DoctorResponse.class);
+//                        initRecycler(data);
+//                    }
                     Toast.makeText(ListActivity.this, "页面渲染成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -91,11 +102,10 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
     private void initRequest(){
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(ListActivity.this);
-        sharedPreferences.clear();
         if(action == 0) {
-            presenter.getAllDoctor("bdc5c064-4fd4-4650-aabd-33096bc7e41c");
+            presenter.getAllDoctor("fda1aaad-5c81-4afb-bbb0-ee8fdad9e4fd");
         } else {
-            presenter.getAllHospital("bdc5c064-4fd4-4650-aabd-33096bc7e41c");
+            presenter.getAllHospital("fda1aaad-5c81-4afb-bbb0-ee8fdad9e4fd");
         }
     }
 
@@ -110,13 +120,13 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
         if(action == 0){
             DoctorResponse doctorResponse = (DoctorResponse) body;
             doctorResponse.getData().forEach(d->{
-                Intro r = new Intro(R.drawable.doctor_img,d.getName(),d.getIntro(),"主治专业："+d.getSort());
+                Intro r = new Intro(R.drawable.doctor_img,d.getName(),d.getIntro(),"主治专业："+d.getSort(),"剩余号数："+d.getCount());
                 lists.add(r);
             });
         } else {
             HospitalResponse hospitalResponse = (HospitalResponse) body;
             hospitalResponse.getData().forEach(d->{
-                Intro r = new Intro(R.drawable.ramain_register,d.getName(),d.getAddress(),"联系电话："+d.getPhone());
+                Intro r = new Intro(R.drawable.ramain_register,d.getName(),d.getAddress(),"电话："+d.getPhone(),"地址："+d.getAddress());
                 lists.add(r);
             });
         }
@@ -131,12 +141,16 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
             Log.e("网络请求", "响应结果: " + result);
             if(action == 0) {
                 DoctorResponse data = GsonUtils.fromJson(result, DoctorResponse.class);
+//                String dataString = GsonUtils.toJson(data);
+//                sharedPreferences.putString("all_doctor",GsonUtils.toJson(data));
                 initRecycler(data);
             } else {
                 HospitalResponse data = GsonUtils.fromJson(result, HospitalResponse.class);
+//                String dataString = GsonUtils.toJson(data);
+//                sharedPreferences.putString("all_hospital",GsonUtils.toJson(data));
                 initRecycler(data);
             }
-            CounterService.startDownload(this,1, 200);
+            CounterService.startDownload(this,1, 201);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,7 +160,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
     public void getDataFail(Throwable throwable) {
         String[] httpStatus = throwable.getMessage().split("[ ]");
 //        Toast.makeText(HomeActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-        CounterService.startDownload(this,2, Integer.valueOf(httpStatus[1]));
+        CounterService.startDownload(this,2, Integer.valueOf(httpStatus[1]+1));
     }
 
     @Override

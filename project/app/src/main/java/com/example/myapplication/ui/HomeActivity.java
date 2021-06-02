@@ -16,12 +16,16 @@ import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
 import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
+import com.example.myapplication.util.HideUtil;
 import com.example.myapplication.util.SharedPreferencesUtils;
-import com.example.myapplication.view.adapter.ListAdapter;
+import com.example.myapplication.view.fragment.RecycleFragment;
+import com.example.myapplication.view.fragment.ShimmeFragment;
 import com.example.myapplication.view.items.LocalImageHolderView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.View;
@@ -29,10 +33,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
-import com.example.myapplication.view.items.Intro;
 import com.example.myapplication.view.layout.MyPowerMenu;
 import com.example.myapplication.view.layout.ShapeLoadingDialog;
-import com.example.myapplication.view.layout.SpruceRecyclerView;
 import com.skydoves.elasticviews.ElasticAnimation;
 import com.skydoves.elasticviews.ElasticImageView;
 import com.yalantis.taurus.PullToRefreshView;
@@ -44,7 +46,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -59,9 +60,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner banner;
-
-    @BindView(R.id.home_recommend)
-    RecyclerView recommend;
 
     @BindView(R.id.pull_to_refresh)
     PullToRefreshView prv;
@@ -98,10 +96,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         EventBus.getDefault().register(this);
         ButterKnife.bind(this);
+        HideUtil.init(this);
         init();
     }
 
     private void init() {
+        replaceFragment(new ShimmeFragment());
         initLoading();
         initRefresh();
         initNav();
@@ -116,18 +116,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case 404:
                 if(counter.getProgress() == 0) {
                     shapeLoadingDialog.dismiss();
+                    replaceFragment(new ShimmeFragment());
                     Toast.makeText(HomeActivity.this, "网络请求出现问题", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 401:
                 if(counter.getProgress() == 0) {
                     shapeLoadingDialog.dismiss();
+                    replaceFragment(new ShimmeFragment());
                     Toast.makeText(HomeActivity.this, "访问权限不足", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 200:
                 if(counter.getProgress() == 0) {
                     shapeLoadingDialog.dismiss();
+                    String dataString = sharedPreferences.getString("all_hospital");
+                    HospitalResponse data = GsonUtils.fromJson(dataString, HospitalResponse.class);
+                    replaceFragment(new RecycleFragment(data));
                     Toast.makeText(HomeActivity.this, "页面渲染成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -163,17 +168,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(HomeActivity.this);
         sharedPreferences.clear();
-        presenter.getAllHospital("bdc5c064-4fd4-4650-aabd-33096bc7e41c");
-    }
-
-    private void initRecycler(HospitalResponse hospitalResponse){
-        List<Intro> lists = new ArrayList<>();
-        hospitalResponse.getData().forEach(d->{
-            Intro r = new Intro(R.drawable.ramain_register,d.getName(),d.getAddress(),"联系电话："+d.getPhone());
-            lists.add(r);
-        });
-        ListAdapter listAdapter = new ListAdapter(lists);
-        new SpruceRecyclerView(this, recommend, listAdapter, false).init();
+        presenter.getAllHospital("fda1aaad-5c81-4afb-bbb0-ee8fdad9e4fd");
     }
 
     private void initBanner(){
@@ -236,25 +231,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
     }
 
-    public void onHamburger(View view) {
-        myPowerMenu.onHamburger(view);
-    }
-
-    public void onProfile(View view) {
-        myPowerMenu.onProfile(view);
-    }
-
-    public void onIcon(View view){
-        myPowerMenu.onIcon(view);
-    }
-
     @Override
     public void getDataSuccess(ResponseBody body) {
         try {
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);
             HospitalResponse data = GsonUtils.fromJson(result, HospitalResponse.class);
-            initRecycler(data);
+            String dataString = GsonUtils.toJson(data);
+            sharedPreferences.putString("all_hospital",dataString);
             CounterService.startDownload(this,1, 200);
         } catch (IOException e) {
             e.printStackTrace();
@@ -264,8 +248,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void getDataFail(Throwable throwable) {
         String[] httpStatus = throwable.getMessage().split("[ ]");
-//        Toast.makeText(HomeActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-        CounterService.startDownload(this,2, Integer.valueOf(httpStatus[1]));
+        Toast.makeText(HomeActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        CounterService.startDownload(this,1, Integer.valueOf(httpStatus[1]));
+        System.out.println(Integer.valueOf(httpStatus[1]));
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frag_layout, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override

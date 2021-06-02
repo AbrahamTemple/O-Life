@@ -16,6 +16,8 @@ public class CounterService extends IntentService {
 
     private static final String EXTRA_TAG = "com.example.myapplication.service.extra.TAG";
 
+    private static final String EXTRA_DATA = "com.example.myapplication.service.extra.DATA";
+
     private static final int SLEEP_TIME = 1;
 
     public CounterService() {
