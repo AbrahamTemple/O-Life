@@ -39,6 +39,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -91,7 +95,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     /** 第三方UI/UX库 */
-
     // 过度按钮
     implementation 'com.royrodriguez:transitionbutton:0.2.0'
     // 涟漪背景 https://github.com/skyfishjy/android-ripple-background */
@@ -116,5 +119,12 @@ dependencies {
     implementation "com.github.zzz40500:android-shapeLoadingView:1.0.3.2"
     // 网络检测 https://github.com/hzw1199/AndroidGpsStatus/
     implementation "com.github.hzw1199:AndroidGpsStatus:1.2"
-    // 聊天冒泡
+    // 骨架 https://github.com/team-supercharge/ShimmerLayout
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
+    // 果冻工具栏
+    implementation 'com.github.yalantis:jellytoolbar:v1.0'
+    // 冒泡聊天
+    implementation 'com.github.MasayukiSuda:BubbleLayout:v1.2.1'
+    // 循环底部栏 https://github.com/Cleveroad/LoopBar
+    implementation "com.cleveroad:loopbar:1.2.0"
 }
