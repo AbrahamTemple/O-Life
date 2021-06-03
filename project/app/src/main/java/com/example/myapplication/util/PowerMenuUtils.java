@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.example.myapplication.R;
 import com.example.myapplication.view.adapter.CenterMenuAdapter;
 import com.example.myapplication.view.adapter.CustomDialogMenuAdapter;
-import com.example.myapplication.view.items.NameCardMenuItem;
+import com.example.myapplication.view.model.NameCardMenuItem;
 import com.skydoves.powermenu.CircularEffect;
 import com.skydoves.powermenu.CustomPowerMenu;
 import com.skydoves.powermenu.MenuAnimation;

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.view.items.Intro;
+import com.example.myapplication.view.model.Intro;
 import com.intrusoft.squint.DiagonalView;
 
 import java.util.List;

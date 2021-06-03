@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.view.items.NameCardMenuItem;
+import com.example.myapplication.view.model.NameCardMenuItem;
 import com.skydoves.powermenu.MenuBaseAdapter;
 
 @SuppressWarnings("ConstantConditions")

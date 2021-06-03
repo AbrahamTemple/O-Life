@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.HospitalResponse;
 import com.example.myapplication.view.adapter.ListAdapter;
-import com.example.myapplication.view.items.Intro;
+import com.example.myapplication.view.model.Intro;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
 
 import java.util.ArrayList;
@@ -32,10 +32,14 @@ public class RecycleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        return inflater.inflate(R.layout.fragment_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         recommend = view.findViewById(R.id.frag_recommend);
         initRecycler(data);
-        return view;
     }
 
     private void initRecycler(HospitalResponse hospitalResponse){

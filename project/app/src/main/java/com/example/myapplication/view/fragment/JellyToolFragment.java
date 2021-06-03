@@ -27,7 +27,12 @@ public class JellyToolFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_jelly, container, false);
+        return inflater.inflate(R.layout.fragment_jelly, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.getToolbar().setNavigationIcon(R.drawable.ic_menu);
         toolbar.setJellyListener(jellyListener);
@@ -40,7 +45,6 @@ public class JellyToolFragment extends Fragment {
         myPowerMenu = new MyPowerMenu(getContext(),this);
         myPowerMenu.init();
         toolbar.getToolbar().setNavigationOnClickListener(v -> onIcon(v));
-        return view;
     }
 
     private JellyListener jellyListener = new JellyListener() {

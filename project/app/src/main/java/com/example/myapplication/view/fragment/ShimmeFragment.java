@@ -20,9 +20,13 @@ public class ShimmeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shimme, container, false);
+        return inflater.inflate(R.layout.fragment_shimme, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         shimmerLayout = view.findViewById(R.id.shimmer_layout);
         shimmerLayout.startShimmerAnimation();
-        return view;
     }
 }
