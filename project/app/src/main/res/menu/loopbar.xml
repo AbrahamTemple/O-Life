@@ -22,10 +22,6 @@
         android:title="用户"
         tools:ignore="HardcodedText,PrivateResource"/>
     <item
-        android:icon="@drawable/ic_home_selected"
-        android:title="登录"
-        tools:ignore="HardcodedText,PrivateResource"/>
-    <item
         android:icon="@drawable/enls_vector_moon_white_24dp"
         android:title="晚班"
         tools:ignore="HardcodedText,PrivateResource"/>
