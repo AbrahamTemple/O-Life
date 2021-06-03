@@ -1,16 +1,31 @@
 package com.example.myapplication.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -24,9 +39,13 @@ import com.example.myapplication.R;
 import com.example.myapplication.domain.CardBean;
 import com.example.myapplication.domain.ProvinceBean;
 import com.example.myapplication.util.HideUtil;
+import com.example.myapplication.view.fragment.BezierFragment;
+import com.example.myapplication.view.fragment.LoadingFragment;
 import com.example.myapplication.view.layout.ChatBarView;
+import com.example.myapplication.view.layout.ResizableImageView;
 import com.skydoves.elasticviews.ElasticAnimation;
 import com.skydoves.elasticviews.ElasticButton;
+import com.skyfishjy.library.RippleBackground;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,11 +71,32 @@ public class EscortActivity extends AppCompatActivity {
     private TimePickerView pvTime;
     private OptionsPickerView pvOptions;
 
+    @BindView(R.id.btn_Time)
+    ElasticButton btn_Time;
+
     @BindView(R.id.btn_Options)
     ElasticButton btn_Options;
 
-    @BindView(R.id.chatbar)
-    ChatBarView chatBarView;
+    @BindView(R.id.imageLayer1)
+    ResizableImageView imageLayer1;
+
+    @BindView(R.id.imageLayer2)
+    ResizableImageView imageLayer2;
+
+    @BindView(R.id.pointer)
+    ImageView pointer;
+
+    @BindView(R.id.time_point)
+    RippleBackground timePoint;
+
+    @BindView(R.id.address_point)
+    RippleBackground addressPoint;
+
+    @BindView(R.id.e_frag_layout)
+    FrameLayout list;
+
+    private Bitmap image2Bitmap;
+    private int mInputImageForBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +104,7 @@ public class EscortActivity extends AppCompatActivity {
         setContentView(R.layout.activity_escort);
         ButterKnife.bind(this);
         HideUtil.init(this);
+        replaceFragment(new LoadingFragment());
         init();
     }
 
@@ -71,7 +112,7 @@ public class EscortActivity extends AppCompatActivity {
         initTimePicker();
         getOptionData();
         initOptionPicker();
-        initCharView();
+        initImageCompare();
     }
 
     @OnClick(R.id.btn_post)
@@ -97,21 +138,19 @@ public class EscortActivity extends AppCompatActivity {
                 }).doAction();
     }
 
-    public void initCharView(){
-        chatBarView.setSendClickListener(view -> {
-            Toast.makeText(EscortActivity.this, chatBarView.getMessageText(), Toast.LENGTH_SHORT).show();
-        });
-
-        chatBarView.setOnMicListener(view -> {
-            Toast.makeText(EscortActivity.this, "Recording...", Toast.LENGTH_SHORT).show();
-            return true;
-        });
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.e_frag_layout, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void initTimePicker() {//Dialog 模式下，在底部弹出
         pvTime = new TimePickerBuilder(this, (date, v) -> {
             Toast.makeText(EscortActivity.this, getTime(date), Toast.LENGTH_SHORT).show();
-            Log.i("pvTime", "onTimeSelect");
+            btn_Time.setText(getTime(date));
+            timePoint.startRippleAnimation();
         })
                 .setTimeSelectChangeListener(date -> Log.i("pvTime", "onTimeSelectChanged"))
                 .setType(new boolean[]{true, true, true, true, true, true})
@@ -144,11 +183,9 @@ public class EscortActivity extends AppCompatActivity {
     }
 
     private void initOptionPicker() {//条件选择器初始化
-
         /**
          * 注意 ：如果是三级联动的数据(省市区等)，请参照 JsonDataActivity 类里面的写法。
          */
-
         pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
@@ -157,6 +194,7 @@ public class EscortActivity extends AppCompatActivity {
                         + options2Items.get(options1).get(options2)
                         /* + options3Items.get(options1).get(options2).get(options3).getPickerViewText()*/;
                 btn_Options.setText(tx);
+                addressPoint.startRippleAnimation();
             }
         })
                 .setTitleText("城市选择")
@@ -185,8 +223,6 @@ public class EscortActivity extends AppCompatActivity {
         /*pvOptions.setPicker(options1Items, options2Items,options3Items);//三级选择器*/
     }
 
-
-
     private String getTime(Date date) {//可根据需要自行截取数据显示
         Log.d("getTime()", "choice date millis: " + date.getTime());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -198,7 +234,6 @@ public class EscortActivity extends AppCompatActivity {
          * 注意：如果是添加JavaBean实体数据，则实体类需要实现 IPickerViewData 接口，
          * PickerView会通过getPickerViewText方法获取字符串显示出来。
          */
-
         //选项1
         options1Items.add(new ProvinceBean(0, "广东", "描述部分", "其他数据"));
         options1Items.add(new ProvinceBean(1, "湖南", "描述部分", "其他数据"));
@@ -226,4 +261,62 @@ public class EscortActivity extends AppCompatActivity {
         /*--------数据源添加完毕---------*/
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    public void initImageCompare(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        final int screenWidth = displayMetrics.widthPixels;
+        if (mInputImageForBitmap == 0 || mInputImageForBitmap == -1) {
+            image2Bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.staff_bg2);
+        }
+        pointer.setOnTouchListener((v, event) -> {
+            int sliderX = (int) event.getRawX();
+            if (sliderX > 0 && sliderX < screenWidth - 80) {
+                pointer.setX(sliderX);
+            }
+
+            int fX = ScaleFunction(sliderX+50, 0, screenWidth, 0, image2Bitmap.getWidth());
+            final Bitmap outputBitmap = Bitmap.createBitmap(imageLayer2.getWidth(), imageLayer2.getHeight(), Bitmap.Config.ARGB_8888);
+            final Canvas canvas = new Canvas(outputBitmap);
+            final Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL_AND_STROKE);
+            paint.setStrokeWidth(0);
+            final Rect rect = new Rect(fX, 0, image2Bitmap.getWidth(), image2Bitmap.getHeight());
+            final double imageWidth = image2Bitmap.getWidth();
+            final double imageHeight = image2Bitmap.getHeight();
+            final double imageAspect = imageWidth / imageHeight;
+            final double finalImageHeight = imageLayer2.getWidth() / imageAspect;
+            final double startY = (imageLayer2.getHeight() / 2.0) - (finalImageHeight / 2.0);
+            final RectF rectF = new RectF(sliderX+50, (int) startY, imageLayer2.getWidth(), (int) startY + (int) finalImageHeight);
+            paint.setAntiAlias(true);
+            paint.setColor(Color.RED);
+            canvas.drawRect(rectF, paint);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawBitmap(image2Bitmap, rect, rectF, paint);
+            imageLayer2.setImageBitmap((outputBitmap));
+            return true;
+        });
+    }
+
+    public int ScaleFunction(int xCoordinate, double A, double B, double C, double D) {
+        double resultData = 0.0;
+        double data1 = xCoordinate - A;
+        double data2 = B - A;
+        if (data2 != 0) {
+            resultData = data1 / data2;
+        }
+        double start = Math.round((C * (1.0 - resultData)));
+        double end = D * resultData;
+        double finalResult = (start + end);
+        return (int) finalResult;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(timePoint.isRippleAnimationRunning() | addressPoint.isRippleAnimationRunning()) {
+            timePoint.stopRippleAnimation();
+            addressPoint.stopRippleAnimation();
+        }
+    }
 }

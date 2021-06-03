@@ -38,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     private PopupWindow popupWindow;
     private BubbleLayout bubbleLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

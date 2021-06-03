@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.HospitalResponse;
 import com.example.myapplication.view.adapter.ListAdapter;
-import com.example.myapplication.view.model.Intro;
+import com.example.myapplication.domain.Intro;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
 
 import java.util.ArrayList;

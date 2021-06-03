@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.cleveroad.loopbar.adapter.SimpleCategoriesAdapter;
-import com.cleveroad.loopbar.model.MockedItemsFactory;
 import com.cleveroad.loopbar.widget.LoopBarView;
 import com.cleveroad.loopbar.widget.OnItemClickListener;
 import com.example.myapplication.data.model.HospitalResponse;
@@ -17,7 +16,8 @@ import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.HideUtil;
 import com.example.myapplication.util.SharedPreferencesUtils;
-import com.example.myapplication.view.fragment.HomeFragment;
+import com.example.myapplication.view.fragment.compose.AboutFragment;
+import com.example.myapplication.view.fragment.compose.HomeFragment;
 import com.example.myapplication.view.fragment.RecycleFragment;
 import com.example.myapplication.view.fragment.ShimmeFragment;
 
@@ -30,6 +30,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.view.fragment.compose.UserFragment;
 import com.example.myapplication.view.layout.ShapeLoadingDialog;
 import com.example.myapplication.view.model.LoopBarItemsFactory;
 import com.yalantis.taurus.PullToRefreshView;
@@ -194,6 +195,7 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
 
     @Override
     public void onItemClicked(int position) {
+        System.out.println(position);
         switch (position){
             case 0:
                 String dataString = sharedPreferences.getString("all_hospital");
@@ -205,6 +207,12 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
                 } else {
                     home.replaceFragment(new ShimmeFragment());
                 }
+                break;
+            case 4:
+                replaceFragment(new UserFragment());
+                break;
+            case 5:
+                replaceFragment(new AboutFragment());
                 break;
             default: replaceFragment(new ShimmeFragment());
         }

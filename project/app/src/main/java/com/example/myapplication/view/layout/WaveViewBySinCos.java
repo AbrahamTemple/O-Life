@@ -13,6 +13,13 @@ import android.view.animation.LinearInterpolator;
 
 import com.example.myapplication.R;
 
+/**
+ * y=A*sin(ωx+φ)+k
+ * A—振幅越大，波形在y轴上最大与最小值的差值越大
+ * ω—角速度， 控制正弦周期(单位角度内震动的次数)
+ * φ—初相，反映在坐标系上则为图像的左右移动。这里通过不断改变φ,达到波浪移动效果
+ * k—偏距，反映在坐标系上则为图像的上移或下移。
+ */
 public class WaveViewBySinCos extends View {
     private Context mContext;
     /**
@@ -25,9 +32,9 @@ public class WaveViewBySinCos extends View {
     private int K;
 
     /**
-     * 波形的颜色
+     * 波形的颜色 FF7E37
      */
-    private int waveColor = 0xaaFF7E37;
+    private int waveColor = 0xaaB0C4DE;
 
     /**
      * 初相

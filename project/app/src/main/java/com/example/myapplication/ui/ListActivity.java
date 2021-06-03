@@ -18,7 +18,7 @@ import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.SharedPreferencesUtils;
 import com.example.myapplication.view.adapter.ListAdapter;
-import com.example.myapplication.view.model.Intro;
+import com.example.myapplication.domain.Intro;
 import com.example.myapplication.view.layout.ShapeLoadingDialog;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
 
