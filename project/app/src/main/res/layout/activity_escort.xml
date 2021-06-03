@@ -7,73 +7,135 @@
     android:layout_height="wrap_content"
     tools:context=".ui.EscortActivity">
 
-    <com.skydoves.elasticviews.ElasticButton
-        android:id="@+id/btn_Time"
-        android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_height="50dp"
-        android:text="时间选择器"
-        android:backgroundTint="@color/colorAccent"
-        android:textColor="@color/md_white_1000"
-        android:textSize="17sp"
-        app:button_cornerRadius="4dp"
-        app:button_duration="250"
-        app:button_scale="0.87" />
 
-    <com.skydoves.elasticviews.ElasticButton
-        android:id="@+id/btn_Options"
-        android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_height="50dp"
-        android:text="地区选择器"
-        android:backgroundTint="@color/colorControlActivated"
-        android:textColor="@color/md_white_1000"
-        android:textSize="17sp"
-        app:button_cornerRadius="4dp"
-        app:button_duration="250"
-        app:button_scale="0.87" />
-
-    <com.skydoves.elasticviews.ElasticButton
-        android:id="@+id/btn_post"
-        android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_height="50dp"
-        android:text="提交选择"
-        android:backgroundTint="@color/eggplant"
-        android:textColor="@color/md_white_1000"
-        android:textSize="17sp"
-        app:button_cornerRadius="4dp"
-        app:button_duration="250"
-        app:button_scale="0.87" />
-
-    <com.example.myapplication.view.layout.ChatBarView
-        android:id="@+id/chatbar"
+    <RelativeLayout
+        android:id="@+id/rlImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        app:cb_isTextCleanerEnabled="true"
-        app:cb_isSoftInputHidden="true"
-        app:cb_messageBoxHint="sample text"
-        app:cb_micClickWarningMessage="warning message"/>
+        android:layout_centerInParent="true">
 
-    <com.mingle.widget.LoadingView
-        android:id="@+id/loadView"
-        app:loadingText="加载中..."
+        <com.example.myapplication.view.layout.ResizableImageView
+            android:id="@+id/imageLayer1"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/staff_bg" />
+
+        <com.example.myapplication.view.layout.ResizableImageView
+            android:id="@+id/imageLayer2"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/staff_bg2" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/pointer"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/point" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="550dp"/>
+        android:layout_height="180dp"
+        android:background="@drawable/border_shape"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.skyfishjy.library.RippleBackground
+                android:layout_height="38dp"
+                android:layout_width="38dp"
+                android:layout_marginTop="4dp"
+                android:id="@+id/time_point"
+                app:rb_color="@color/Aquamarine"
+                app:rb_radius="7dp"
+                app:rb_rippleAmount="3"
+                app:rb_duration="3000"
+                app:rb_type="fillRipple"
+                app:rb_strokeWidth="3dp"
+                app:rb_scale="3">
+                <FrameLayout
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/escort_time_point"
+                    android:layout_centerInParent="true"/>
+            </com.skyfishjy.library.RippleBackground>
+            <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/btn_Time"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="选择预定时间"
+                android:backgroundTint="@color/colorAccent"
+                android:textColor="@color/md_white_1000"
+                android:textSize="17sp"
+                app:button_cornerRadius="4dp"
+                app:button_duration="250"
+                app:button_scale="0.87"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@+id/time_point"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.skyfishjy.library.RippleBackground
+                android:layout_height="38dp"
+                android:layout_width="38dp"
+                android:layout_marginTop="4dp"
+                android:id="@+id/address_point"
+                app:rb_color="@color/LightSalmon"
+                app:rb_radius="7dp"
+                app:rb_rippleAmount="3"
+                app:rb_duration="3000"
+                app:rb_type="fillRipple"
+                app:rb_strokeWidth="3dp"
+                app:rb_scale="3">
+                <FrameLayout
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/escort_address_point"
+                    android:layout_centerInParent="true"/>
+            </com.skyfishjy.library.RippleBackground>
+            <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/btn_Options"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="选择预定地区"
+                android:backgroundTint="@color/colorControlActivated"
+                android:textColor="@color/md_white_1000"
+                android:textSize="17sp"
+                app:button_cornerRadius="4dp"
+                app:button_duration="250"
+                app:button_scale="0.87"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@+id/address_point"/>
+        </RelativeLayout>
+        <com.skydoves.elasticviews.ElasticButton
+            android:id="@+id/btn_post"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="提交选择"
+            android:backgroundTint="@color/eggplant"
+            android:textColor="@color/md_white_1000"
+            android:textSize="17sp"
+            app:button_cornerRadius="4dp"
+            app:button_duration="250"
+            app:button_scale="0.87"
+            android:layout_margin="20dp"/>
+    </LinearLayout>
 
-
-
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="500dp">-->
-<!--        <LinearLayout-->
-<!--            android:id="@+id/fg_list"-->
-<!--            android:layout_width="match_parent"-->
-<!--             android:orientation="vertical"-->
-<!--            android:layout_height="550dp">-->
-<!--        </LinearLayout>-->
-<!--    </ScrollView>-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/gpsText"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/border_shape">
+        <FrameLayout
+            android:id="@+id/e_frag_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
 </LinearLayout>
