@@ -152,7 +152,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnIt
     @Override
     public void onItemClick(int position) {
         Toast.makeText(getContext(),"点击了第"+position+"个", Toast.LENGTH_SHORT).show();
-        ARouter.getInstance().build("/olife/login").navigation();
     }
 
     public ConvenientBanner getBanner() {

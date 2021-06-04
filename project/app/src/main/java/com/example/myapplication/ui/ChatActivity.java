@@ -7,11 +7,8 @@ import com.daasuu.bl.BubbleLayout;
 import com.daasuu.bl.BubblePopupHelper;
 import com.example.myapplication.util.HideUtil;
 import com.example.myapplication.view.layout.ChatBarView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,16 +56,37 @@ public class ChatActivity extends AppCompatActivity {
     public void initCharView(){
         chatBarView.setSendClickListener(view -> {
             Toast.makeText(ChatActivity.this, chatBarView.getMessageText(), Toast.LENGTH_SHORT).show();
-            int[] location = new int[2];
-            task.getLocationInWindow(location);
-            popupWindow.showAtLocation(task, Gravity.NO_GRAVITY, location[0], view.getHeight() + location[1]);
-//            popupWindow.showAsDropDown(task, location[0], view.getHeight() + location[1]);
+            int rand = new Random().nextBoolean()?1:0;
+            if (rand == 0) {
+                addUserViewItem(chatBarView.getMessageText());
+            } else {
+                addDocterViewItem(chatBarView.getMessageText());
+            }
+//            int[] location = new int[2];
+//            task.getLocationInWindow(location);
+//            popupWindow.showAtLocation(task, Gravity.NO_GRAVITY, location[0], view.getHeight() + location[1]);
         });
 
         chatBarView.setOnMicListener(view -> {
             Toast.makeText(ChatActivity.this, "Recording...", Toast.LENGTH_SHORT).show();
             return true;
         });
+    }
+
+    private void addUserViewItem(String msg) {
+        View bubble = View.inflate(this, R.layout.fragment_bubble, null);
+        TextView bubbleText = (TextView) bubble.findViewById(R.id.bubble_text);
+        bubbleText.setText(msg); //发送内容
+        bubbleText.setTag("user"); //发送人
+        task.addView(bubble);
+    }
+
+    private void addDocterViewItem(String msg) {
+        View bubble = View.inflate(this, R.layout.fragment_bubble2, null);
+        TextView bubbleText = (TextView) bubble.findViewById(R.id.bubble_text);
+        bubbleText.setText(msg); //发送内容
+        bubbleText.setTag("doctor"); //发送人
+        task.addView(bubble);
     }
 
 }
