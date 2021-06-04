@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:icon="@drawable/ic_call_selected"
+        android:title="通话"
+        tools:ignore="HardcodedText,PrivateResource"/>
+    <item
+        android:icon="@drawable/enls_ic_account_balance"
+        android:title="主页"
+        tools:ignore="HardcodedText,PrivateResource"/>
+    <item
+        android:icon="@drawable/enls_ic_alarm"
+        android:title="预约"
+        tools:ignore="HardcodedText,PrivateResource"/>
+    <item
+        android:icon="@drawable/ic_event_selected"
+        android:title="订单"
+        tools:ignore="HardcodedText,PrivateResource"/>
+    <item
+        android:icon="@drawable/ic_account_selected"
+        android:title="用户"
+        tools:ignore="HardcodedText,PrivateResource"/>
+    <item
+        android:icon="@drawable/enls_vector_moon_white_24dp"
+        android:title="晚班"
+        tools:ignore="HardcodedText,PrivateResource"/>
+</menu>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:squint="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.intrusoft.squint.DiagonalView
+            android:id="@+id/about_ps"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/about_closed"
+            squint:angle="10"
+            squint:diagonalDirection="right_to_left"
+            squint:gravity="left"/>
+        <com.skydoves.elasticviews.ElasticFloatingActionButton
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:backgroundTint="@color/colorAccent"
+            android:tint="@color/colorAccent"
+            app:fabSize="normal"
+            app:fabutton_duration="400"
+            app:fabutton_scale="0.85"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/about_ps"
+            android:layout_marginTop="-40dp"/>
+    </RelativeLayout>
+    <com.skydoves.elasticviews.ElasticLayout
+        android:id="@+id/about_context"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_cornerRadius="4dp"
+        app:layout_duration="500"
+        app:layout_scale="0.85"
+        android:layout_marginTop="-50dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp">
+            <TextView
+                android:id="@+id/about_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="我们的服务时间"
+                android:textColor="@color/md_black_1000"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/about_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2021-6-1 12:30:08"
+                android:textColor="@color/md_grey_600"
+                android:textSize="16sp"
+                android:layout_below="@+id/about_title"
+                android:layout_marginStart="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/about_time"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/md_black_1000"
+                android:textSize="18dp"
+                android:text="    这是你要了解的事情，我们并不是24小时营业。\n    在工作日内，我们的平台的服务时间是从早上7:30到晚上9:30，但是在周末，我们是从早上9:00到晚上8:00提供服务。\n    如果你还需要了解更加详细的信息，欢迎致电：8208-8208820，我们将用心为你解答所有疑问，为你们服务是我们人生的乐趣。"/>
+        </RelativeLayout>
+    </com.skydoves.elasticviews.ElasticLayout>
+</LinearLayout>

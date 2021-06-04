@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.xuexiang.xui.widget.imageview.RadiusImageView
+        android:id="@+id/user_ps"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/user_ps_circle"
+        android:src="@drawable/abraham_ps"
+        app:riv_border_color="@color/xui_config_color_gray_6"
+        app:riv_border_width="1px"
+        app:riv_is_circle="true"
+        app:riv_selected_border_color="@color/xui_config_color_gray_4"
+        app:riv_selected_border_width="1px"
+        app:riv_selected_mask_color="@color/xui_config_color_gray_8" />
+    <com.daasuu.bl.BubbleLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:bl_arrowDirection="left"
+        app:bl_arrowHeight="12dp"
+        app:bl_arrowPosition="16dp"
+        app:bl_arrowWidth="8dp"
+        app:bl_bubbleColor="@color/colorAccent"
+        app:bl_cornersRadius="2dp"
+        android:layout_marginTop="15dp">
+        <TextView
+            android:id="@+id/bubble_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="4dp"
+            android:text="BubbleLayout Popup"
+            android:textColor="@android:color/white" />
+    </com.daasuu.bl.BubbleLayout>
+</LinearLayout>
