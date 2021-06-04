@@ -1,5 +1,6 @@
 package com.example.myapplication.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.example.myapplication.domain.Intro;
 import com.example.myapplication.view.layout.ShapeLoadingDialog;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -103,9 +105,9 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(ListActivity.this);
         if(action == 0) {
-            presenter.getAllDoctor("fda1aaad-5c81-4afb-bbb0-ee8fdad9e4fd");
+            presenter.getAllDoctor("09654b2c-c74d-4e71-86b2-7be9312d634e");
         } else {
-            presenter.getAllHospital("fda1aaad-5c81-4afb-bbb0-ee8fdad9e4fd");
+            presenter.getAllHospital("09654b2c-c74d-4e71-86b2-7be9312d634e");
         }
     }
 
@@ -131,6 +133,18 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
             });
         }
         ListAdapter listAdapter = new ListAdapter(lists);
+        if(action == 0){
+            listAdapter.setOnItemClickListener((intro, position) -> {
+                showConfirmDialog(intro.getTitle(),position);
+            });
+        }else {
+            listAdapter.setOnItemClickListener((intro, position) -> {
+                ARouter.getInstance().build("/olife/list")
+                        .withInt("action", 0)
+                        .navigation();
+                finish();
+            });
+        }
         new SpruceRecyclerView(this, o_list, listAdapter, true).init();
     }
 
@@ -141,13 +155,9 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
             Log.e("网络请求", "响应结果: " + result);
             if(action == 0) {
                 DoctorResponse data = GsonUtils.fromJson(result, DoctorResponse.class);
-//                String dataString = GsonUtils.toJson(data);
-//                sharedPreferences.putString("all_doctor",GsonUtils.toJson(data));
                 initRecycler(data);
             } else {
                 HospitalResponse data = GsonUtils.fromJson(result, HospitalResponse.class);
-//                String dataString = GsonUtils.toJson(data);
-//                sharedPreferences.putString("all_hospital",GsonUtils.toJson(data));
                 initRecycler(data);
             }
             CounterService.startDownload(this,1, 201);
@@ -167,5 +177,16 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    private void showConfirmDialog(String doctor,int position){
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setTitle("注意")
+                .setMessage("你确定要挂"+doctor+"医生的号吗？")
+                .setIcon(R.mipmap.info)
+                .setPositiveButton("确定", (dialogInterface, i) -> Toast.makeText(ListActivity.this, position+"", Toast.LENGTH_SHORT).show())
+                .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
+                .create();
+        alert.show();
     }
 }

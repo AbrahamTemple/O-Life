@@ -140,7 +140,7 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(HomeActivity.this);
         sharedPreferences.clear();
-        presenter.getAllHospital("2535ced3-db36-4252-a0aa-ccb03b5a81fb0");
+        presenter.getAllHospital("09654b2c-c74d-4e71-86b2-7be9312d634e");
     }
 
     @Override

@@ -17,8 +17,8 @@ import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    List<Intro> lists;
-    OnItemClickListener onItemClickListener;
+    private List<Intro> lists;
+    private OnItemClickListener onItemClickListener;
 
     public ListAdapter(List<Intro> lists) {
         this.lists = lists;
@@ -33,17 +33,22 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Intro recommend = lists.get(position);
-        holder.image.setImageResource(recommend.getImg());
-        holder.about.setText(recommend.getAbout());
-        holder.title.setText(recommend.getTitle());
-        holder.other.setText(recommend.getOther());
-        holder.main.setText(recommend.getMain());
+        Intro intro = lists.get(position);
+        holder.image.setImageResource(intro.getImg());
+        holder.about.setText(intro.getAbout());
+        holder.title.setText(intro.getTitle());
+        holder.other.setText(intro.getOther());
+        holder.main.setText(intro.getMain());
         holder.itemView.setOnClickListener(v -> {
-            if(onItemClickListener!=null){
-                Log.e("TT",holder.itemView.toString());
-                onItemClickListener.onClick(recommend,position);
-            }
+            v.setTag(position+1);
+            onItemClickListener.onClick(intro,position+1);
+//            if(action == 0){
+//                ARouter.getInstance().build("/olife/list")
+//                        .withInt("action", 0)
+//                        .navigation();
+//            } else {
+
+//            }
         });
     }
 
@@ -74,7 +79,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
      * 定义点击回调接口
      */
     public interface  OnItemClickListener{
-        void onClick(Intro recommend, int position);
+        void onClick(Intro intro, int position);
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 }

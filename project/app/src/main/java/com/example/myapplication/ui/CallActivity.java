@@ -110,7 +110,7 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
         initGetNetStatus();
         sharedPreferences = SharedPreferencesUtils.init(CallActivity.this);
         sharedPreferences.clear();
-        presenter.getPone("6ecf5fb3-b955-4e14-ba07-30a1e0f8516f");
+        presenter.getPone("bab59730-cbb9-4eae-8924-cfb4ba1af759");
         PhoneNumber = sharedPreferences.getString("phone");
     }
 
@@ -159,7 +159,7 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
-            presenter.getPone("6ecf5fb3-b955-4e14-ba07-30a1e0f8516f");
+            presenter.getPone("bab59730-cbb9-4eae-8924-cfb4ba1af759");
             PhoneNumber = sharedPreferences.getString("phone");
             call(PhoneNumber);
             AmqpService.setRountingKey(tag);
