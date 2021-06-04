@@ -5,6 +5,9 @@ import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.daasuu.bl.BubbleLayout;
 import com.daasuu.bl.BubblePopupHelper;
+import com.example.myapplication.domain.Counter;
+import com.example.myapplication.domain.MsgDto;
+import com.example.myapplication.service.WsService;
 import com.example.myapplication.util.HideUtil;
 import com.example.myapplication.view.layout.ChatBarView;
 
@@ -20,6 +23,14 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -44,8 +55,19 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
         HideUtil.init(this);
+        EventBus.getDefault().register(this);
         init();
         initCharView();
+        initWebsocket();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnEventProgress(MsgDto dto) {
+        if (dto.getIsm()) {
+            addDocterViewItem(dto.getMsg());
+        } else {
+            addUserViewItem(dto.getMsg());
+        }
     }
 
     public void init(){
@@ -53,15 +75,24 @@ public class ChatActivity extends AppCompatActivity {
         popupWindow = BubblePopupHelper.create(this, bubbleLayout);
     }
 
+    private void initWebsocket(){
+        WsService.startConnection(this,"6");
+    }
+
     public void initCharView(){
         chatBarView.setSendClickListener(view -> {
             Toast.makeText(ChatActivity.this, chatBarView.getMessageText(), Toast.LENGTH_SHORT).show();
-            int rand = new Random().nextBoolean()?1:0;
-            if (rand == 0) {
-                addUserViewItem(chatBarView.getMessageText());
-            } else {
-                addDocterViewItem(chatBarView.getMessageText());
-            }
+            Map<String, Object> map= new HashMap<>();
+//            int rand = new Random().nextBoolean()?1:0;
+//            if (rand == 0) {
+//                addUserViewItem(chatBarView.getMessageText());
+//            } else {
+//                addDocterViewItem(chatBarView.getMessageText());
+//            }
+            List<String> persons = new ArrayList<>();
+            persons.add("3");
+            persons.add("6");
+            WsService.startSend(this,new MsgDto(persons,chatBarView.getMessageText(),false));
 //            int[] location = new int[2];
 //            task.getLocationInWindow(location);
 //            popupWindow.showAtLocation(task, Gravity.NO_GRAVITY, location[0], view.getHeight() + location[1]);
@@ -89,4 +120,10 @@ public class ChatActivity extends AppCompatActivity {
         task.addView(bubble);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        WsService.startClose(this);
+        EventBus.getDefault().unregister(this);
+    }
 }
