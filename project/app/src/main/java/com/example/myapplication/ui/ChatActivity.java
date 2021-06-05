@@ -82,7 +82,6 @@ public class ChatActivity extends AppCompatActivity {
     public void initCharView(){
         chatBarView.setSendClickListener(view -> {
             Toast.makeText(ChatActivity.this, chatBarView.getMessageText(), Toast.LENGTH_SHORT).show();
-            Map<String, Object> map= new HashMap<>();
 //            int rand = new Random().nextBoolean()?1:0;
 //            if (rand == 0) {
 //                addUserViewItem(chatBarView.getMessageText());

@@ -25,17 +25,17 @@ public interface Request {
 //    @POST("/banner/json")
 //    Observable<Response<List<BlogResponse.Blog>>> setBlog(@QueryMap Map<String, String> map);
 
-//    @GET("banner/json")
-//    Call<ResponseBody> getBanner();
+    String HOST = "http://121.37.178.107:8079";
 
-    public static String HOST = "http://124.71.185.137:8081";
+    @GET("/base/wrr/phone")
+    Observable<ResponseBody> getPhone(@QueryMap Map<String, String> headers);
 
-    @GET("/wrr/phone")
-    Observable<ResponseBody> getPhone(@HeaderMap Map<String, String> headers);
+    @GET("/base/oh/all")
+    Observable<ResponseBody> getAllHospital(@QueryMap Map<String, String> headers);
 
-    @GET("/oh/all")
-    Observable<ResponseBody> getAllHospital(@HeaderMap Map<String, String> headers);
+    @GET("/base/oe/all")
+    Observable<ResponseBody> getAllDoctor(@QueryMap Map<String, String> headers);
 
-    @GET("/oe/all")
-    Observable<ResponseBody> getAllDoctor(@HeaderMap Map<String, String> headers);
+    @GET("/auth/o/pass")
+    Observable<ResponseBody> loginAuth(@QueryMap Map<String,String> map);
 }

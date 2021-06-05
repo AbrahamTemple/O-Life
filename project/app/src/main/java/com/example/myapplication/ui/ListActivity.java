@@ -83,18 +83,13 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
             case 201:
                 if(counter.getProgress() == 0) {
                     shapeLoadingDialog.dismiss();
-//                    if (action == 0) {
-//                        String dataString = sharedPreferences.getString("all_hospital");
-//                        System.out.println(dataString);
-//                        HospitalResponse data = GsonUtils.fromJson(dataString, HospitalResponse.class);
-//                        initRecycler(data);
-//                    } else {
-//                        String dataString = sharedPreferences.getString("all_doctor");
-//                        System.out.println(dataString);
-//                        DoctorResponse data = GsonUtils.fromJson(dataString, DoctorResponse.class);
-//                        initRecycler(data);
-//                    }
                     Toast.makeText(ListActivity.this, "页面渲染成功", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 407:
+                if(counter.getProgress() == 0) {
+                    shapeLoadingDialog.dismiss();
+                    Toast.makeText(ListActivity.this, "没有合法的请求头", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -105,9 +100,9 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(ListActivity.this);
         if(action == 0) {
-            presenter.getAllDoctor("09654b2c-c74d-4e71-86b2-7be9312d634e");
+            presenter.getAllDoctor("cbc96e6a-499e-4d90-8e70-6babf959aa4c");
         } else {
-            presenter.getAllHospital("09654b2c-c74d-4e71-86b2-7be9312d634e");
+            presenter.getAllHospital("cbc96e6a-499e-4d90-8e70-6babf959aa4c");
         }
     }
 
@@ -169,7 +164,6 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
     @Override
     public void getDataFail(Throwable throwable) {
         String[] httpStatus = throwable.getMessage().split("[ ]");
-//        Toast.makeText(HomeActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
         CounterService.startDownload(this,2, Integer.valueOf(httpStatus[1]+1));
     }
 

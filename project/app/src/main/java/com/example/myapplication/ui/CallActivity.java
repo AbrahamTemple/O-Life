@@ -159,7 +159,7 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
-            presenter.getPone("bab59730-cbb9-4eae-8924-cfb4ba1af759");
+            presenter.getPone("cbc96e6a-499e-4d90-8e70-6babf959aa4c");
             PhoneNumber = sharedPreferences.getString("phone");
             call(PhoneNumber);
             AmqpService.setRountingKey(tag);
