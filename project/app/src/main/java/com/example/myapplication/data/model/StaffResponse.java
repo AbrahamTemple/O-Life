@@ -3,13 +3,12 @@ package com.example.myapplication.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
 import java.util.List;
 
-public class DoctorResponse {
+public class StaffResponse {
     @Expose
     @SerializedName("data")
-    private List<Doctor> data;
+    private List<Staff> data;
 
     @Expose
     @SerializedName("status")
@@ -19,19 +18,14 @@ public class DoctorResponse {
     @SerializedName("msg")
     private String msg;
 
-    public List<Doctor> getData() {
+    public List<Staff> getData() {
         return data;
     }
 
-    public static class Doctor{
-
+    public static class Staff{
         @Expose
         @SerializedName("id")
         private Long id;
-
-        @Expose
-        @SerializedName("h_id")
-        private Long hId;
 
         @Expose
         @SerializedName("name")
@@ -42,28 +36,27 @@ public class DoctorResponse {
         private String sex;
 
         @Expose
-        @SerializedName("sort")
-        private String sort;
+        @SerializedName("address")
+        private String address;
 
         @Expose
         @SerializedName("intro")
         private String intro;
 
         @Expose
+        @SerializedName("phone")
+        private Long phone;
+
+        @Expose
+        @SerializedName("weight")
+        private Integer weight;
+
+        @Expose
         @SerializedName("jobTime")
         private Integer jobTime;
 
-        @Expose
-        @SerializedName("count")
-        private Integer count;
-
-
         public Long getId() {
             return id;
-        }
-
-        public Long gethId() {
-            return hId;
         }
 
         public String getName() {
@@ -74,20 +67,24 @@ public class DoctorResponse {
             return sex;
         }
 
-        public String getSort() {
-            return sort;
+        public String getAddress() {
+            return address;
         }
 
         public String getIntro() {
             return intro;
         }
 
-        public Integer getJobTime() {
-            return jobTime;
+        public Long getPhone() {
+            return phone;
         }
 
-        public Integer getCount() {
-            return count;
+        public Integer getWeight() {
+            return weight;
+        }
+
+        public Integer getJobTime() {
+            return jobTime;
         }
     }
 }

@@ -120,8 +120,10 @@ public class EscortActivity extends AppCompatActivity {
         //new Random().nextBoolean()?1:0
         new ElasticAnimation(v).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
                 .setOnFinishListener(() -> ARouter.getInstance().build("/olife/list")
-                        .withInt("action", new Random().nextBoolean()?1:0)
+                        .withInt("action", 3)
+                        .withLong("id",-1)
                         .navigation()).doAction();
+        finish();
     }
 
     @OnClick(R.id.btn_Time)

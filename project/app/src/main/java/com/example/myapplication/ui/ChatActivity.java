@@ -2,7 +2,9 @@ package com.example.myapplication.ui;
 
 import android.os.Bundle;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.daasuu.bl.BubbleLayout;
 import com.daasuu.bl.BubblePopupHelper;
 import com.example.myapplication.domain.Counter;
@@ -39,6 +41,9 @@ import butterknife.ButterKnife;
 @Route(path = "/olife/chat")
 public class ChatActivity extends AppCompatActivity {
 
+    @Autowired
+    public long id;
+
     @BindView(R.id.chatbar)
     ChatBarView chatBarView;
 
@@ -48,11 +53,11 @@ public class ChatActivity extends AppCompatActivity {
     private PopupWindow popupWindow;
     private BubbleLayout bubbleLayout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        ARouter.getInstance().inject(this);
         ButterKnife.bind(this);
         HideUtil.init(this);
         EventBus.getDefault().register(this);
@@ -76,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void initWebsocket(){
-        WsService.startConnection(this,"6");
+        WsService.startConnection(this,String.valueOf(id));
     }
 
     public void initCharView(){
@@ -89,8 +94,8 @@ public class ChatActivity extends AppCompatActivity {
 //                addDocterViewItem(chatBarView.getMessageText());
 //            }
             List<String> persons = new ArrayList<>();
-            persons.add("3");
             persons.add("6");
+            persons.add(String.valueOf(id));
             WsService.startSend(this,new MsgDto(persons,chatBarView.getMessageText(),false));
 //            int[] location = new int[2];
 //            task.getLocationInWindow(location);

@@ -84,6 +84,23 @@ public class Presenter {
         mDisposable.add(disposable);
     }
 
+    public void getAllStaff(String token){
+        Map<String, String> headers = new HashMap<>();
+        headers.put("access_token",token);
+        Disposable disposable = model.getAllStaff(headers)
+//                .compose(ResponseTransformer.handleResult())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .subscribe(data -> {
+                    view.getDataSuccess(data);
+                }, throwable -> {
+                    // 处理异常
+                    view.getDataFail(throwable);
+                });
+        mDisposable.add(disposable);
+    }
+
     public void loginAuth(String name,String pass){
         Map<String, String> param = new HashMap<>();
         param.put("username",name);
@@ -92,6 +109,21 @@ public class Presenter {
         param.put("clientSecret","sec");
         param.put("access_token","");
         Disposable disposable = model.loginAuth(param)
+//                .compose(ResponseTransformer.handleResult())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .subscribe(data -> {
+                    view.getDataSuccess(data);
+                }, throwable -> {
+                    // 处理异常
+                    view.getDataFail(throwable);
+                });
+        mDisposable.add(disposable);
+    }
+
+    public void getHospitalDoctor(Long id,String token){
+        Disposable disposable = model.getHospitalDoctor(id, token)
 //                .compose(ResponseTransformer.handleResult())
                 .compose(schedulerProvider.applySchedulers())
                 .subscribeOn(Schedulers.io())

@@ -152,7 +152,7 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
         sharedPreferences = SharedPreferencesUtils.init(HomeActivity.this);
         sharedPreferences.clear();
         System.out.println("医院网络请求");
-        presenter.getAllHospital("cbc96e6a-499e-4d90-8e70-6babf959aa4c");
+        presenter.getAllHospital("dcf51a9c-e32f-46d9-8533-d03d3c716738");
     }
 
     @Override

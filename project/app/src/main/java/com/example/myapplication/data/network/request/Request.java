@@ -12,6 +12,8 @@ import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -35,6 +37,12 @@ public interface Request {
 
     @GET("/base/oe/all")
     Observable<ResponseBody> getAllDoctor(@QueryMap Map<String, String> headers);
+
+    @GET("/base/oe/get/{id}")
+    Observable<ResponseBody> getHospitalDoctor(@Path("id") Long id, @Query("access_token") String token);
+
+    @GET("/base/os/all")
+    Observable<ResponseBody> getAllStaff(@QueryMap Map<String,String> headers);
 
     @GET("/auth/o/pass")
     Observable<ResponseBody> loginAuth(@QueryMap Map<String,String> map);

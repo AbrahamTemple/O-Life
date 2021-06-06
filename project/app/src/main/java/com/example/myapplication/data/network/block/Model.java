@@ -25,7 +25,17 @@ public class Model implements Contract.Model{
     }
 
     @Override
+    public Observable<ResponseBody> getAllStaff(Map<String, String> headers) {
+        return NetWorkManager.getRequest().getAllStaff(headers);
+    }
+
+    @Override
     public Observable<ResponseBody> loginAuth(Map<String, String> map) {
         return NetWorkManager.getRequest().loginAuth(map);
+    }
+
+    @Override
+    public Observable<ResponseBody> getHospitalDoctor(Long id, String token) {
+        return NetWorkManager.getRequest().getHospitalDoctor(id,token);
     }
 }

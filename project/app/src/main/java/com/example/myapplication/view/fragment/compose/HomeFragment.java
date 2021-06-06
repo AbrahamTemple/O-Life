@@ -95,12 +95,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnIt
             case R.id.register_index:
             case R.id.register_logo:
                 new ElasticAnimation(register_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
-                        .setOnFinishListener(() -> Log.d("register","挂号链接")).doAction();
+                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/register").navigation()).doAction();
                 break;
             case R.id.healthy_chat_index:
             case R.id.healthy_chat_logo:
                 new ElasticAnimation(healthy_chat_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
-                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/chat").navigation()).doAction();
+                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/list").withInt("action", 2).withLong("id",-1).navigation()).doAction();
                 break;
         }
     }

@@ -1,6 +1,5 @@
 package com.example.myapplication.ui;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.data.model.DoctorResponse;
 import com.example.myapplication.data.model.HospitalResponse;
+import com.example.myapplication.data.model.StaffResponse;
 import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
@@ -53,6 +53,9 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
 
     @Autowired
     public int action;
+
+    @Autowired
+    public long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +102,19 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
     private void initRequest(){
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(ListActivity.this);
-        if(action == 0) {
-            presenter.getAllDoctor("cbc96e6a-499e-4d90-8e70-6babf959aa4c");
-        } else {
-            presenter.getAllHospital("cbc96e6a-499e-4d90-8e70-6babf959aa4c");
+        switch (action) {
+            case 0:
+                presenter.getHospitalDoctor(id,"dcf51a9c-e32f-46d9-8533-d03d3c716738");
+                break;
+            case 1:
+                presenter.getAllHospital("dcf51a9c-e32f-46d9-8533-d03d3c716738");
+                break;
+            case 2:
+                presenter.getAllDoctor("dcf51a9c-e32f-46d9-8533-d03d3c716738");
+                break;
+            case 3:
+                presenter.getAllStaff("dcf51a9c-e32f-46d9-8533-d03d3c716738");
+                break;
         }
     }
 
@@ -114,31 +126,54 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
 
     private void initRecycler(Object body){
         List<Intro> lists = new ArrayList<>();
-        if(action == 0){
-            DoctorResponse doctorResponse = (DoctorResponse) body;
-            doctorResponse.getData().forEach(d->{
-                Intro r = new Intro(R.drawable.doctor_img,d.getName(),d.getIntro(),"主治专业："+d.getSort(),"剩余号数："+d.getCount());
-                lists.add(r);
-            });
-        } else {
-            HospitalResponse hospitalResponse = (HospitalResponse) body;
-            hospitalResponse.getData().forEach(d->{
-                Intro r = new Intro(R.drawable.ramain_register,d.getName(),d.getAddress(),"电话："+d.getPhone(),"地址："+d.getAddress());
-                lists.add(r);
-            });
-        }
         ListAdapter listAdapter = new ListAdapter(lists);
-        if(action == 0){
-            listAdapter.setOnItemClickListener((intro, position) -> {
-                showConfirmDialog(intro.getTitle(),position);
-            });
-        }else {
-            listAdapter.setOnItemClickListener((intro, position) -> {
-                ARouter.getInstance().build("/olife/list")
-                        .withInt("action", 0)
-                        .navigation();
-                finish();
-            });
+        switch (action){
+            case 0:
+                DoctorResponse doctorResponse = (DoctorResponse) body;
+                doctorResponse.getData().forEach(d->{
+                    Intro r = new Intro(R.drawable.doctor_img,d.getName(),d.getIntro(),"主治专业："+d.getSort(),"剩余号数："+d.getCount());
+                    lists.add(r);
+                });
+                listAdapter = new ListAdapter(lists);
+                listAdapter.setOnItemClickListener((intro, position) -> {
+                    showRegisterDialog(intro.getTitle(),position);
+                });
+            break;
+            case 1:
+                HospitalResponse hospitalResponse = (HospitalResponse) body;
+                hospitalResponse.getData().forEach(d->{
+                    Intro r = new Intro(R.drawable.ramain_register,d.getName(),d.getIntro(),"电话："+d.getPhone(),"地址："+d.getAddress());
+                    lists.add(r);
+                });
+                listAdapter = new ListAdapter(lists);
+                listAdapter.setOnItemClickListener((intro, position) -> {
+                    ARouter.getInstance().build("/olife/list")
+                            .withInt("action", 0)
+                            .withLong("id",position)
+                            .navigation();
+                });
+            break;
+            case 2:
+                DoctorResponse doctorResponse2 = (DoctorResponse) body;
+                doctorResponse2.getData().forEach(d->{
+                    Intro r = new Intro(R.drawable.doctor_ps,d.getName(),d.getIntro(),"主治专业："+d.getSort(),"工作时长："+d.getJobTime());
+                    lists.add(r);
+                });
+                listAdapter = new ListAdapter(lists);
+                listAdapter.setOnItemClickListener((intro, position) -> {
+                    showChatDialog(intro.getTitle(),position);
+                });
+            break;
+            case 3:
+                StaffResponse staffResponse = (StaffResponse) body;
+                staffResponse.getData().forEach(d->{
+                    Intro r = new Intro(R.drawable.staff_img,d.getName(),d.getIntro(),"电话："+d.getPhone(),"工作时长："+d.getJobTime()+"年");
+                    lists.add(r);
+                });
+                listAdapter.setOnItemClickListener((intro, position) -> {
+                    showEscortDialog(intro.getTitle(),position);
+                });
+            break;
         }
         new SpruceRecyclerView(this, o_list, listAdapter, true).init();
     }
@@ -148,12 +183,20 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
         try {
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);
-            if(action == 0) {
-                DoctorResponse data = GsonUtils.fromJson(result, DoctorResponse.class);
-                initRecycler(data);
-            } else {
-                HospitalResponse data = GsonUtils.fromJson(result, HospitalResponse.class);
-                initRecycler(data);
+            switch (action) {
+                case 0:
+                case 2:
+                    DoctorResponse data0 = GsonUtils.fromJson(result, DoctorResponse.class);
+                    initRecycler(data0);
+                break;
+                case 1:
+                    HospitalResponse data1 = GsonUtils.fromJson(result, HospitalResponse.class);
+                    initRecycler(data1);
+                break;
+                case 3:
+                    StaffResponse data2 = GsonUtils.fromJson(result,StaffResponse.class);
+                    initRecycler(data2);
+                break;
             }
             CounterService.startDownload(this,1, 201);
         } catch (IOException e) {
@@ -173,12 +216,34 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
         super.onDestroy();
     }
 
-    private void showConfirmDialog(String doctor,int position){
+    private void showRegisterDialog(String doctor, int position){
         AlertDialog alert = new AlertDialog.Builder(this)
                 .setTitle("注意")
                 .setMessage("你确定要挂"+doctor+"医生的号吗？")
                 .setIcon(R.mipmap.info)
+                .setPositiveButton("确定", (dialogInterface, i) -> Toast.makeText(ListActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show())
+                .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
+                .create();
+        alert.show();
+    }
+
+    private void showEscortDialog(String staff, int position) {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setTitle("注意")
+                .setMessage("你确定要预定"+staff+"护工陪诊吗？")
+                .setIcon(R.mipmap.danger)
                 .setPositiveButton("确定", (dialogInterface, i) -> Toast.makeText(ListActivity.this, position+"", Toast.LENGTH_SHORT).show())
+                .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
+                .create();
+        alert.show();
+    }
+
+    private void showChatDialog(String doctor, int position){
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setTitle("注意")
+                .setMessage("你确定要选"+doctor+"医生进行咨询吗？")
+                .setIcon(R.mipmap.success)
+                .setPositiveButton("确定", (dialogInterface, i) -> ARouter.getInstance().build("/olife/chat").withLong("id",position).navigation())
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();
         alert.show();
