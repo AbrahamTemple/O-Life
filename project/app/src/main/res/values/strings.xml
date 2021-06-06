@@ -16,4 +16,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_list">ListActivity</string>
     <string name="title_activity_user">UserActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
 </resources>
