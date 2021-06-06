@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
+import com.example.myapplication.router.LoginCallbackImpl;
+import com.example.myapplication.router.RoutePath;
 import com.royrodriguez.transitionbutton.TransitionButton;
 
 import butterknife.BindView;
@@ -42,11 +44,11 @@ public class RegisterActivity extends AppCompatActivity {
 
             if (isSuccessful) {
                 btn.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, () -> {
-                    Uri uri = Uri.parse("/olife/list");
+                    Uri uri = Uri.parse(RoutePath.LIST.toString());
                     ARouter.getInstance().build(uri)
                             .withInt("action", 1)
                             .withLong("id",-1)
-                            .navigation();
+                            .navigation(this,new LoginCallbackImpl());
                     finish();
                 });
             } else {

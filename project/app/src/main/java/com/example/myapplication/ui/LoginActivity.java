@@ -6,14 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.example.myapplication.BR;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.data.model.LoginResponse;
 import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
-import com.example.myapplication.domain.Counter;
-import com.example.myapplication.domain.UserInfo;
+import com.example.myapplication.router.RoutePath;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.HideUtil;
 import com.example.myapplication.util.SharedPreferencesUtils;
@@ -50,6 +49,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import butterknife.BindView;
@@ -74,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private TextView nameEdit,passEdit,passEdit1;
 
-    private SharedPreferencesUtils sharedPreferences;
+    private SharedPreferencesUtils sharedPreferences,tokenShared;
     private Presenter presenter;
 
     @Override
@@ -97,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initResquest(){
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(LoginActivity.this);
-        sharedPreferences.clear();
+        tokenShared = SharedPreferencesUtils.init(this,"oauth");
     }
 
     @Override
@@ -116,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);
             LoginResponse data = GsonUtils.fromJson(result, LoginResponse.class);
+            tokenShared.putString("token",data.getData().getAccessToken());
             initSceneLogging(data); //进行登录验证并附带动画
         } catch (IOException e) {
             e.printStackTrace();
@@ -161,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             animator.setInterpolator(new LinearInterpolator());
 //            animator.addUpdateListener(animation -> Log.d("login success",animation.getAnimatedValue().toString()));
             animator.start();
+//            ARouter.getInstance().build(RoutePath.HOME.toString()).navigation();
             finish();
         });
     }

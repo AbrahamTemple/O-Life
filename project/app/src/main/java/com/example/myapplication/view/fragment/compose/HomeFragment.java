@@ -21,6 +21,8 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.myapplication.R;
+import com.example.myapplication.router.LoginCallbackImpl;
+import com.example.myapplication.router.RoutePath;
 import com.example.myapplication.view.model.LocalImageHolderView;
 import com.skydoves.elasticviews.ElasticAnimation;
 import com.skydoves.elasticviews.ElasticImageView;
@@ -83,24 +85,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnIt
             case R.id.staff_index:
             case R.id.staff_logo:
                 new ElasticAnimation(staff_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
-                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/escort").navigation()).doAction();
+                        .setOnFinishListener(() -> ARouter.getInstance().build(RoutePath.ESCORT.toString()).navigation(activity,new LoginCallbackImpl())).doAction();
                 break;
             case R.id.callout_index:
             case R.id.callout_logo:
                 new ElasticAnimation(callout_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
-                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/call")
+                        .setOnFinishListener(() -> ARouter.getInstance().build(RoutePath.CALL.toString())
                                 .withString("tag", UUID.randomUUID().toString())
-                                .navigation()).doAction();
+                                .navigation(activity,new LoginCallbackImpl())).doAction();
                 break;
             case R.id.register_index:
             case R.id.register_logo:
                 new ElasticAnimation(register_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
-                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/register").navigation()).doAction();
+                        .setOnFinishListener(() -> ARouter.getInstance().build(RoutePath.REGISTER.toString()).navigation(activity,new LoginCallbackImpl())).doAction();
                 break;
             case R.id.healthy_chat_index:
             case R.id.healthy_chat_logo:
                 new ElasticAnimation(healthy_chat_logo).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
-                        .setOnFinishListener(() -> ARouter.getInstance().build("/olife/list").withInt("action", 2).withLong("id",-1).navigation()).doAction();
+                        .setOnFinishListener(() -> ARouter.getInstance().build(RoutePath.LIST.toString())
+                                .withInt("action", 2)
+                                .withLong("id",-1)
+                                .navigation(activity,new LoginCallbackImpl())).doAction();
                 break;
         }
     }

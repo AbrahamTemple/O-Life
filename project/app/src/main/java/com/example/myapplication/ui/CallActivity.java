@@ -34,6 +34,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.myapplication.BuildConfig;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.PhoneResponse;
 import com.example.myapplication.data.network.block.Contract;
@@ -69,7 +70,7 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
 
     private String TAG = "CallActivity";
     private String PhoneNumber;
-    private SharedPreferencesUtils sharedPreferences;
+    private SharedPreferencesUtils sharedPreferences,tokenShared;
     private Presenter presenter;
 
     @Autowired
@@ -106,12 +107,8 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
     public void init() {
         myPhoneStateListener = new MyPhoneStateListener();
         manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         initGetNetStatus();
-        sharedPreferences = SharedPreferencesUtils.init(CallActivity.this);
-        sharedPreferences.clear();
-        presenter.getPone("bab59730-cbb9-4eae-8924-cfb4ba1af759");
-        PhoneNumber = sharedPreferences.getString("phone");
+        initRequest();
     }
 
     public void initAmqp() {
@@ -120,6 +117,13 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
         AmqpService.setIsAutoDete(true);
         AmqpService.setIsExclusive(true);
         AmqpService.startListener(this);
+    }
+
+    private void initRequest(){
+        presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
+        sharedPreferences = SharedPreferencesUtils.init(CallActivity.this);
+        sharedPreferences.clear();
+        tokenShared = SharedPreferencesUtils.init(this,"oauth");
     }
 
     public void initGetNetStatus() {
@@ -159,7 +163,8 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
-            presenter.getPone("cbc96e6a-499e-4d90-8e70-6babf959aa4c");
+            Log.d("令牌",tokenShared.getString("token"));
+            presenter.getPone(BuildConfig.ACCESS_TOKEN);
             PhoneNumber = sharedPreferences.getString("phone");
             call(PhoneNumber);
             AmqpService.setRountingKey(tag);

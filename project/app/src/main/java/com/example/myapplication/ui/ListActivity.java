@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.myapplication.BuildConfig;
 import com.example.myapplication.data.model.DoctorResponse;
 import com.example.myapplication.data.model.HospitalResponse;
 import com.example.myapplication.data.model.StaffResponse;
@@ -15,6 +16,8 @@ import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
+import com.example.myapplication.router.LoginCallbackImpl;
+import com.example.myapplication.router.RoutePath;
 import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.SharedPreferencesUtils;
@@ -49,7 +52,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
 
     private ShapeLoadingDialog shapeLoadingDialog;
     private Presenter presenter;
-    private SharedPreferencesUtils sharedPreferences;
+    private SharedPreferencesUtils sharedPreferences,tokenShared;
 
     @Autowired
     public int action;
@@ -102,18 +105,19 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
     private void initRequest(){
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(ListActivity.this);
+        tokenShared = SharedPreferencesUtils.init(this,"oauth");
         switch (action) {
             case 0:
-                presenter.getHospitalDoctor(id,"dcf51a9c-e32f-46d9-8533-d03d3c716738");
+                presenter.getHospitalDoctor(id, tokenShared.getString("token"));
                 break;
             case 1:
-                presenter.getAllHospital("dcf51a9c-e32f-46d9-8533-d03d3c716738");
+                presenter.getAllHospital(tokenShared.getString("token"));
                 break;
             case 2:
-                presenter.getAllDoctor("dcf51a9c-e32f-46d9-8533-d03d3c716738");
+                presenter.getAllDoctor(tokenShared.getString("token"));
                 break;
             case 3:
-                presenter.getAllStaff("dcf51a9c-e32f-46d9-8533-d03d3c716738");
+                presenter.getAllStaff(tokenShared.getString("token"));
                 break;
         }
     }
@@ -147,10 +151,10 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 });
                 listAdapter = new ListAdapter(lists);
                 listAdapter.setOnItemClickListener((intro, position) -> {
-                    ARouter.getInstance().build("/olife/list")
+                    ARouter.getInstance().build(RoutePath.LIST.toString())
                             .withInt("action", 0)
                             .withLong("id",position)
-                            .navigation();
+                            .navigation(this,new LoginCallbackImpl());
                 });
             break;
             case 2:
@@ -243,7 +247,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 .setTitle("注意")
                 .setMessage("你确定要选"+doctor+"医生进行咨询吗？")
                 .setIcon(R.mipmap.success)
-                .setPositiveButton("确定", (dialogInterface, i) -> ARouter.getInstance().build("/olife/chat").withLong("id",position).navigation())
+                .setPositiveButton("确定", (dialogInterface, i) -> ARouter.getInstance().build(RoutePath.CHAT.toString()).withLong("id",position).navigation())
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();
         alert.show();

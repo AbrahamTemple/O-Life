@@ -3,17 +3,18 @@ package com.example.myapplication.ui;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.cleveroad.loopbar.adapter.SimpleCategoriesAdapter;
 import com.cleveroad.loopbar.widget.LoopBarView;
 import com.cleveroad.loopbar.widget.OnItemClickListener;
-import com.example.myapplication.BR;
+import com.example.myapplication.BuildConfig;
 import com.example.myapplication.data.model.HospitalResponse;
 import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
-import com.example.myapplication.domain.UserInfo;
+import com.example.myapplication.router.RoutePath;
 import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.HideUtil;
@@ -24,8 +25,6 @@ import com.example.myapplication.view.fragment.RecycleFragment;
 import com.example.myapplication.view.fragment.ShimmeFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -58,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
     @BindView(R.id.pull_to_refresh)
     PullToRefreshView prv;
 
-    private SharedPreferencesUtils sharedPreferences;
+    private SharedPreferencesUtils sharedPreferences,tokenShared;
     private Presenter presenter;
 
     private ShapeLoadingDialog shapeLoadingDialog;
@@ -150,9 +149,11 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
     private void initRequest(){
         presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
         sharedPreferences = SharedPreferencesUtils.init(HomeActivity.this);
+        tokenShared = SharedPreferencesUtils.init(this,"oauth");
         sharedPreferences.clear();
-        System.out.println("医院网络请求");
-        presenter.getAllHospital("dcf51a9c-e32f-46d9-8533-d03d3c716738");
+//        tokenShared.clear(); //仅限主活动清理一次
+        System.out.println(tokenShared.getString("token"));
+        presenter.getAllHospital(BuildConfig.ACCESS_TOKEN);
     }
 
     @Override
@@ -221,6 +222,8 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
                     home.replaceFragment(new ShimmeFragment());
                 }
                 break;
+            case 1:
+                ARouter.getInstance().build(RoutePath.START.toString()).navigation();
             case 4:
                 replaceFragment(new UserFragment(this));
                 break;

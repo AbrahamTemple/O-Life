@@ -15,7 +15,7 @@ public class Contract {
     }
 
     public interface Model {
-        Observable<ResponseBody> getPhone(Map<String, String> headers);
+        Observable<ResponseBody> getPhone(String token);
         Observable<ResponseBody> getAllHospital(Map<String, String> headers);
         Observable<ResponseBody> getAllDoctor(Map<String, String> headers);
         Observable<ResponseBody> getAllStaff(Map<String,String> headers);

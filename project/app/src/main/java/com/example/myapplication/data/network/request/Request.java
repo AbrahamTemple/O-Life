@@ -30,7 +30,7 @@ public interface Request {
     String HOST = "http://121.37.178.107:8079";
 
     @GET("/base/wrr/phone")
-    Observable<ResponseBody> getPhone(@QueryMap Map<String, String> headers);
+    Observable<ResponseBody> getPhone(@Query("access_token") String token);
 
     @GET("/base/oh/all")
     Observable<ResponseBody> getAllHospital(@QueryMap Map<String, String> headers);

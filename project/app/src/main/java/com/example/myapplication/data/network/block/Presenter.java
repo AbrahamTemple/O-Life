@@ -34,9 +34,7 @@ public class Presenter {
     }
 
     public void getPone(String token) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("access_token",token);
-        Disposable disposable = model.getPhone(headers)
+        Disposable disposable = model.getPhone(token)
 //                .compose(ResponseTransformer.handleResult())
                 .compose(schedulerProvider.applySchedulers())
                 .subscribeOn(Schedulers.io())

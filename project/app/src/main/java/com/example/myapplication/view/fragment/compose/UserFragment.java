@@ -15,9 +15,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.myapplication.BR;
 import com.example.myapplication.R;
-import com.example.myapplication.domain.UserInfo;
 
 public class UserFragment extends Fragment {
 
