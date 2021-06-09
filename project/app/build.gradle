@@ -136,6 +136,10 @@ dependencies {
     implementation 'com.github.MasayukiSuda:BubbleLayout:v1.2.1'
     // 循环底部栏 https://github.com/Cleveroad/LoopBar
     implementation "com.cleveroad:loopbar:1.2.0"
-    // 动画
+    // 启动动画
     implementation 'com.schibsted.spain:parallax-layer-layout:1.1.2'
+    // 选项卡 https://github.com/Devlight/NavigationTabStrip
+    implementation 'com.github.devlight.navigationtabstrip:navigationtabstrip:1.0.4'
+    // 圆角
+    implementation 'com.jcminarro:RoundKornerLayouts:0.4.0'
 }
