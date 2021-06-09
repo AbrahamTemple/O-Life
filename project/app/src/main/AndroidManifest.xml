@@ -19,10 +19,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.DetailActivity"></activity>
+        <activity
+            android:name=".ui.OrderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.StartActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.ListActivity"
             android:label="@string/title_activity_list"
@@ -56,25 +69,12 @@
             android:name=".ui.ViewActivity"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.ArouterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".service.CounterService"
             android:exported="false" />
 
-        <activity android:name=".ui.MainActivity">
-            <intent-filter>
-                <data
-                    android:host="m.aliyun.com"
-                    android:scheme="arouter" />
-
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.MainActivity" />
     </application>
 
 </manifest>
