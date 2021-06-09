@@ -288,4 +288,10 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
     public void getDataFail(Throwable throwable) {
         Toast.makeText(CallActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

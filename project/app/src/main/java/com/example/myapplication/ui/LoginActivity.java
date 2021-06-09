@@ -227,4 +227,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         System.out.println("after:"+s.toString());
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

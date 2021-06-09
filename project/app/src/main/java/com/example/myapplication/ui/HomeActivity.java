@@ -223,7 +223,7 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
                 }
                 break;
             case 1:
-                ARouter.getInstance().build(RoutePath.START.toString()).navigation();
+                ARouter.getInstance().build(RoutePath.ORDER.toString()).navigation();
             case 4:
                 replaceFragment(new UserFragment(this));
                 break;

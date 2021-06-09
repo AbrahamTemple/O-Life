@@ -38,8 +38,10 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.myapplication.R;
 import com.example.myapplication.domain.CardBean;
 import com.example.myapplication.domain.ProvinceBean;
+import com.example.myapplication.event.RxTimer;
 import com.example.myapplication.util.HideUtil;
 import com.example.myapplication.view.fragment.BezierFragment;
+import com.example.myapplication.view.fragment.BgFragment;
 import com.example.myapplication.view.fragment.LoadingFragment;
 import com.example.myapplication.view.layout.ChatBarView;
 import com.example.myapplication.view.layout.ResizableImageView;
@@ -113,11 +115,11 @@ public class EscortActivity extends AppCompatActivity {
         getOptionData();
         initOptionPicker();
         initImageCompare();
+        new RxTimer().timer(5000, number -> replaceFragment(new BgFragment()));
     }
 
     @OnClick(R.id.btn_post)
     public void postForm(View v){
-        //new Random().nextBoolean()?1:0
         new ElasticAnimation(v).setScaleX(0.85f).setScaleY(0.85f).setDuration(500)
                 .setOnFinishListener(() -> ARouter.getInstance().build("/olife/list")
                         .withInt("action", 3)
@@ -320,5 +322,11 @@ public class EscortActivity extends AppCompatActivity {
             timePoint.stopRippleAnimation();
             addressPoint.stopRippleAnimation();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

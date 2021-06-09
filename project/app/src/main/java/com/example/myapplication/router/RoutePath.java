@@ -14,7 +14,9 @@ public enum RoutePath {
     CALL("/olife/call",true),
     REGISTER("/olife/register",true),
     CHAT("/olife/chat",true),
-    LIST("/olife/list",true);
+    LIST("/olife/list",true),
+    ORDER("/olife/order",true),
+    DETAIL("/olife/detail",true);
 
     private final String path;
     private final Boolean interceptor;

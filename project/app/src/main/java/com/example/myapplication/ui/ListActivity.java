@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.myapplication.BuildConfig;
 import com.example.myapplication.data.model.DoctorResponse;
 import com.example.myapplication.data.model.HospitalResponse;
 import com.example.myapplication.data.model.StaffResponse;
@@ -16,6 +15,7 @@ import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
+import com.example.myapplication.event.RxTimer;
 import com.example.myapplication.router.LoginCallbackImpl;
 import com.example.myapplication.router.RoutePath;
 import com.example.myapplication.service.CounterService;
@@ -187,19 +187,20 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
         try {
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);
+            RxTimer rxTimer = new RxTimer();
             switch (action) {
                 case 0:
                 case 2:
                     DoctorResponse data0 = GsonUtils.fromJson(result, DoctorResponse.class);
-                    initRecycler(data0);
+                    rxTimer.timer(2000, number -> initRecycler(data0));
                 break;
                 case 1:
                     HospitalResponse data1 = GsonUtils.fromJson(result, HospitalResponse.class);
-                    initRecycler(data1);
+                    rxTimer.timer(2000, number ->initRecycler(data1));
                 break;
                 case 3:
                     StaffResponse data2 = GsonUtils.fromJson(result,StaffResponse.class);
-                    initRecycler(data2);
+                    rxTimer.timer(2000, number ->initRecycler(data2));
                 break;
             }
             CounterService.startDownload(this,1, 201);
@@ -251,5 +252,11 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();
         alert.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

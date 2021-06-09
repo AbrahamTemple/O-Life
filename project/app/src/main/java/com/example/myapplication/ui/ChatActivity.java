@@ -94,7 +94,7 @@ public class ChatActivity extends AppCompatActivity {
 //                addDocterViewItem(chatBarView.getMessageText());
 //            }
             List<String> persons = new ArrayList<>();
-            persons.add("6");
+            persons.add(String.valueOf(id+2));
             persons.add(String.valueOf(id));
             WsService.startSend(this,new MsgDto(persons,chatBarView.getMessageText(),false));
 //            int[] location = new int[2];
@@ -129,5 +129,11 @@ public class ChatActivity extends AppCompatActivity {
         super.onDestroy();
         WsService.startClose(this);
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
