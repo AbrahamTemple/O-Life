@@ -17,4 +17,6 @@
     <string name="title_activity_list">ListActivity</string>
     <string name="title_activity_user">UserActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_order">OrderActivity</string>
 </resources>

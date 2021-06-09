@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.OrderActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/order_nav"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <com.gigamole.navigationtabstrip.NavigationTabStrip
+            android:id="@+id/nts_top"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            app:nts_active_color="#42a4d1"
+            app:nts_color="#42a4d1"
+            app:nts_corners_radius="1dp"
+            app:nts_inactive_color="#ff1a1e23"
+            app:nts_size="55dp"
+            app:nts_titles="@array/titles"
+            app:nts_weight="3dp"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frag_order"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:layout_below="@+id/order_nav"/>
+    </RelativeLayout>
+
+</FrameLayout>
