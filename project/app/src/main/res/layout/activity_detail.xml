@@ -9,46 +9,256 @@
             type="com.example.myapplication.domain.Order" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.DetailActivity">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_height="match_parent"
+        <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
             android:layout_width="match_parent"
-            android:gravity="center">
+            android:layout_height="100dp"
+            android:background="@drawable/border_shape">
+            <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/server_ps"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/user_ps_circle"
+            android:src="@drawable/order_ps"
+            app:riv_border_color="@color/xui_config_color_gray_6"
+            app:riv_border_width="1px"
+            app:riv_is_circle="true"
+            app:riv_selected_border_color="@color/xui_config_color_gray_4"
+            app:riv_selected_border_width="1px"
+            app:riv_selected_mask_color="@color/xui_config_color_gray_8" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{order.title}"
-                android:textSize="16dp"
-                android:textColor="@color/md_black_1000"/>
+                android:text="泷泽萝拉"
+                android:textColor="@color/md_black_1000"
+                android:textSize="20dp"
+                android:layout_marginTop="22dp"
+                android:layout_toRightOf="@+id/server_ps"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(order.time)}"
+                android:text="+86 18672369411"
+                android:textColor="@color/md_grey_600"
                 android:textSize="16dp"
-                android:textColor="@color/md_black_1000"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{order.address}"
-                android:textSize="16dp"
-                android:textColor="@color/md_black_1000"/>
+                android:layout_toRightOf="@+id/server_ps"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="15dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{order.state}"
+                android:textColor="@color/eggplant"
                 android:textSize="16dp"
-                android:textColor="@color/md_black_1000"/>
+                android:layout_alignParentEnd="true"
+                android:layout_margin="20dp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{order.server}"
+                android:text="¥50"
+                android:textColor="@color/Tomato"
                 android:textSize="16dp"
-                android:textColor="@color/md_black_1000"/>
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="20dp"/>
+        </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="400dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/border_shape"
+            android:padding="10dp">
+            <!--地址-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:padding="15dp">
+                <ImageView
+                    android:id="@+id/address_logo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_address"
+                    android:scaleType="fitXY"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{order.title}"
+                    android:textColor="@color/md_grey_600"
+                    android:textSize="22dp"
+                    android:layout_toRightOf="@+id/address_logo"
+                    android:layout_marginStart="10dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="13dp"/>
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="用户地址"
+                    android:textColor="@color/md_black_1000"
+                    android:textSize="18dp"
+                    android:layout_below="@+id/address_logo"
+                    android:layout_toEndOf="@id/address_logo"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{order.address}"
+                    android:textColor="@color/md_grey_600"
+                    android:textSize="18dp"
+                    android:layout_below="@+id/username"
+                    android:layout_toEndOf="@id/address_logo"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp" />
+            </RelativeLayout>
+            <View  android:layout_height="1px"
+                android:layout_width="match_parent"
+                android:background="@color/md_grey_600"
+                android:layout_margin="1dp"/>
+            <!--时间-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:padding="15dp">
+                <ImageView
+                    android:id="@+id/time_logo"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_time"
+                    android:scaleType="fitXY"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预约时间"
+                    android:textColor="@color/md_grey_600"
+                    android:textSize="22dp"
+                    android:layout_toRightOf="@+id/time_logo"
+                    android:layout_marginStart="10dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="13dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(order.time)}"
+                    android:textColor="@color/md_grey_600"
+                    android:textSize="18dp"
+                    android:layout_below="@+id/time_logo"
+                    android:layout_toEndOf="@id/time_logo"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"/>
+            </RelativeLayout>
+            <View  android:layout_height="1px"
+                android:layout_width="match_parent"
+                android:background="@color/md_grey_600"
+                android:layout_margin="5dp"/>
+
+            <!--订单号-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:padding="15dp">
+                <ImageView
+                    android:id="@+id/order_logo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_event_selected"
+                    android:tint="@color/colorAccent"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前订单号"
+                    android:textColor="@color/md_grey_600"
+                    android:textSize="22dp"
+                    android:layout_toRightOf="@+id/order_logo"
+                    android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="13dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{order.id}"
+                    android:textColor="@color/md_grey_600"
+                    android:textSize="16dp"
+                    android:layout_below="@+id/order_logo"
+                    android:layout_toEndOf="@id/order_logo"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp" />
+            </RelativeLayout>
+            <View android:layout_height="1px"
+                android:layout_width="match_parent"
+                android:background="@color/md_grey_600"
+                android:layout_margin="1dp"/>
         </LinearLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <RelativeLayout
+            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/border_shape"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/server_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{order.server}"
+                android:textSize="20dp"
+                android:textColor="@color/colorControlActivated"
+                android:layout_marginStart="15dp"/>
+            <TextView
+                android:id="@+id/server_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(order.time)}"
+                android:textSize="16dp"
+                android:textColor="@color/md_grey_600"
+                android:layout_marginStart="15dp"
+                android:layout_below="@+id/server_name"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+86 16427366001"
+                android:textSize="16dp"
+                android:textColor="@color/md_grey_600"
+                android:layout_marginStart="15dp"
+                android:layout_below="@+id/server_time"/>
+            <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/server_call"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/md_white_1000"
+                android:textSize="18dp"
+                android:text="联系他"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"
+                app:button_cornerRadius="8dp"
+                app:button_duration="250"
+                app:button_scale="0.87"
+                android:layout_marginEnd="20dp"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 </layout>

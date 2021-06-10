@@ -46,10 +46,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/md_blue_grey_300"
-            android:layout_alignParentEnd="true"
             android:textSize="18dp"
             android:layout_marginTop="2dp"
-            android:text="更多" />
+            android:text="更多"
+            android:layout_toStartOf="@+id/hospital_more"
+            android:layout_marginRight="8dp"/>
+        <ImageView
+            android:id="@+id/hospital_more"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_more"
+            android:scaleType="centerCrop"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
 
     <FrameLayout
