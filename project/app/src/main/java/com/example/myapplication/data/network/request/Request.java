@@ -44,6 +44,9 @@ public interface Request {
     @GET("/base/os/all")
     Observable<ResponseBody> getAllStaff(@QueryMap Map<String,String> headers);
 
+    @GET("/base/ou/get")
+    Observable<ResponseBody> getLoginUser(@Query("access_token") String token);
+
     @GET("/auth/o/pass")
     Observable<ResponseBody> loginAuth(@QueryMap Map<String,String> map);
 }

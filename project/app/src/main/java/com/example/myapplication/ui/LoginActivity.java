@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.data.model.LoginResponse;
+import com.example.myapplication.data.model.UserResponse;
 import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
@@ -78,6 +79,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SharedPreferencesUtils sharedPreferences,tokenShared;
     private Presenter presenter;
 
+    private View anim;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_pass_same);
         System.out.println(nameEdit.getText().toString() +" "+ passEdit.getText().toString());
         presenter.loginAuth(nameEdit.getText().toString(),passEdit.getText().toString());
-        startSignAnim(v); //启动加载动画
+        anim = v;
     }
 
     @Override
@@ -116,9 +119,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);
-            LoginResponse data = GsonUtils.fromJson(result, LoginResponse.class);
-            tokenShared.putString("token",data.getData().getAccessToken());
-            initSceneLogging(data); //进行登录验证并附带动画
+            if (result.length()<200) {
+                LoginResponse data = GsonUtils.fromJson(result, LoginResponse.class);
+                initSceneLogging(data); //进行登录验证并附带动画
+                startSignAnim(anim); //启动加载动画
+                tokenShared.putString("token", data.getData().getAccessToken());
+                presenter.getLoginUser(data.getData().getAccessToken());
+            } else {
+                UserResponse data = GsonUtils.fromJson(result, UserResponse.class);
+                tokenShared.putString("username",data.getData().getUsername());
+                tokenShared.putString("sex",data.getData().getSex());
+                tokenShared.putString("address",data.getData().getAddress());
+                tokenShared.putString("phone",data.getData().getPhone().toString());
+                tokenShared.putString("identify",data.getData().getIdentify());
+                tokenShared.putString("clientId",data.getData().getClientId());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void getDataFail(Throwable throwable) {
-        System.out.println(throwable.getMessage());
+        Toast.makeText(this,"登陆时发生错误",Toast.LENGTH_SHORT);
     }
 
     private void initSceneSignUp(){

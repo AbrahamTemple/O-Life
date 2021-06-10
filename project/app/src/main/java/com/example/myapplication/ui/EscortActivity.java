@@ -278,7 +278,6 @@ public class EscortActivity extends AppCompatActivity {
             if (sliderX > 0 && sliderX < screenWidth - 80) {
                 pointer.setX(sliderX);
             }
-
             int fX = ScaleFunction(sliderX+50, 0, screenWidth, 0, image2Bitmap.getWidth());
             final Bitmap outputBitmap = Bitmap.createBitmap(imageLayer2.getWidth(), imageLayer2.getHeight(), Bitmap.Config.ARGB_8888);
             final Canvas canvas = new Canvas(outputBitmap);

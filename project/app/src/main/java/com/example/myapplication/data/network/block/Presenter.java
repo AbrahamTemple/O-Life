@@ -99,6 +99,22 @@ public class Presenter {
         mDisposable.add(disposable);
     }
 
+    public void getLoginUser(String token){
+        Disposable disposable = model.getLoginUser(token)
+//                .compose(ResponseTransformer.handleResult())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .subscribe(data -> {
+                    view.getDataSuccess(data);
+                }, throwable -> {
+                    // 处理异常
+                    view.getDataFail(throwable);
+                });
+        mDisposable.add(disposable);
+    }
+
+
     public void loginAuth(String name,String pass){
         Map<String, String> param = new HashMap<>();
         param.put("username",name);

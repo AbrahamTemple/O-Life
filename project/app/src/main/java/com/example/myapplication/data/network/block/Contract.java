@@ -20,6 +20,7 @@ public class Contract {
         Observable<ResponseBody> getAllDoctor(Map<String, String> headers);
         Observable<ResponseBody> getAllStaff(Map<String,String> headers);
         Observable<ResponseBody> loginAuth(Map<String,String> map);
+        Observable<ResponseBody> getLoginUser(String token);
         Observable<ResponseBody> getHospitalDoctor(Long id, String token);
     }
 }

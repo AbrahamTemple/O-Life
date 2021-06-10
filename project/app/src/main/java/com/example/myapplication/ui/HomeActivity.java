@@ -225,7 +225,7 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
             case 1:
                 ARouter.getInstance().build(RoutePath.ORDER.toString()).navigation();
             case 4:
-                replaceFragment(new UserFragment(this));
+                replaceFragment(new UserFragment(this,tokenShared.getString("username")));
                 break;
             case 5:
                 replaceFragment(new AboutFragment());

@@ -1,5 +1,6 @@
 package com.example.myapplication.view.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,10 @@ public class OrderAdpater extends RecyclerView.Adapter<OrderAdpater.ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_list, parent, false);
+        point1 = view.findViewById(R.id.time_point);
+        piont2 = view.findViewById(R.id.address_point);
+        point1.startRippleAnimation();
+        piont2.startRippleAnimation();
         return new ViewHolder(view);
     }
 
@@ -37,6 +42,9 @@ public class OrderAdpater extends RecyclerView.Adapter<OrderAdpater.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Order o = lists.get(position);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(o.getState().contains("已")){
+            holder.state.setTextColor(Color.GREEN);
+        }
         holder.title.setText(o.getTitle());
         holder.time.setText(sdf.format(o.getTime()));
         holder.address.setText(o.getAddress());

@@ -35,6 +35,11 @@ public class Model implements Contract.Model{
     }
 
     @Override
+    public Observable<ResponseBody> getLoginUser(String token) {
+        return NetWorkManager.getRequest().getLoginUser(token);
+    }
+
+    @Override
     public Observable<ResponseBody> getHospitalDoctor(Long id, String token) {
         return NetWorkManager.getRequest().getHospitalDoctor(id,token);
     }

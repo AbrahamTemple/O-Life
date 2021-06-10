@@ -3,11 +3,21 @@ package com.example.myapplication.domain;
 import java.util.Date;
 
 public class Order {
+    private String id;
     private String title;
     private Date time;
     private String address;
     private String state;
     private String server;
+
+    public Order(String id, String title, Date time, String address, String state, String server) {
+        this.id = id;
+        this.title = title;
+        this.time = time;
+        this.address = address;
+        this.state = state;
+        this.server = server;
+    }
 
     public Order(String title, Date time, String address, String state, String server) {
         this.title = title;
@@ -15,6 +25,10 @@ public class Order {
         this.address = address;
         this.state = state;
         this.server = server;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitle() {

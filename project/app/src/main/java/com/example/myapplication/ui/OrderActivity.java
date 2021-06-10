@@ -3,7 +3,6 @@ package com.example.myapplication.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -14,7 +13,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.ReserverResponse;
-import com.example.myapplication.domain.Order;
 import com.example.myapplication.view.fragment.OrderListFragment;
 import com.example.myapplication.view.fragment.ShimmeFragment;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
@@ -38,6 +36,7 @@ public class OrderActivity extends AppCompatActivity implements ViewPager.OnPage
         setContentView(R.layout.activity_order);
         ButterKnife.bind(this);
         initTab();
+        replaceFragment(new ShimmeFragment());
     }
 
     public void initTab(){
@@ -86,18 +85,22 @@ public class OrderActivity extends AppCompatActivity implements ViewPager.OnPage
     @Override
     public void onEndTabSelected(String title, int index) {
         Log.d("onEndTabSelected", String.valueOf(index));
-        switch (index){
-            case 0:
-                replaceFragment(new ShimmeFragment());
-                break;
-            default:
-                List<ReserverResponse.Reserver> item = new ArrayList<>();
-                ReserverResponse.Reserver a = new ReserverResponse.Reserver(1,"预约陪诊",new Date(),"广东省广州市海珠区海心沙","等待接单","吴佳杰");
-                ReserverResponse.Reserver b = new ReserverResponse.Reserver(2,"预约陪诊",new Date(),"上海市外滩","已接单","老板");
-                item.add(a);
-                item.add(b);
-                ReserverResponse data = new ReserverResponse(item,200,"OK");
-                replaceFragment(new OrderListFragment(data));
+        if (index == 0) {
+            List<ReserverResponse.Reserver> item1 = new ArrayList<>();
+            ReserverResponse.Reserver c = new ReserverResponse.Reserver(1, "预约陪诊", new Date(), "广东省广州市海珠区海心沙", "等待接单", "吴佳杰");
+            ReserverResponse.Reserver d = new ReserverResponse.Reserver(2, "预约陪诊", new Date(), "上海市外滩", "已接单", "老板");
+            item1.add(c);
+            item1.add(d);
+            ReserverResponse data1 = new ReserverResponse(item1, 200, "OK");
+            replaceFragment(new OrderListFragment(data1));
+        } else {
+            List<ReserverResponse.Reserver> item0 = new ArrayList<>();
+            ReserverResponse.Reserver a = new ReserverResponse.Reserver(1, "预约挂号", new Date(), "美国加州弗里亚", "正在排队", "农承彬");
+            ReserverResponse.Reserver b = new ReserverResponse.Reserver(2, "预约挂号", new Date(), "加拿大蒙特利尔", "已完成", "儿子");
+            item0.add(a);
+            item0.add(b);
+            ReserverResponse data = new ReserverResponse(item0, 200, "OK");
+            replaceFragment(new OrderListFragment(data));
         }
     }
 
