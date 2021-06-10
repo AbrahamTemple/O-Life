@@ -17,6 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 public class AmqpService extends IntentService {
@@ -27,14 +28,14 @@ public class AmqpService extends IntentService {
     private static final String EXTRA_MESSAGE = "com.example.myapplication.service.extra.MESSAGE";
 
     private static ConnectionFactory factory;
-    private static final String host = "172.20.10.12" ; //一定不可为localhost
+    private static final String host = "121.36.204.21" ; //一定不可为localhost
     private static final int port = 5672 ;
     private static final String username = "admin" ;
-    private static final String password = "admin" ;
+    private static final String password = "3626356" ;
     private static final String virtualHost = "/";
-    private static final String exchange = "android_exchange" ;
-    private static String queue = "android_queue";
-    private static String rountingKey = "news";
+    private static final String exchange = "olife-reserve-exchange" ;
+    private static String queue = "olife-redis-queue";
+    private static String rountingKey = "olife.reserve.redis."+ UUID.randomUUID().toString();
     private static boolean isAutoDete = false; //结束进程后自动删除队列
     private static boolean isExclusive = false; //排斥其它队列，不允许其它队列访问
     private static Map<String,Object> args = null; //附带参数

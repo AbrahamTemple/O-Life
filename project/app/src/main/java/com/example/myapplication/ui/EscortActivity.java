@@ -40,6 +40,7 @@ import com.example.myapplication.domain.CardBean;
 import com.example.myapplication.domain.ProvinceBean;
 import com.example.myapplication.event.RxTimer;
 import com.example.myapplication.util.HideUtil;
+import com.example.myapplication.util.SharedPreferencesUtils;
 import com.example.myapplication.view.fragment.BezierFragment;
 import com.example.myapplication.view.fragment.BgFragment;
 import com.example.myapplication.view.fragment.LoadingFragment;
@@ -97,6 +98,8 @@ public class EscortActivity extends AppCompatActivity {
     @BindView(R.id.e_frag_layout)
     FrameLayout list;
 
+    private SharedPreferencesUtils tokenShared;
+
     private Bitmap image2Bitmap;
     private int mInputImageForBitmap;
 
@@ -107,6 +110,8 @@ public class EscortActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         HideUtil.init(this);
         replaceFragment(new LoadingFragment());
+        new RxTimer().timer(5000, number -> replaceFragment(new BgFragment()));
+        tokenShared = SharedPreferencesUtils.init(this,"oauth");
         init();
     }
 
@@ -115,7 +120,6 @@ public class EscortActivity extends AppCompatActivity {
         getOptionData();
         initOptionPicker();
         initImageCompare();
-        new RxTimer().timer(5000, number -> replaceFragment(new BgFragment()));
     }
 
     @OnClick(R.id.btn_post)
@@ -154,6 +158,7 @@ public class EscortActivity extends AppCompatActivity {
         pvTime = new TimePickerBuilder(this, (date, v) -> {
             Toast.makeText(EscortActivity.this, getTime(date), Toast.LENGTH_SHORT).show();
             btn_Time.setText(getTime(date));
+            tokenShared.putLong("escort_time", date.getTime());
             timePoint.startRippleAnimation();
         })
                 .setTimeSelectChangeListener(date -> Log.i("pvTime", "onTimeSelectChanged"))
@@ -198,6 +203,7 @@ public class EscortActivity extends AppCompatActivity {
                         + options2Items.get(options1).get(options2)
                         /* + options3Items.get(options1).get(options2).get(options3).getPickerViewText()*/;
                 btn_Options.setText(tx);
+                tokenShared.putString("escort_address", tx);
                 addressPoint.startRippleAnimation();
             }
         })

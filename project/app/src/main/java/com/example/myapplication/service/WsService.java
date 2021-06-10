@@ -40,6 +40,7 @@ public class WsService extends IntentService {
     public static void startConnection(Context context,String userId) {
         Intent intent = new Intent(context, WsService.class);
         intent.setAction(ACTION_CONNECTION);
+        System.out.println("userId:"+userId);
         intent.putExtra(EXTRA_UID,userId);
         context.startService(intent);
     }
@@ -71,8 +72,7 @@ public class WsService extends IntentService {
                 case ACTION_CONNECTION:
                     if (intent.getStringExtra(EXTRA_UID)!=null){
                         String uid = intent.getStringExtra(EXTRA_UID);
-                        uri += uid;
-                        connectionChannel(uri);
+                        connectionChannel(uri+uid);
                     }
                     break;
                 case ACTION_SEND:
@@ -93,7 +93,6 @@ public class WsService extends IntentService {
      * 通过onMessage回调函数接收当前通道的消息
      */
     private void connectionChannel(String uri){
-        System.out.println(uri);
         URI serverURI = URI.create(uri);
         webSocketClient = new WebSocketClient(serverURI) {
             @Override

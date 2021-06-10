@@ -1,6 +1,7 @@
 package com.example.myapplication.domain;
 
 public class Intro {
+    private Long id;
     private int img;
     private String title;
     private String about;
@@ -61,5 +62,13 @@ public class Intro {
 
     public void setMain(String main) {
         this.main = main;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

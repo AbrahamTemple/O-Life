@@ -15,9 +15,12 @@ import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
+import com.example.myapplication.domain.EscortDto;
+import com.example.myapplication.domain.ORegister;
 import com.example.myapplication.event.RxTimer;
 import com.example.myapplication.router.LoginCallbackImpl;
 import com.example.myapplication.router.RoutePath;
+import com.example.myapplication.service.AmqpService;
 import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.SharedPreferencesUtils;
@@ -136,12 +139,11 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 DoctorResponse doctorResponse = (DoctorResponse) body;
                 doctorResponse.getData().forEach(d->{
                     Intro r = new Intro(R.drawable.doctor_img,d.getName(),d.getIntro(),"主治专业："+d.getSort(),"剩余号数："+d.getCount());
+                    r.setId(d.getId());
                     lists.add(r);
                 });
                 listAdapter = new ListAdapter(lists);
-                listAdapter.setOnItemClickListener((intro, position) -> {
-                    showRegisterDialog(intro.getTitle(),position);
-                });
+                listAdapter.setOnItemClickListener(this::showRegisterDialog);
             break;
             case 1:
                 HospitalResponse hospitalResponse = (HospitalResponse) body;
@@ -155,6 +157,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                             .withInt("action", 0)
                             .withLong("id",position)
                             .navigation(this,new LoginCallbackImpl());
+                    tokenShared.putLong("hid",position);
                 });
             break;
             case 2:
@@ -164,9 +167,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                     lists.add(r);
                 });
                 listAdapter = new ListAdapter(lists);
-                listAdapter.setOnItemClickListener((intro, position) -> {
-                    showChatDialog(intro.getTitle(),position);
-                });
+                listAdapter.setOnItemClickListener((intro, position) -> showChatDialog(intro.getTitle(),position));
             break;
             case 3:
                 StaffResponse staffResponse = (StaffResponse) body;
@@ -174,9 +175,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                     Intro r = new Intro(R.drawable.staff_img,d.getName(),d.getIntro(),"电话："+d.getPhone(),"工作时长："+d.getJobTime()+"年");
                     lists.add(r);
                 });
-                listAdapter.setOnItemClickListener((intro, position) -> {
-                    showEscortDialog(intro.getTitle(),position);
-                });
+                listAdapter.setOnItemClickListener((intro, position) -> showEscortDialog(intro.getTitle(),position));
             break;
         }
         new SpruceRecyclerView(this, o_list, listAdapter, true).init();
@@ -221,12 +220,16 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
         super.onDestroy();
     }
 
-    private void showRegisterDialog(String doctor, int position){
+    private void showRegisterDialog(Intro doctor, int position){
         AlertDialog alert = new AlertDialog.Builder(this)
                 .setTitle("注意")
-                .setMessage("你确定要挂"+doctor+"医生的号吗？")
+                .setMessage("你确定要挂"+doctor.getTitle()+"医生的号吗？")
                 .setIcon(R.mipmap.info)
-                .setPositiveButton("确定", (dialogInterface, i) -> Toast.makeText(ListActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show())
+                .setPositiveButton("确定", (dialogInterface, i) -> {
+                    Toast.makeText(ListActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+                    ORegister register = new ORegister(tokenShared.getLong("id"),tokenShared.getLong("hid"),doctor.getId(), tokenShared.getString("register_time"));
+                    System.out.println(GsonUtils.toJson(register));
+                })
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();
         alert.show();
@@ -237,7 +240,10 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 .setTitle("注意")
                 .setMessage("你确定要预定"+staff+"护工陪诊吗？")
                 .setIcon(R.mipmap.danger)
-                .setPositiveButton("确定", (dialogInterface, i) -> Toast.makeText(ListActivity.this, position+"", Toast.LENGTH_SHORT).show())
+                .setPositiveButton("确定", (dialogInterface, i) -> {
+                    EscortDto dto = new EscortDto(tokenShared.getLong("id"), (long) position,tokenShared.getLong("escort_time"),tokenShared.getString("escort_address"),null);
+                    AmqpService.startPublish(this,GsonUtils.toJson(dto));
+                })
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();
         alert.show();
@@ -248,7 +254,9 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 .setTitle("注意")
                 .setMessage("你确定要选"+doctor+"医生进行咨询吗？")
                 .setIcon(R.mipmap.success)
-                .setPositiveButton("确定", (dialogInterface, i) -> ARouter.getInstance().build(RoutePath.CHAT.toString()).withLong("id",position).navigation())
+                .setPositiveButton("确定", (dialogInterface, i) -> {
+                    ARouter.getInstance().build(RoutePath.CHAT.toString()).withLong("id",position).navigation();
+                })
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();
         alert.show();

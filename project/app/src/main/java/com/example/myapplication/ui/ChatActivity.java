@@ -7,15 +7,15 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.daasuu.bl.BubbleLayout;
 import com.daasuu.bl.BubblePopupHelper;
-import com.example.myapplication.domain.Counter;
 import com.example.myapplication.domain.MsgDto;
 import com.example.myapplication.service.WsService;
 import com.example.myapplication.util.HideUtil;
+import com.example.myapplication.util.SharedPreferencesUtils;
 import com.example.myapplication.view.layout.ChatBarView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -30,10 +30,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +51,9 @@ public class ChatActivity extends AppCompatActivity {
     private PopupWindow popupWindow;
     private BubbleLayout bubbleLayout;
 
+    private SharedPreferencesUtils tokenShared;
+    private String serverId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +70,7 @@ public class ChatActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnEventProgress(MsgDto dto) {
         if (dto.getIsm()) {
-            addDocterViewItem(dto.getMsg());
+            addDoctorViewItem(dto.getMsg());
         } else {
             addUserViewItem(dto.getMsg());
         }
@@ -78,28 +79,22 @@ public class ChatActivity extends AppCompatActivity {
     public void init(){
         bubbleLayout = (BubbleLayout) LayoutInflater.from(this).inflate(R.layout.bubble_layout, null);
         popupWindow = BubblePopupHelper.create(this, bubbleLayout);
+        tokenShared = SharedPreferencesUtils.init(this,"oauth");
     }
 
     private void initWebsocket(){
-        WsService.startConnection(this,String.valueOf(id));
+        WsService.startConnection(this,String.valueOf(tokenShared.getLong("id")));
+        serverId = UUID.nameUUIDFromBytes(String.valueOf(id).getBytes()).toString();
+        Log.e("医生的通道", serverId);
     }
 
     public void initCharView(){
         chatBarView.setSendClickListener(view -> {
             Toast.makeText(ChatActivity.this, chatBarView.getMessageText(), Toast.LENGTH_SHORT).show();
-//            int rand = new Random().nextBoolean()?1:0;
-//            if (rand == 0) {
-//                addUserViewItem(chatBarView.getMessageText());
-//            } else {
-//                addDocterViewItem(chatBarView.getMessageText());
-//            }
             List<String> persons = new ArrayList<>();
-            persons.add(String.valueOf(id+2));
-            persons.add(String.valueOf(id));
+            persons.add(String.valueOf(tokenShared.getLong("id")));
+            persons.add(String.valueOf(serverId));
             WsService.startSend(this,new MsgDto(persons,chatBarView.getMessageText(),false));
-//            int[] location = new int[2];
-//            task.getLocationInWindow(location);
-//            popupWindow.showAtLocation(task, Gravity.NO_GRAVITY, location[0], view.getHeight() + location[1]);
         });
 
         chatBarView.setOnMicListener(view -> {
@@ -116,7 +111,7 @@ public class ChatActivity extends AppCompatActivity {
         task.addView(bubble);
     }
 
-    private void addDocterViewItem(String msg) {
+    private void addDoctorViewItem(String msg) {
         View bubble = View.inflate(this, R.layout.fragment_bubble2, null);
         TextView bubbleText = (TextView) bubble.findViewById(R.id.bubble_text);
         bubbleText.setText(msg); //发送内容

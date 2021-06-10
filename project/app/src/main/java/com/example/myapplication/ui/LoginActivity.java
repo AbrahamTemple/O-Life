@@ -127,10 +127,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 presenter.getLoginUser(data.getData().getAccessToken());
             } else {
                 UserResponse data = GsonUtils.fromJson(result, UserResponse.class);
+                tokenShared.putLong("id",data.getData().getId());
                 tokenShared.putString("username",data.getData().getUsername());
                 tokenShared.putString("sex",data.getData().getSex());
                 tokenShared.putString("address",data.getData().getAddress());
-                tokenShared.putString("phone",data.getData().getPhone().toString());
+                tokenShared.putLong("phone",data.getData().getPhone());
                 tokenShared.putString("identify",data.getData().getIdentify());
                 tokenShared.putString("clientId",data.getData().getClientId());
             }
