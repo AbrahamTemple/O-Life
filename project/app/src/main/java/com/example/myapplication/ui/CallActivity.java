@@ -34,13 +34,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.example.myapplication.BuildConfig;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.PhoneResponse;
 import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
+import com.example.myapplication.domain.Phone;
 import com.example.myapplication.event.MyPhoneStateListener;
 import com.example.myapplication.service.AmqpService;
 import com.example.myapplication.util.GsonUtils;
@@ -69,7 +69,6 @@ import okhttp3.ResponseBody;
 public class CallActivity extends AppCompatActivity implements Contract.View {
 
     private String TAG = "CallActivity";
-    private String PhoneNumber;
     private SharedPreferencesUtils sharedPreferences,tokenShared;
     private Presenter presenter;
 
@@ -141,18 +140,17 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
 
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void OnEventProgress(String msg) {
+    public void OnEventProgress(Phone phone) {
         if (task1.getChildCount() > 16) {
             task1.removeAllViewsInLayout();
         }
-        Date now = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
         TextView textView = new TextView(this);
-        textView.setTag("帅胤");
+        textView.setTag(phone.getSender());
         Random rand = new Random();
         textView.setTextColor(Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
-        textView.setText(ft.format(now) + ' ' + msg);
-        textView.setOnClickListener(v -> Toast.makeText(this, "服务者：" + textView.getTag().toString(), Toast.LENGTH_SHORT).show());
+        textView.setText(ft.format(phone.getTime()) + ' ' + phone.getPhoneNum());
+        textView.setOnClickListener(v -> Toast.makeText(this, "被服务者：" + textView.getTag().toString(), Toast.LENGTH_SHORT).show());
         task1.addView(textView);
     }
 
@@ -163,12 +161,7 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
-            Log.d("令牌",tokenShared.getString("token"));
-            presenter.getPone(BuildConfig.ACCESS_TOKEN);
-            PhoneNumber = sharedPreferences.getString("phone");
-            call(PhoneNumber);
-            AmqpService.setRountingKey(tag);
-            AmqpService.startPublish(this, PhoneNumber);
+            presenter.getPone(tokenShared.getString("token"));
             manager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         }
     }
@@ -246,7 +239,8 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
                         return;
                     }
                 }
-                call(PhoneNumber);
+//                presenter.getPone(BuildConfig.ACCESS_TOKEN);
+                Toast.makeText(this, "通话权限已打开", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "发生未知错误", Toast.LENGTH_SHORT).show();
                 finish();
@@ -278,7 +272,9 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);
             PhoneResponse data = GsonUtils.fromJson(result, PhoneResponse.class);
-            sharedPreferences.putString("phone",data.getData());
+            call(data.getData());
+            Phone phone = new Phone(tokenShared.getString("username"),data.getData(),new Date());
+            EventBus.getDefault().post(phone);
         } catch (IOException e) {
             e.printStackTrace();
         }

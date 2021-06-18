@@ -19,6 +19,14 @@ public class DoctorResponse {
     @SerializedName("msg")
     private String msg;
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
     public List<Doctor> getData() {
         return data;
     }

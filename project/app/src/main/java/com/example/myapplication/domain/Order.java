@@ -1,27 +1,31 @@
 package com.example.myapplication.domain;
 
-import java.util.Date;
+
 
 public class Order {
+
     private String id;
     private String title;
-    private Date time;
+    private String time;
+    private String info;
     private String address;
     private String state;
     private String server;
 
-    public Order(String id, String title, Date time, String address, String state, String server) {
+    public Order(String id, String title, String time, String info, String address, String state, String server) {
         this.id = id;
         this.title = title;
         this.time = time;
+        this.info = info;
         this.address = address;
         this.state = state;
         this.server = server;
     }
 
-    public Order(String title, Date time, String address, String state, String server) {
+    public Order(String title, String time, String info, String address, String state, String server) {
         this.title = title;
         this.time = time;
+        this.info = info;
         this.address = address;
         this.state = state;
         this.server = server;
@@ -29,6 +33,10 @@ public class Order {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -39,11 +47,11 @@ public class Order {
         this.title = title;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -69,5 +77,13 @@ public class Order {
 
     public void setServer(String server) {
         this.server = server;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 }

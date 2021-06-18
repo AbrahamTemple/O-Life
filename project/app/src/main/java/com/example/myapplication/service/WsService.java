@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.domain.MsgDto;
 import com.example.myapplication.util.GsonUtils;
 
@@ -13,7 +14,10 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.Objects;
+
+import okhttp3.ResponseBody;
 
 
 public class WsService extends IntentService {
@@ -29,7 +33,7 @@ public class WsService extends IntentService {
     private static final String EXTRA_UID = "com.example.myapplication.service.extra.UID";
 
     private static volatile WebSocketClient webSocketClient;
-    private static String host = "121.37.178.107:8083"; //一定不可以是localhost
+    private static String host = "124.71.82.74:8083"; //一定不可以是localhost
     private static String uri = "ws://"+host+"/websocket/";
     private static String localMessage = "";
 
@@ -103,7 +107,7 @@ public class WsService extends IntentService {
             @Override
             public void onMessage(String message) {
                 Log.d(TAG,"收到服务器消息："+message);
-                if (!message.equals(localMessage)) {
+                if (!message.equals(localMessage) && !message.contains("总连接数") && !message.contains(new Date().toString().substring(0,15))) {
                     EventBus.getDefault().post(new MsgDto(null, message, true));
                 }
             }
@@ -160,4 +164,5 @@ public class WsService extends IntentService {
     public static void setUri(String uri) {
         WsService.uri = uri;
     }
+
 }

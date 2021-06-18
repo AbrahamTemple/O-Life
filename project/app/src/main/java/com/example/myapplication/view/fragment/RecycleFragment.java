@@ -10,8 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.HospitalResponse;
+import com.example.myapplication.router.LoginCallbackImpl;
+import com.example.myapplication.router.RoutePath;
+import com.example.myapplication.util.SharedPreferencesUtils;
 import com.example.myapplication.view.adapter.ListAdapter;
 import com.example.myapplication.domain.Intro;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
@@ -23,7 +27,7 @@ public class RecycleFragment extends Fragment {
 
     private HospitalResponse data;
     private RecyclerView recommend;
-
+//    private SharedPreferencesUtils tokenShared;
 
     public RecycleFragment(HospitalResponse data) {
         this.data = data;
@@ -39,6 +43,7 @@ public class RecycleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recommend = view.findViewById(R.id.frag_recommend);
+//        tokenShared = SharedPreferencesUtils.init(getActivity(),"oauth");
         initRecycler(data);
     }
 
@@ -49,6 +54,14 @@ public class RecycleFragment extends Fragment {
             lists.add(r);
         });
         ListAdapter listAdapter = new ListAdapter(lists);
+        listAdapter.setOnItemClickListener((intro, position) -> {
+            System.out.println(position);
+//            ARouter.getInstance().build(RoutePath.LIST.toString())
+//                    .withInt("action", 0)
+//                    .withLong("id",position)
+//                    .navigation(getActivity(),new LoginCallbackImpl());
+//            tokenShared.putLong("hid",position);
+        });
         new SpruceRecyclerView(getContext(), recommend, listAdapter, true).init();
     }
 }

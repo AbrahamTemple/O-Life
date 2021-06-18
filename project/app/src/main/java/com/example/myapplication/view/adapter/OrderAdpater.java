@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.domain.Intro;
 import com.example.myapplication.domain.Order;
 import com.skyfishjy.library.RippleBackground;
 
@@ -46,7 +45,7 @@ public class OrderAdpater extends RecyclerView.Adapter<OrderAdpater.ViewHolder>{
             holder.state.setTextColor(Color.GREEN);
         }
         holder.title.setText(o.getTitle());
-        holder.time.setText(sdf.format(o.getTime()));
+        holder.time.setText(o.getTime());
         holder.address.setText(o.getAddress());
         holder.state.setText(o.getState());
         holder.server.setText(o.getServer());

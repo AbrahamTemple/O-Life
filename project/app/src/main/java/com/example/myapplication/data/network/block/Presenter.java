@@ -2,6 +2,7 @@ package com.example.myapplication.data.network.block;
 
 
 import com.example.myapplication.data.network.scheduler.BaseSchedulerProvider;
+import com.example.myapplication.domain.RegisterDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -115,12 +116,12 @@ public class Presenter {
     }
 
 
-    public void loginAuth(String name,String pass){
+    public void loginAuth(String name,String pass,String cli,String sec){
         Map<String, String> param = new HashMap<>();
         param.put("username",name);
         param.put("password",pass);
-        param.put("clientId","cli");
-        param.put("clientSecret","sec");
+        param.put("clientId",cli);
+        param.put("clientSecret",sec);
         param.put("access_token","");
         Disposable disposable = model.loginAuth(param)
 //                .compose(ResponseTransformer.handleResult())
@@ -138,6 +139,51 @@ public class Presenter {
 
     public void getHospitalDoctor(Long id,String token){
         Disposable disposable = model.getHospitalDoctor(id, token)
+//                .compose(ResponseTransformer.handleResult())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .subscribe(data -> {
+                    view.getDataSuccess(data);
+                }, throwable -> {
+                    // 处理异常
+                    view.getDataFail(throwable);
+                });
+        mDisposable.add(disposable);
+    }
+
+    public void RedisEscort(Long id,String token){
+        Disposable disposable = model.RedisEscort(id,"Bearer "+token,token)
+//                .compose(ResponseTransformer.handleResult())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .subscribe(data -> {
+                    view.getDataSuccess(data);
+                }, throwable -> {
+                    // 处理异常
+                    view.getDataFail(throwable);
+                });
+        mDisposable.add(disposable);
+    }
+
+    public void RegisterSet(RegisterDto dao, String token){
+        Disposable disposable = model.RegisterSet(dao,"Bearer "+token,token)
+//                .compose(ResponseTransformer.handleResult())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .subscribe(data -> {
+                    view.getDataSuccess(data);
+                }, throwable -> {
+                    // 处理异常
+                    view.getDataFail(throwable);
+                });
+        mDisposable.add(disposable);
+    }
+
+    public void RegisterGet(Long id, String token){
+        Disposable disposable = model.RegisterGet(id,"Bearer "+token,token)
 //                .compose(ResponseTransformer.handleResult())
                 .compose(schedulerProvider.applySchedulers())
                 .subscribeOn(Schedulers.io())

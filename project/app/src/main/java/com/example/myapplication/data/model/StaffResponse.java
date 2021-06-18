@@ -18,6 +18,14 @@ public class StaffResponse {
     @SerializedName("msg")
     private String msg;
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
     public List<Staff> getData() {
         return data;
     }

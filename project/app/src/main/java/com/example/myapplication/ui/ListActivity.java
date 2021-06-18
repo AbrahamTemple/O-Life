@@ -17,11 +17,13 @@ import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
 import com.example.myapplication.domain.EscortDto;
 import com.example.myapplication.domain.ORegister;
+import com.example.myapplication.domain.RegisterDto;
 import com.example.myapplication.event.RxTimer;
 import com.example.myapplication.router.LoginCallbackImpl;
 import com.example.myapplication.router.RoutePath;
 import com.example.myapplication.service.AmqpService;
 import com.example.myapplication.service.CounterService;
+import com.example.myapplication.service.OrderService;
 import com.example.myapplication.util.GsonUtils;
 import com.example.myapplication.util.SharedPreferencesUtils;
 import com.example.myapplication.view.adapter.ListAdapter;
@@ -41,7 +43,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -226,9 +230,14 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 .setMessage("你确定要挂"+doctor.getTitle()+"医生的号吗？")
                 .setIcon(R.mipmap.info)
                 .setPositiveButton("确定", (dialogInterface, i) -> {
+                    shapeLoadingDialog.show();
                     Toast.makeText(ListActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    ORegister register = new ORegister(tokenShared.getLong("id"),tokenShared.getLong("hid"),doctor.getId(), tokenShared.getString("register_time"));
-                    System.out.println(GsonUtils.toJson(register));
+                    RegisterDto dto = new RegisterDto(tokenShared.getLong("id"),tokenShared.getLong("id"),tokenShared.getLong("hid"),doctor.getId(),new Date().getTime(),"待挂号");
+                    new RxTimer().timer(500,number -> {
+                        shapeLoadingDialog.dismiss();
+                        OrderService.startRequest(this, GsonUtils.toJson(dto));
+                        finish();
+                    });
                 })
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();
@@ -241,8 +250,17 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 .setMessage("你确定要预定"+staff+"护工陪诊吗？")
                 .setIcon(R.mipmap.danger)
                 .setPositiveButton("确定", (dialogInterface, i) -> {
-                    EscortDto dto = new EscortDto(tokenShared.getLong("id"), (long) position,tokenShared.getLong("escort_time"),tokenShared.getString("escort_address"),null);
+                    shapeLoadingDialog.show();
+                    EscortDto dto = new EscortDto(tokenShared.getLong("id"), (long) position,tokenShared.getLong("escort_time"),tokenShared.getString("escort_address"),"add","待接单");
+                    AmqpService.setExchange("olife-reserve-exchange");
+                    AmqpService.setQueue("olife-redis-queue");
+                    AmqpService.setRountingKey("olife.reserve.redis."+ UUID.randomUUID().toString());
                     AmqpService.startPublish(this,GsonUtils.toJson(dto));
+                    new RxTimer().timer(500,number -> {
+                        shapeLoadingDialog.dismiss();
+                        ARouter.getInstance().build(RoutePath.ORDER.toString()).navigation(this,new LoginCallbackImpl());
+                        finish();
+                    });
                 })
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();
@@ -255,7 +273,11 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 .setMessage("你确定要选"+doctor+"医生进行咨询吗？")
                 .setIcon(R.mipmap.success)
                 .setPositiveButton("确定", (dialogInterface, i) -> {
-                    ARouter.getInstance().build(RoutePath.CHAT.toString()).withLong("id",position).navigation();
+                    shapeLoadingDialog.show();
+                    new RxTimer().timer(500,number -> {
+                        shapeLoadingDialog.dismiss();
+                        ARouter.getInstance().build(RoutePath.CHAT.toString()).withLong("id", position).navigation();
+                    });
                 })
                 .setNegativeButton("取消", (dialogInterface, i) -> Toast.makeText(ListActivity.this, "已取消", Toast.LENGTH_SHORT).show())
                 .create();

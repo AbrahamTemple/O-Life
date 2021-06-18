@@ -3,12 +3,13 @@ package com.example.myapplication.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.List;
 
-public class HospitalResponse {
+public class RegisterResponse {
     @Expose
     @SerializedName("data")
-    private List<Hospital> data;
+    private List<Register> data;
 
     @Expose
     @SerializedName("status")
@@ -18,6 +19,10 @@ public class HospitalResponse {
     @SerializedName("msg")
     private String msg;
 
+    public List<Register> getData() {
+        return data;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -26,50 +31,47 @@ public class HospitalResponse {
         return msg;
     }
 
-    public List<Hospital> getData() {
-        return data;
-    }
-
-    public static class Hospital{
-
-        @Expose
-        @SerializedName("id")
-        private Long id;
+    public static class Register{
 
         @Expose
         @SerializedName("name")
         private String name;
 
         @Expose
+        @SerializedName("sort")
+        private String sort;
+
+        @Expose
+        @SerializedName("time")
+        private Date time;
+
+        @Expose
         @SerializedName("address")
         private String address;
 
         @Expose
-        @SerializedName("phone")
-        private Long phone;
+        @SerializedName("state")
+        private String state;
 
-        @Expose
-        @SerializedName("intro")
-        private String intro;
-
-        public Long getId() {
-            return id;
-        }
 
         public String getName() {
             return name;
+        }
+
+        public String getSort() {
+            return sort;
+        }
+
+        public Date getTime() {
+            return time;
         }
 
         public String getAddress() {
             return address;
         }
 
-        public Long getPhone() {
-            return phone;
-        }
-
-        public String getIntro() {
-            return intro;
+        public String getState() {
+            return state;
         }
     }
 }

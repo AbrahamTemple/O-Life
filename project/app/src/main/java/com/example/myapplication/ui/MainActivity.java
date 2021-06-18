@@ -149,42 +149,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void OnEventProgress(Counter counter){
-//        presenter = new Presenter(new Model(), this, SchedulerProvider.getInstance());
-//        TextView textView = (TextView) task1.findViewWithTag(counter.getTag());
-//        textView.setText(counter.getProgress() + "ms");
-//        if(counter.getProgress() == 0) {
-//            presenter.getPone("bb8b89b5-6408-4266-806e-d0463baa583b");
-//        }
-//        Call<ResponseBody> call = NetWorkManager.getRequest().getBanner();
-//        if(counter.getProgress() == 0){
-//            call.enqueue(new Callback<ResponseBody>() {
-//                @Override
-//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                    if(response.isSuccessful()){
-//                        Toast.makeText(MainActivity.this, "请求数据成功", Toast.LENGTH_SHORT).show();
-//                        try {
-//                            String result = response.body().string();
-//                            Log.e("网络请求", "响应结果: " + result);
-//                            BannerResponse data = GsonUtils.fromJson(result, BannerResponse.class);
-//                            data.getData().forEach(d ->{
-//                                sharedPreferences.putString(d.getId()+"",d.getUrl());
-//                            });
-//                            Toast.makeText(MainActivity.this, "网址已被保存", Toast.LENGTH_SHORT).show();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//                @Override
-//                public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-//    }
-
     @Override
     protected void onDestroy() {
 //        EventBus.getDefault().unregister(this);
@@ -207,17 +171,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void getDataSuccess(ResponseBody body) {
         Toast.makeText(MainActivity.this, "请求数据成功", Toast.LENGTH_SHORT).show();
-//        try {
-//            String result = body.string();
-//            Log.e("网络请求", "响应结果: " + result);
-//            BannerResponse data = GsonUtils.fromJson(result, BannerResponse.class);
-//            data.getData().forEach(d ->{
-//                sharedPreferences.putString(d.getId()+"",d.getUrl());
-//            });
-//            Toast.makeText(MainActivity.this, "网址已被保存", Toast.LENGTH_SHORT).show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         try {
             String result = body.string();
             Log.e("网络请求", "响应结果: " + result);

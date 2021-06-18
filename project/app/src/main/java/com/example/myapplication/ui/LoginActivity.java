@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private int mTvSighUpWidth, mTvSighUpHeight;
     private int mDuration;
 
-    private TextView nameEdit,passEdit,passEdit1;
+    private TextView nameEdit,passEdit,secEdit,cliEdit;
 
     private SharedPreferencesUtils sharedPreferences,tokenShared;
     private Presenter presenter;
@@ -107,10 +107,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(final View v) {
         nameEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_name);
-        passEdit1 = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_pass);
-        passEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_pass_same);
+        cliEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_cli);
+        secEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_sec);
+        passEdit = (EditText) mSceneSignUp.getSceneRoot().findViewById(R.id.log_pass);
         System.out.println(nameEdit.getText().toString() +" "+ passEdit.getText().toString());
-        presenter.loginAuth(nameEdit.getText().toString(),passEdit.getText().toString());
+        presenter.loginAuth(nameEdit.getText().toString(),passEdit.getText().toString(),cliEdit.getText().toString(),secEdit.getText().toString());
         anim = v;
     }
 
@@ -127,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 presenter.getLoginUser(data.getData().getAccessToken());
             } else {
                 UserResponse data = GsonUtils.fromJson(result, UserResponse.class);
+                Log.d("当前登录用户id",data.getData().getId().toString());
                 tokenShared.putLong("id",data.getData().getId());
                 tokenShared.putString("username",data.getData().getUsername());
                 tokenShared.putString("sex",data.getData().getSex());

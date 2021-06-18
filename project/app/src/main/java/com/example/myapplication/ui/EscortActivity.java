@@ -327,6 +327,7 @@ public class EscortActivity extends AppCompatActivity {
             timePoint.stopRippleAnimation();
             addressPoint.stopRippleAnimation();
         }
+        finish();
     }
 
     @Override

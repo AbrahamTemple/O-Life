@@ -52,7 +52,6 @@ public class ChatActivity extends AppCompatActivity {
     private BubbleLayout bubbleLayout;
 
     private SharedPreferencesUtils tokenShared;
-    private String serverId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +83,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void initWebsocket(){
         WsService.startConnection(this,String.valueOf(tokenShared.getLong("id")));
-        serverId = UUID.nameUUIDFromBytes(String.valueOf(id).getBytes()).toString();
-        Log.e("医生的通道", serverId);
+        Log.e("医生的信道编号", String.valueOf(-id));
     }
 
     public void initCharView(){
@@ -93,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
             Toast.makeText(ChatActivity.this, chatBarView.getMessageText(), Toast.LENGTH_SHORT).show();
             List<String> persons = new ArrayList<>();
             persons.add(String.valueOf(tokenShared.getLong("id")));
-            persons.add(String.valueOf(serverId));
+            persons.add(String.valueOf(-id));
             WsService.startSend(this,new MsgDto(persons,chatBarView.getMessageText(),false));
         });
 

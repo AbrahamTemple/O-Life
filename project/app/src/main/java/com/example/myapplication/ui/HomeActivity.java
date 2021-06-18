@@ -14,6 +14,7 @@ import com.example.myapplication.data.network.block.Model;
 import com.example.myapplication.data.network.block.Presenter;
 import com.example.myapplication.data.network.scheduler.SchedulerProvider;
 import com.example.myapplication.domain.Counter;
+import com.example.myapplication.router.LoginCallbackImpl;
 import com.example.myapplication.router.RoutePath;
 import com.example.myapplication.service.CounterService;
 import com.example.myapplication.util.GsonUtils;
@@ -43,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +59,7 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
     @BindView(R.id.pull_to_refresh)
     PullToRefreshView prv;
 
-    private SharedPreferencesUtils sharedPreferences,tokenShared;
+    private SharedPreferencesUtils sharedPreferences,tokenShared,baseShared;
     private Presenter presenter;
 
     private ShapeLoadingDialog shapeLoadingDialog;
@@ -151,9 +153,8 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
         sharedPreferences = SharedPreferencesUtils.init(HomeActivity.this);
         tokenShared = SharedPreferencesUtils.init(this,"oauth");
         sharedPreferences.clear();
-//        tokenShared.clear(); //仅限主活动清理一次
-        System.out.println(tokenShared.getString("token"));
-        presenter.getAllHospital(BuildConfig.ACCESS_TOKEN);
+        baseShared = SharedPreferencesUtils.init(this,"base");
+        presenter.getAllHospital(baseShared.getString("render")); //BuildConfig.ACCESS_TOKEN
     }
 
     @Override
@@ -181,8 +182,8 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
             Log.e("网络请求", "响应结果: " + result);
             HospitalResponse data = GsonUtils.fromJson(result, HospitalResponse.class);
             String dataString = GsonUtils.toJson(data);
-            sharedPreferences.putString("all_hospital",dataString);
             CounterService.startDownload(this,1, 200);
+            sharedPreferences.putString("all_hospital",dataString);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -219,11 +220,21 @@ public class HomeActivity extends AppCompatActivity implements Contract.View, On
                     HospitalResponse data = GsonUtils.fromJson(dataString, HospitalResponse.class);
                     home.replaceFragment(new RecycleFragment(data));
                 } else {
-                    home.replaceFragment(new ShimmeFragment());
+                    if(tokenShared.getString("token")!=null){
+                        presenter.getAllHospital(tokenShared.getString("token"));
+                    } home.replaceFragment(new ShimmeFragment());
                 }
                 break;
             case 1:
-                ARouter.getInstance().build(RoutePath.ORDER.toString()).navigation();
+                ARouter.getInstance().build(RoutePath.CALL.toString())
+                        .withString("tag", UUID.randomUUID().toString()).navigation(this,new LoginCallbackImpl());
+                break;
+            case 2:
+                ARouter.getInstance().build(RoutePath.ESCORT.toString()).navigation(this,new LoginCallbackImpl());
+                break;
+            case 3:
+                ARouter.getInstance().build(RoutePath.ORDER.toString()).navigation(this,new LoginCallbackImpl());
+                break;
             case 4:
                 replaceFragment(new UserFragment(this,tokenShared.getString("username")));
                 break;

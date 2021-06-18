@@ -1,5 +1,6 @@
 package com.example.myapplication.domain;
 
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,18 +12,21 @@ import java.util.Date;
  * @description:
  */
 public class EscortDto implements Serializable {
+
     private Long userId;
     private Long staffId;
     private Long timing;
     private String address;
     private String command;
+    private String state;
 
-    public EscortDto(Long userId, Long staffId, Long timing, String address, String command) {
+    public EscortDto(Long userId, Long staffId, Long timing, String address, String command, String state) {
         this.userId = userId;
         this.staffId = staffId;
         this.timing = timing;
         this.address = address;
         this.command = command;
+        this.state = state;
     }
 
     public Long getUserId() {
@@ -63,5 +67,13 @@ public class EscortDto implements Serializable {
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

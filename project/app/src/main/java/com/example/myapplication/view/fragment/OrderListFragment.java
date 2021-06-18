@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.R;
-import com.example.myapplication.data.model.ReserverResponse;
-import com.example.myapplication.domain.Intro;
 import com.example.myapplication.domain.Order;
+import com.example.myapplication.domain.Reserver;
 import com.example.myapplication.router.RoutePath;
 import com.example.myapplication.view.adapter.OrderAdpater;
 import com.example.myapplication.view.layout.SpruceRecyclerView;
@@ -25,10 +24,11 @@ import java.util.List;
 
 public class OrderListFragment extends Fragment {
 
-    private ReserverResponse data;
     private RecyclerView orders;
 
-    public OrderListFragment(ReserverResponse data) {
+    private List<Reserver> data;
+
+    public OrderListFragment(List<Reserver> data) {
         this.data = data;
     }
 
@@ -45,21 +45,24 @@ public class OrderListFragment extends Fragment {
         initRecycler(data);
     }
 
-    private void initRecycler(ReserverResponse hospitalResponse){
+    private void initRecycler(List<Reserver> data){
         List<Order> lists = new ArrayList<>();
-        hospitalResponse.getData().forEach(d->{
-            Order r = new Order(d.getTitle(),d.getTime(),d.getAddress(),d.getState(),"护工："+d.getServer());
-            lists.add(r);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        data.forEach( d->{
+            Order or = new Order(d.getTitle(),sdf.format(d.getTime()),d.getInfo(),d.getAddress(),d.getState(),d.getServer());
+            lists.add(or);
         });
         OrderAdpater orderAdapter = new OrderAdpater(lists);
         orderAdapter.setOnItemClickListener((order, position) -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             ARouter.getInstance().build(RoutePath.DETAIL.toString())
                     .withString("title",order.getTitle())
-                    .withString("time",sdf.format(order.getTime()))
+                    .withString("time",order.getTime())
                     .withString("address",order.getAddress())
+                    .withString("info",order.getInfo())
                     .withString("state",order.getState())
-                    .withString("server",order.getServer()).navigation();
+                    .withString("server",order.getServer())
+                    .withInt("action",data.get(0).getAction())
+                    .navigation();
         });
         new SpruceRecyclerView(getContext(), orders, orderAdapter, true).init();
     }

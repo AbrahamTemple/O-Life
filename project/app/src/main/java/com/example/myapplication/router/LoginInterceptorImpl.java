@@ -28,12 +28,9 @@ public class LoginInterceptorImpl implements IInterceptor {
         Log.i("拦截器截获的路由",path);
         if (isNotLogin()) {
             switch (Objects.requireNonNull(RoutePath.getByPath(path))) {
-                case DETAIL:
-                case ORDER:
                 case START:
                 case HOME:
                 case LOGIN:
-                case CALL:
                     Log.d("拦截器","不需要登录的路由");
                     callback.onContinue(postcard);
                     break;
