@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign Up"
+            android:text="登录"
             android:textSize="38sp"
             android:textColor="@color/colorBg"/>
 
@@ -23,54 +23,54 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textSize="14sp"
-            android:text="Have an account?"/>
+            android:text="并没账号需要注册?"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textColor="@color/colorBg"
-            android:text="Name"/>
+            android:text="用户名"/>
 
         <EditText
             android:id="@+id/log_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="AbrahamVong"/>
+            android:text="Abraham"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBg"
-            android:text="Email"/>
+            android:text="认证账号"/>
 
         <EditText
-            android:id="@+id/log_mail"
+            android:id="@+id/log_cli"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1135530168@qq.com"/>
+            android:text="vong"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBg"
-            android:text="Password"/>
+            android:text="授权密码"/>
 
         <EditText
-            android:id="@+id/log_pass"
+            android:id="@+id/log_sec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="123456"
+            android:text="vong"
             android:inputType="textPassword"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBg"
-            android:text="Confirm Password"/>
+            android:text="密码"/>
 
         <EditText
-            android:id="@+id/log_pass_same"
+            android:id="@+id/log_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="123456"

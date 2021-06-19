@@ -11,14 +11,11 @@
         android:id="@+id/pull_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ScrollView
+        <androidx.percentlayout.widget.PercentRelativeLayout
             android:id="@+id/suck_top"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:background="@color/md_white_1000">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
                 <!--头部导航栏-->
                 <com.google.android.material.appbar.AppBarLayout
@@ -37,15 +34,15 @@
                 <!--碎片窗口-->
                 <ScrollView
                     android:id="@+id/scroll_frag"
-                    android:layout_width="match_parent"
-                    android:layout_height="505dp"
-                    android:layout_below="@+id/home_nav">
+                    android:layout_below="@+id/home_nav"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_heightPercent="78%">
                     <FrameLayout
                         android:id="@+id/frag_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </ScrollView>
-
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+                 </ScrollView>
                 <!--底部导航栏-->
                 <View
                     android:id="@+id/placeHolder"
@@ -69,7 +66,6 @@
                     app:enls_menu="@menu/loopbar"
                     app:enls_scrollMode="auto"
                     app:enls_listBackground="@android:color/holo_orange_dark"/>
-            </RelativeLayout>
-        </ScrollView>
+        </androidx.percentlayout.widget.PercentRelativeLayout>
     </com.yalantis.taurus.PullToRefreshView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

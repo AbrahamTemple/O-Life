@@ -51,10 +51,10 @@
     <fragment
         android:id="@+id/user_bezier_curve"
         android:name="com.example.myapplication.view.fragment.BezierFragment"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="290dp"
         android:background="#cad8e9"
         android:orientation="vertical">

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:background="@drawable/user_ps_circle"
-            android:src="@drawable/order_ps"
+            android:src="@drawable/abraham_ps"
             app:riv_border_color="@color/xui_config_color_gray_6"
             app:riv_border_width="1px"
             app:riv_is_circle="true"
@@ -34,7 +34,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="泷泽萝拉"
+                android:text="@{order.username}"
                 android:textColor="@color/md_black_1000"
                 android:textSize="20dp"
                 android:layout_marginTop="22dp"
@@ -156,7 +156,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(order.time)}"
+                    android:text="@{order.time}"
                     android:textColor="@color/md_grey_600"
                     android:textSize="18dp"
                     android:layout_below="@+id/time_logo"
@@ -238,7 +238,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+86 16427366001"
+                android:text="@{order.info}"
                 android:textSize="16dp"
                 android:textColor="@color/md_grey_600"
                 android:layout_marginStart="15dp"
