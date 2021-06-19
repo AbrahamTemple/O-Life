@@ -171,14 +171,14 @@ public class CallActivity extends AppCompatActivity implements Contract.View {
         @Override
         public void onLocationChanged(Location location) {
             proxy.notifyLocation(location);
-            Log.d("网络状态已刷新",location.getProvider());
-            Toast.makeText(CallActivity.this, "网络状态已刷新 "+location.getProvider(), Toast.LENGTH_SHORT).show();
+//            Log.d("网络状态已刷新",location.getProvider());
+//            Toast.makeText(CallActivity.this, "网络状态已刷新 "+location.getProvider(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.d("网络状态发生改变",provider);
-            Toast.makeText(CallActivity.this, "网络状态正在改变 HTTP "+status, Toast.LENGTH_SHORT).show();
+//            Log.d("网络状态发生改变",provider);
+//            Toast.makeText(CallActivity.this, "网络状态正在改变 HTTP "+status, Toast.LENGTH_SHORT).show();
         }
 
         @Override

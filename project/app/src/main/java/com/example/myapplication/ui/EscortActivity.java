@@ -110,7 +110,12 @@ public class EscortActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         HideUtil.init(this);
         replaceFragment(new LoadingFragment());
-        new RxTimer().timer(5000, number -> replaceFragment(new BgFragment()));
+        new RxTimer().timer(5000, number -> {
+            if(!this.isDestroyed() && !this.isFinishing()) {
+                replaceFragment(new BgFragment());
+            }
+        });
+
         tokenShared = SharedPreferencesUtils.init(this,"oauth");
         init();
     }

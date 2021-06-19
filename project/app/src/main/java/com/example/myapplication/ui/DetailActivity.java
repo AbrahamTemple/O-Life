@@ -46,6 +46,7 @@ public class DetailActivity extends AppCompatActivity {
     @Autowired
     public int action;
 
+    private SharedPreferencesUtils tokenShared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +59,14 @@ public class DetailActivity extends AppCompatActivity {
 
 
     public void init(){
+        tokenShared = SharedPreferencesUtils.init(this,"oauth");
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         if (action==0) {
             serverBtn.setText("联系他");
-            binding.setVariable(BR.order, new Order(UUID.randomUUID().toString(),title,time,"+86 "+info,address,state,server));
+            binding.setVariable(BR.order, new Order(UUID.randomUUID().toString(),tokenShared.getString("username"),title,time,"+86 "+info,address,state,server));
         } else {
             serverBtn.setText("私聊他");
-            binding.setVariable(BR.order, new Order(UUID.randomUUID().toString(),title,time,"诊科:"+info,address,state,server));
+            binding.setVariable(BR.order, new Order(UUID.randomUUID().toString(),tokenShared.getString("username"),title,time,"诊科:"+info,address,state,server));
         }
     }
 

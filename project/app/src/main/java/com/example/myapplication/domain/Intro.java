@@ -8,14 +8,6 @@ public class Intro {
     private String other;
     private String main;
 
-//    public Intro(int img, String title, String about, String other) {
-//        this.img = img;
-//        this.title = title;
-//        this.about = about;
-//        this.other = other;
-//    }
-
-
     public Intro(int img, String title, String about, String other, String main) {
         this.img = img;
         this.title = title;

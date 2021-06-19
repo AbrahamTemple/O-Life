@@ -5,6 +5,7 @@ package com.example.myapplication.domain;
 public class Order {
 
     private String id;
+    private String username;
     private String title;
     private String time;
     private String info;
@@ -12,8 +13,7 @@ public class Order {
     private String state;
     private String server;
 
-    public Order(String id, String title, String time, String info, String address, String state, String server) {
-        this.id = id;
+    public Order(String title, String time, String info, String address, String state, String server) {
         this.title = title;
         this.time = time;
         this.info = info;
@@ -22,7 +22,19 @@ public class Order {
         this.server = server;
     }
 
-    public Order(String title, String time, String info, String address, String state, String server) {
+    public Order(String username, String title, String time, String info, String address, String state, String server) {
+        this.username = username;
+        this.title = title;
+        this.time = time;
+        this.info = info;
+        this.address = address;
+        this.state = state;
+        this.server = server;
+    }
+
+    public Order(String id, String username, String title, String time, String info, String address, String state, String server) {
+        this.id = id;
+        this.username = username;
         this.title = title;
         this.time = time;
         this.info = info;
@@ -85,5 +97,13 @@ public class Order {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

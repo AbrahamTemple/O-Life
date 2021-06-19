@@ -46,6 +46,10 @@ public class RegisterResponse {
         private Date time;
 
         @Expose
+        @SerializedName("username")
+        private String username;
+
+        @Expose
         @SerializedName("address")
         private String address;
 
@@ -72,6 +76,10 @@ public class RegisterResponse {
 
         public String getState() {
             return state;
+        }
+
+        public String getUsername() {
+            return username;
         }
     }
 }

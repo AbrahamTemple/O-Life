@@ -6,6 +6,8 @@ public class Reserver {
 
     private String title;
 
+    private String username;
+
     private String address;
 
     private String server;
@@ -17,6 +19,17 @@ public class Reserver {
     private String state;
 
     private Integer action;
+
+    public Reserver(String title, String username, String address, String server, String info, Date time, String state, Integer action) {
+        this.title = title;
+        this.username = username;
+        this.address = address;
+        this.server = server;
+        this.info = info;
+        this.time = time;
+        this.state = state;
+        this.action = action;
+    }
 
     public Reserver(String title, String address, String server, String info, Date time, String state, Integer action) {
         this.title = title;
@@ -82,5 +95,13 @@ public class Reserver {
 
     public void setAction(Integer action) {
         this.action = action;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

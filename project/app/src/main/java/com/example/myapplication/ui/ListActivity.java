@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.myapplication.data.model.DoctorResponse;
 import com.example.myapplication.data.model.HospitalResponse;
+import com.example.myapplication.data.model.RegisterResponse;
 import com.example.myapplication.data.model.StaffResponse;
 import com.example.myapplication.data.network.block.Contract;
 import com.example.myapplication.data.network.block.Model;
@@ -162,6 +163,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                             .withLong("id",position)
                             .navigation(this,new LoginCallbackImpl());
                     tokenShared.putLong("hid",position);
+                    tokenShared.putString("hospital",intro.getMain().replace("地址：",""));
                 });
             break;
             case 2:
@@ -179,7 +181,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                     Intro r = new Intro(R.drawable.staff_img,d.getName(),d.getIntro(),"电话："+d.getPhone(),"工作时长："+d.getJobTime()+"年");
                     lists.add(r);
                 });
-                listAdapter.setOnItemClickListener((intro, position) -> showEscortDialog(intro.getTitle(),position));
+                listAdapter.setOnItemClickListener((intro, position) -> showEscortDialog(intro,position));
             break;
         }
         new SpruceRecyclerView(this, o_list, listAdapter, true).init();
@@ -232,7 +234,7 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
                 .setPositiveButton("确定", (dialogInterface, i) -> {
                     shapeLoadingDialog.show();
                     Toast.makeText(ListActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    RegisterDto dto = new RegisterDto(tokenShared.getLong("id"),tokenShared.getLong("id"),tokenShared.getLong("hid"),doctor.getId(),new Date().getTime(),"待挂号");
+                    RegisterDto dto = new RegisterDto(tokenShared.getLong("id"),tokenShared.getLong("id"),tokenShared.getLong("hid"),doctor.getId(),doctor.getTitle(),doctor.getOther().replace("主治专业：",""),tokenShared.getString("username"),tokenShared.getString("hospital"),new Date().getTime(),"待挂号");
                     new RxTimer().timer(500,number -> {
                         shapeLoadingDialog.dismiss();
                         OrderService.startRequest(this, GsonUtils.toJson(dto));
@@ -244,14 +246,14 @@ public class ListActivity extends AppCompatActivity implements Contract.View{
         alert.show();
     }
 
-    private void showEscortDialog(String staff, int position) {
+    private void showEscortDialog(Intro staff, int position) {
         AlertDialog alert = new AlertDialog.Builder(this)
                 .setTitle("注意")
-                .setMessage("你确定要预定"+staff+"护工陪诊吗？")
+                .setMessage("你确定要预定"+staff.getTitle()+"护工陪诊吗？")
                 .setIcon(R.mipmap.danger)
                 .setPositiveButton("确定", (dialogInterface, i) -> {
                     shapeLoadingDialog.show();
-                    EscortDto dto = new EscortDto(tokenShared.getLong("id"), (long) position,tokenShared.getLong("escort_time"),tokenShared.getString("escort_address"),"add","待接单");
+                    EscortDto dto = new EscortDto(tokenShared.getLong("id"), (long) position,tokenShared.getString("username"),tokenShared.getLong("escort_time"),tokenShared.getString("escort_address"),staff.getTitle(),Long.valueOf(staff.getOther().replace("电话：","")),"add","待接单");
                     AmqpService.setExchange("olife-reserve-exchange");
                     AmqpService.setQueue("olife-redis-queue");
                     AmqpService.setRountingKey("olife.reserve.redis."+ UUID.randomUUID().toString());

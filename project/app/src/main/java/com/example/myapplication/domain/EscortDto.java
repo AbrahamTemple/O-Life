@@ -15,10 +15,25 @@ public class EscortDto implements Serializable {
 
     private Long userId;
     private Long staffId;
+    private String userName;
     private Long timing;
     private String address;
+    private String name;
+    private Long phone;
     private String command;
     private String state;
+
+    public EscortDto(Long userId, Long staffId, String userName, Long timing, String address, String name, Long phone, String command, String state) {
+        this.userId = userId;
+        this.staffId = staffId;
+        this.userName = userName;
+        this.timing = timing;
+        this.address = address;
+        this.name = name;
+        this.phone = phone;
+        this.command = command;
+        this.state = state;
+    }
 
     public EscortDto(Long userId, Long staffId, Long timing, String address, String command, String state) {
         this.userId = userId;
@@ -75,5 +90,29 @@ public class EscortDto implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Long phone) {
+        this.phone = phone;
     }
 }
