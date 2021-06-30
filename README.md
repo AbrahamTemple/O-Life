@@ -1,4 +1,10 @@
-基于Android MVVM框架的前端设计
+# 基于Android MVVM框架的前端设计
+
+## apk下载
+
+``` bash
+http://8.135.100.252/apk/olife-0.6.apk
+```
 
 ## 框架组件图
 
